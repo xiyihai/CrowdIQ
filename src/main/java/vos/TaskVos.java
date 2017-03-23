@@ -3,6 +3,8 @@ package vos;
 import java.util.ArrayList;
 
 public class TaskVos {
+	//这里task类虽然复杂，但信息全。主要包含两部分：工人可见信息，雇主可见信息。里面一部分是重合的
+	
 	
 	private String taskID;
 	

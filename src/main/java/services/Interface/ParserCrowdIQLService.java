@@ -9,4 +9,6 @@ public interface ParserCrowdIQLService {
 	//这个类主要用于解析语句，生成UI模板，模板确定之后，建立task任务
 	String parser(String sql, JSONObject jsonTable);
 	
+	//雇主上传外部算法,这里需要检查一下，是否按照要求上传，是否成功。并将用户id，算法id写入数据库
+	boolean uploadAlgorithm();
 }

@@ -1,4 +1,4 @@
-package actions.extend;
+package actions.extend.table;
 
 import actions.base.InspectionAndReadTableBaseAction;
 

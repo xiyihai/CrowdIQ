@@ -288,5 +288,11 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 			}
 			return JSONObject.fromObject(map_result).toString();
 		}
+
+	@Override
+	public boolean uploadAlgorithm() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

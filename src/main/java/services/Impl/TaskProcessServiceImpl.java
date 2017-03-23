@@ -22,4 +22,34 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		return false;
 	}
 
+	@Override
+	public boolean deleteTask(String taskID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pauseTask(String taskID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String showTask(String taskID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean takeTask(String taskID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean finishTask(String taskID, String answers) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
