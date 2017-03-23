@@ -9,9 +9,21 @@ public interface ReadTableService {
 	//将原始数据其转换为jsontable
 	boolean tranferJSONTable();
 	
-	//存放读取的表原始数据
-	boolean readTable();
+	//读取上传的的表原始数据
+	boolean readUploadTable();
+	
+	//将用户ID，表格ID存入数据库,下次登录时读取
+	boolean readDBTable();
 	
 	//获取jsontable_show的形式
 	JSONObject getJSONTable_show();
+	
+	//返回jsontable数据
+	JSONObject getJsonTable();
+	
+	//获取二维表原始数据
+	ArrayList<String[]> getReadList();
+
+	//将用户ID，表格ID写入数据库
+	boolean insertDB();
 }

@@ -51,6 +51,13 @@
 	    <version>2.0</version>
 	</dependency>
 
+	<dependency>
+	    <groupId>org.apache.struts</groupId>
+	    <artifactId>struts2-json-plugin</artifactId>
+	    <version>2.5</version>
+	</dependency>
+
+
   </dependencies>
   <build>
     <finalName>CrowdIQ</finalName>

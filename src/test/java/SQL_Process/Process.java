@@ -304,7 +304,7 @@ public class Process {
 		// TODO Auto-generated method stub
 		Process process = new Process();
 		
-		process.process( " using algorithm(xyh0431.impl.headerrecover) on table.columns[4] ","src/test/resources/Winners.csv");
+		process.process( " using algorithm(zlf0320.impl.entityfind) on table.columns ","src/test/resources/Winners.csv");
 	}
 
 }

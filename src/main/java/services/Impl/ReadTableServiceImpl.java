@@ -8,6 +8,7 @@ import com.csvreader.CsvReader;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import services.Interface.InspectionService;
 import services.Interface.ReadTableService;
 import vos.JSONTableVos;
 
@@ -17,25 +18,26 @@ public class ReadTableServiceImpl implements ReadTableService {
 	private JSONObject jsonTable;
 	//存放二维表原始数据
 	private ArrayList<String[]> readList;
-	private InspectionServiceImpl inspection;
-	
-	
-	
+	private InspectionService inspectionService;
+
+
+	public InspectionService getInspectionService() {
+		return inspectionService;
+	}
+
+	public void setInspectionService(InspectionService inspectionService) {
+		this.inspectionService = inspectionService;
+	}
+
+	@Override
 	public JSONObject getJsonTable() {
 		return jsonTable;
 	}
 
-
-	
-
-
+	@Override
 	public ArrayList<String[]> getReadList() {
 		return readList;
 	}
-
-
-	
-
 
 	@Override
 	public boolean tranferJSONTable() {
@@ -46,7 +48,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 		if (readList.size()>0) {
 			
 			//判断是否存在表头,全部内容都在readList中
-			if(inspection.hasHeader()){
+			if(inspectionService.hasHeader(readList)){
 				
 				jsonTableVos.setHeaders(new ArrayList<String>(Arrays.asList(readList.get(0))));
 				ArrayList<ArrayList<String>> data = new ArrayList<>();
@@ -111,10 +113,10 @@ public class ReadTableServiceImpl implements ReadTableService {
 	}
 
 	
-
 	@Override
-	public boolean readTable() {
+	public boolean readUploadTable() {
 		// TODO Auto-generated method stub
+		
 		readList = new ArrayList<>();
 		try {
 			CsvReader reader = new CsvReader("WEB-INF/classes/Winners.csv",',',Charset.forName("utf-8"));
@@ -127,6 +129,21 @@ public class ReadTableServiceImpl implements ReadTableService {
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+	
+
+	@Override
+	public boolean readDBTable() {
+		// TODO Auto-generated method stub
+		
+		return false;
+	}
+
+	@Override
+	public boolean insertDB() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

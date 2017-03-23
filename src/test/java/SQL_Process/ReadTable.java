@@ -19,7 +19,7 @@ public class ReadTable {
 
 	//判断是否存在表头，会影响jsontable的形成
 	private boolean hasHeader(){
-		return false;
+		return true;
 	}
 	
 	//读取csv格式的table，输入参数 path为路径

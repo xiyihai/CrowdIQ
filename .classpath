@@ -34,10 +34,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/xyh0431_header.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/ryr0231_header.jar"/>
+	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/zlf0320_entity.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!--配置service 
+	=========================================================================================== -->
+	<bean id="InspectionService" class="services.Impl.InspectionServiceImpl"></bean>
+	
+	<bean id="ReadTableService" class="services.Impl.ReadTableServiceImpl">
+		<property name="InspectionService" ref="InspectionService"></property>
+	</bean>
+	
+	
+	
+	<!-- 配置action 
+   =================================================================================== -->
+   
+   <!-- 制作模板Action -->
+	<bean id="InspectionAndReadTableAction" abstract="true" scope="prototype">
+		<property name="InspectionService" ref="InspectionService"></property>
+		<property name="ReadTableService" ref="ReadTableService"></property>
+	</bean>
+	
+	<bean id="InspectionAction" class="actions.extend.InspectionAction" parent="InspectionAndReadTableAction"></bean>
+	
+	<bean id="ReadTableAction" class="actions.extend.ReadTableAction" parent="InspectionAndReadTableAction"></bean>
+	
+	
+</beans>

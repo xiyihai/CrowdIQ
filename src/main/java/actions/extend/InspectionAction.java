@@ -1,8 +1,8 @@
 package actions.extend;
 
-import actions.base.InspectionBaseAction;
+import actions.base.InspectionAndReadTableBaseAction;
 
-public class InspectionAction extends InspectionBaseAction {
+public class InspectionAction extends InspectionAndReadTableBaseAction {
 
 	//用来返回存在的问题
 	private String problems;
@@ -15,9 +15,8 @@ public class InspectionAction extends InspectionBaseAction {
 		this.problems = problems;
 	}
 	
-	public String execute(){
-		
-		problems = inservice.inspect();
+	public String execute(){	
+		problems = inservice.inspect(readservice.getJSONTable_show());
 		return SUCCESS;
 	}
 }
