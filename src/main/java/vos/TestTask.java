@@ -18,6 +18,46 @@ public class TestTask {
 	
 	//对应的答案
 	private ArrayList<String> ground_true;
+
+	public String getTaskID() {
+		return taskID;
+	}
+
+	public void setTaskID(String taskID) {
+		this.taskID = taskID;
+	}
+
+	public ArrayList<String> getSqlTargets() {
+		return sqlTargets;
+	}
+
+	public void setSqlTargets(ArrayList<String> sqlTargets) {
+		this.sqlTargets = sqlTargets;
+	}
+
+	public String getQuestionDescribe() {
+		return questionDescribe;
+	}
+
+	public void setQuestionDescribe(String questionDescribe) {
+		this.questionDescribe = questionDescribe;
+	}
+
+	public ArrayList<String> getShowing_contents() {
+		return showing_contents;
+	}
+
+	public void setShowing_contents(ArrayList<String> showing_contents) {
+		this.showing_contents = showing_contents;
+	}
+
+	public ArrayList<String> getGround_true() {
+		return ground_true;
+	}
+
+	public void setGround_true(ArrayList<String> ground_true) {
+		this.ground_true = ground_true;
+	}
 	
 	
 }

@@ -1,12 +1,11 @@
-package actions.extend.task;
+package actions.extend.register;
 
-import actions.base.TaskProcessBaseAction;
+import actions.base.RegisterBaseAction;
 
-public class ShowTaskAction extends TaskProcessBaseAction {
-	//用于接受前端需要发布任务的ID号
+public class TestTaskAction extends RegisterBaseAction {
+
+	//前端接受工人请求的ID
 	private String taskID;
-	//用于返回待修改的真个task数据
-	private String taskJSON;
 	private String userID;
 
 	public String getUserID() {
@@ -16,6 +15,8 @@ public class ShowTaskAction extends TaskProcessBaseAction {
 	public void setUserID(String userID) {
 		this.userID = userID;
 	}
+	//后端返回的测试任务的JSON数据
+	private String taskJSON;
 	
 	public String getTaskJSON() {
 		return taskJSON;
@@ -24,6 +25,7 @@ public class ShowTaskAction extends TaskProcessBaseAction {
 	public void setTaskJSON(String taskJSON) {
 		this.taskJSON = taskJSON;
 	}
+
 	public String getTaskID() {
 		return taskID;
 	}
@@ -31,9 +33,9 @@ public class ShowTaskAction extends TaskProcessBaseAction {
 	public void setTaskID(String taskID) {
 		this.taskID = taskID;
 	}
-
-	public String execute() {
-		taskJSON = taskProcessService.showTask(userID, taskID);
+	
+	public String execute(){
+		taskJSON = registerService.getTestTask(userID, taskID);
 		return SUCCESS;
 	}
 }

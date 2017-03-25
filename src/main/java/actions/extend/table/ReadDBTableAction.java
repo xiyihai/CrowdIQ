@@ -4,6 +4,26 @@ import actions.base.InspectionAndReadTableBaseAction;
 
 public class ReadDBTableAction extends InspectionAndReadTableBaseAction {
 
+	private String userID;
+	private String tableID;
+	
+	
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public String getTableID() {
+		return tableID;
+	}
+
+	public void setTableID(String tableID) {
+		this.tableID = tableID;
+	}
+
 	//用于返回读取的JSONTable，用于前端返回json树
 	private String jsonTable;
 
@@ -16,7 +36,7 @@ public class ReadDBTableAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){	
-		readservice.readDBTable();
+		readservice.readDBTable(userID,tableID);
 		readservice.tranferJSONTable();
 		jsonTable = readservice.getJSONTable_show().toString();
 		return SUCCESS;

@@ -6,6 +6,15 @@ public class TakeTaskAction extends TaskProcessBaseAction {
 
 	//用于接受前端需要的ID号
 			private String taskID;
+			private String userID;
+
+			public String getUserID() {
+				return userID;
+			}
+
+			public void setUserID(String userID) {
+				this.userID = userID;
+			}
 
 			public String getTaskID() {
 				return taskID;
@@ -16,7 +25,7 @@ public class TakeTaskAction extends TaskProcessBaseAction {
 			}
 
 			public String execute() {
-				taskProcessService.takeTask(taskID);
+				taskProcessService.takeTask(userID, taskID);
 				return SUCCESS;
 			}
 }

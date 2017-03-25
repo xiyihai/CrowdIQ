@@ -1,10 +1,10 @@
-package actions.extend.task;
+package actions.extend.task.requester;
 
 import actions.base.TaskProcessBaseAction;
 
-public class DeleteTaskAction extends TaskProcessBaseAction {
+public class PauseTaskAction extends TaskProcessBaseAction{
 
-	//用于接受前端需要的ID号
+	//用于接受前端需要发布任务的ID号
 		private String taskID;
 		private String userID;
 
@@ -15,7 +15,6 @@ public class DeleteTaskAction extends TaskProcessBaseAction {
 		public void setUserID(String userID) {
 			this.userID = userID;
 		}
-
 		public String getTaskID() {
 			return taskID;
 		}
@@ -25,7 +24,7 @@ public class DeleteTaskAction extends TaskProcessBaseAction {
 		}
 
 		public String execute() {
-			taskProcessService.deleteTask(userID, taskID);
+			taskProcessService.pauseTask(userID, taskID);
 			return SUCCESS;
 		}
 }

@@ -8,6 +8,17 @@ public class FinishTaskAction extends TaskProcessBaseAction {
 	private String answers;
 	//用于接受前端任务ID号
 	private String taskID;
+	
+	private String userID;
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+	
 	public String getAnswers() {
 		return answers;
 	}
@@ -22,7 +33,7 @@ public class FinishTaskAction extends TaskProcessBaseAction {
 	}
 	
 	public String execute(){
-		taskProcessService.finishTask(taskID, answers);
+		taskProcessService.finishTask(userID, taskID, answers);
 		return SUCCESS;
 	}
 	

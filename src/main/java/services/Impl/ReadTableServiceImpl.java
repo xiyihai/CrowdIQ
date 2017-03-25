@@ -114,7 +114,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 
 	
 	@Override
-	public boolean readUploadTable() {
+	public boolean readUploadTable(String userID) {
 		// TODO Auto-generated method stub
 		
 		readList = new ArrayList<>();
@@ -131,17 +131,27 @@ public class ReadTableServiceImpl implements ReadTableService {
 		return true;
 	}
 
-	
 
 	@Override
-	public boolean readDBTable() {
+	public boolean readDBTable(String userID, String tableID) {
 		// TODO Auto-generated method stub
-		
 		return false;
 	}
 
 	@Override
-	public boolean insertDB() {
+	public boolean insertDB(String userID, String tableID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> showAllTable(String userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean downloadTable(String tableID, String userID) {
 		// TODO Auto-generated method stub
 		return false;
 	}

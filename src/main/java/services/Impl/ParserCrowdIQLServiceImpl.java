@@ -1,11 +1,15 @@
 package services.Impl;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.csvreader.CsvWriter;
 
 import FunctionsSupport.AlgorithmIn;
 import FunctionsSupport.Parser;
@@ -148,7 +152,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 
 	//根据众包用户获取值之后，填充select,update的值.
 	//value 具体形态需要更具subattribute来定，可能是一维，或者字符串。理论上不可能是二维数组，没有这样的任务
-	private boolean fillContent(String[] subattributes,String value, JSONObject jsonTable){
+	public boolean fillContent(String[] subattributes,String value, JSONObject jsonTable){
 
 		String attribute_name = subattributes[0];
 		int first_number;
@@ -290,9 +294,47 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		}
 
 	@Override
-	public boolean uploadAlgorithm() {
+	public boolean uploadAlgorithm(String userID) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean returnTable(JSONObject jsonTable, String tableID) {
+		// TODO Auto-generated method stub
+		String path = "";
+		String csvWriteFile = path;
+	     CsvWriter writer = new CsvWriter(csvWriteFile, ',', Charset.forName("utf-8"));  
+	     
+	     ArrayList<String[]> writelist = new ArrayList<>();
+	     
+	     //先放入表头
+	     int length = ((JSONArray)jsonTable.get("headers")).size();
+	     String[] headers = new String[length];
+	     ((JSONArray)jsonTable.get("headers")).toArray(headers);
+	     
+	     writelist.add(headers);
+	     
+	     //再放入row值
+	     int length_row = ((JSONArray)jsonTable.get("data")).size();
+	     for(int i=0;i<length_row;i++){
+	    	 int length_column = ((JSONArray)((JSONArray)jsonTable.get("data")).get(i)).size();
+	    	 String[] rows = new String[length_column];
+	    	 ((JSONArray)((JSONArray)jsonTable.get("data")).get(i)).toArray(rows);
+	    	 writelist.add(rows);
+	     }
+	     
+	     for(int row=0;row<writelist.size();row++){
+	       	try {
+				writer.writeRecord(writelist.get(row));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
+		 writer.close();
+
+	     return true;
 	}
 	
 }
