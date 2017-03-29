@@ -13,5 +13,8 @@ public interface RegisterService {
 	boolean finishTestTask(String userID, String taskID, String answer);
 	
 	//需要区分雇主和工人
-	boolean login(String userID);
+	String login(String informationJSON);
+	
+	//返回所有该工人的测试任务ID号
+	String getAllTestTask(String userID);
 }

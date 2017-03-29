@@ -11,7 +11,7 @@ import java.util.ArrayList;
 //内部算法直接发布到项目 lib下，外部算法满足要求后上传，系统自动放到lib下，这样也能够被索引到.
 //外部算法不支持知识库等操作
 
-public interface Algorithm {
+public interface AlgorithmInterface {
 
 	public ArrayList<String> process(String data, int top_k);
 	

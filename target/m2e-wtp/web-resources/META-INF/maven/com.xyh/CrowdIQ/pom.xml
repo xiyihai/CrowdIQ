@@ -58,6 +58,36 @@
 	</dependency>
 
 
+	<dependency >  
+	    <groupId >javax.mail</groupId >  
+	    <artifactId >mail</artifactId >  
+	    <version >1.4.5 </version >  
+	</dependency >  
+	<dependency >  
+	    <groupId >com.sun.mail </groupId >  
+	    <artifactId >javax.mail </artifactId >  
+	    <version >1.5.4 </version >  
+	</dependency >  
+	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-core</artifactId>
+	    <version>5.1.0.Final</version>
+	</dependency>
+	<dependency>
+    	<groupId>mysql</groupId>
+    	<artifactId>mysql-connector-java</artifactId>
+    	<version>5.1.38</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.hibernate</groupId>
+    	<artifactId>hibernate-c3p0</artifactId>
+    	<version>5.1.0.Final</version>
+	</dependency>
+
+
+
+
+
   </dependencies>
   <build>
     <finalName>CrowdIQ</finalName>
