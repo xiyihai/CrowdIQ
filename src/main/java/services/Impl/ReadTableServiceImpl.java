@@ -3,9 +3,14 @@ package services.Impl;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import com.csvreader.CsvReader;
 
+import daos.Interface.RTableDao;
+import domains.RTable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.InspectionService;
@@ -20,6 +25,17 @@ public class ReadTableServiceImpl implements ReadTableService {
 	private ArrayList<String[]> readList;
 	private InspectionService inspectionService;
 
+	private RTableDao rtableDao;
+	
+	
+
+	public RTableDao getRtableDao() {
+		return rtableDao;
+	}
+
+	public void setRtableDao(RTableDao rtableDao) {
+		this.rtableDao = rtableDao;
+	}
 
 	public InspectionService getInspectionService() {
 		return inspectionService;
@@ -118,12 +134,19 @@ public class ReadTableServiceImpl implements ReadTableService {
 		// TODO Auto-generated method stub
 		
 		readList = new ArrayList<>();
+		
 		try {
+			//？？？？？？？？？？？？？这边路径还需要细化
+			String table_name = null;
 			CsvReader reader = new CsvReader("WEB-INF/classes/Winners.csv",',',Charset.forName("utf-8"));
 		    while(reader.readRecord()){ //逐行读入数据      
 		        readList.add(reader.getValues());  
 		    }              
 		    reader.close();
+
+			//将用户上传的表写入数据库
+			rtableDao.save(new RTable(Integer.valueOf(userID), table_name));
+		    
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,21 +156,35 @@ public class ReadTableServiceImpl implements ReadTableService {
 
 
 	@Override
-	public boolean readDBTable(String userID, String tableID) {
+	public boolean readDBTable(String userID, String tablename) {
 		// TODO Auto-generated method stub
-		return false;
+		//这里的操作应该和readUploadTable差不多
+		readList = new ArrayList<>();
+		try {
+			//？？？？？？？？？？？？？这边路径还需要细化
+			CsvReader reader = new CsvReader("WEB-INF/classes/Winners.csv",',',Charset.forName("utf-8"));
+		    while(reader.readRecord()){ //逐行读入数据      
+		        readList.add(reader.getValues());  
+		    }              
+		    reader.close();
+		    
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
 	}
 
-	@Override
-	public boolean insertDB(String userID, String tableID) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
-	public ArrayList<String> showAllTable(String userID) {
+	public String showAllTable(String userID) {
 		// TODO Auto-generated method stub
-		return null;
+		List<RTable> rTables = rtableDao.findAllByRid(userID);
+		ArrayList<String> names = new ArrayList<>();
+		for(int i=0;i<rTables.size();i++){
+			names.add(rTables.get(i).getTable_name());
+		}
+		return JSONObject.fromObject(rTables).toString();
 	}
 
 	@Override

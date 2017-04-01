@@ -17,11 +17,11 @@ public interface TaskProcessService {
 	//雇主针对发布中的任务暂停
 	boolean pauseTask(String userID, String taskID);
 	
-	//删除任务，需要区分雇主和工人。必须是暂停之后才能删除
-	boolean deleteTask(String userID, String taskID);
+	//删除任务，需要区分雇主和工人。雇主必须是暂停之后才能删除，工人则都可以
+	boolean deleteTask(String userID, String taskID, String flag);
 	
 	//雇主或工人（这里要做好区分工作）查看某task，返回task的整个内容。
-	String showTask(String userID, String taskID);
+	String showTask(String userID, String taskID, String flag);
 	
 	//工人确定要收录该任务，将工人ID，任务ID，写入数据库
 	boolean takeTask(String userID, String taskID);
@@ -31,6 +31,6 @@ public interface TaskProcessService {
 	
 	//工人提交了任务之后，对应雇主任务也需要修改。此函数放在finishTask里面，同时需要判断雇主任务是否已满，
 	//若满则还需要更改雇主ID详情表的中任务状态，并且调用决策模块得到答案，在写入数据库
-	boolean addAnswerTask(String taskID, String answer);	
+	boolean addAnswerTask(String taskID, String answer);
 	
 }

@@ -8,6 +8,16 @@ public class ShowTaskAction extends TaskProcessBaseAction {
 	//用于返回待修改的真个task数据
 	private String taskJSON;
 	private String userID;
+	//区分标志
+	private String flag;
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 
 	public String getUserID() {
 		return userID;
@@ -33,7 +43,7 @@ public class ShowTaskAction extends TaskProcessBaseAction {
 	}
 
 	public String execute() {
-		taskJSON = taskProcessService.showTask(userID, taskID);
+		taskJSON = taskProcessService.showTask(userID, taskID, flag);
 		return SUCCESS;
 	}
 }

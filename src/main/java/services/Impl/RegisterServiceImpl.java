@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
+import com.sun.javafx.css.CalculatedValue;
+
 import FunctionsSupport.MailSender;
 import daos.Interface.RequesterDao;
 import daos.Interface.TestTaskDao;
@@ -64,7 +66,7 @@ public class RegisterServiceImpl implements RegisterService {
 			//注册好了还需要写入对应工人的测试数据,这里加入所有测试数据，待用户自己选择做
 			List<TestTask> testtasks = testtaskDao.findAll(TestTask.class);
 			for(int i=0;i<testtasks.size();i++){
-				WorkerTestTask workerTestTask = new WorkerTestTask(Integer.valueOf(id), testtasks.get(i).getId(), new Integer(0), "");
+				WorkerTestTask workerTestTask = new WorkerTestTask(Integer.valueOf(id), testtasks.get(i).getTest_id(), new Integer(0), "");
 				workertesttaskDao.save(workerTestTask);
 			}
 		}
@@ -74,13 +76,41 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public String getTestTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		return null;
+		TestTask testTask = testtaskDao.get(TestTask.class, Integer.valueOf(taskID));
+		String content = testTask.getContent();
+		return content;
 	}
 
 	@Override
 	public boolean finishTestTask(String userID, String taskID, String answer) {
 		// TODO Auto-generated method stub
-		return false;
+		WorkerTestTask task = workertesttaskDao.findByWidTid(userID, taskID).get(0);
+		task.setState(1);
+		task.setWorker_answer(answer);
+		workertesttaskDao.save(task);
+		
+		//需要判断该用户的测试题是否全部完成
+		List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
+		if (tasks.size()>=10) {
+			//需要计算工人初步质量举证
+			ArrayList<String> results = new ArrayList<>();
+			for(int i=0;i<tasks.size();i++){
+				String taskid = String.valueOf(tasks.get(i).getTesttask_id());
+				TestTask testtask = testtaskDao.get(TestTask.class, taskid);
+				//这个truth是由JSONArray变换来的
+				String truth = testtask.getAnswer();
+				//这个由JSONArray变换来的
+				String wanswer = tasks.get(i).getWorker_answer();
+				//以：分割
+				String result = wanswer+":"+truth;
+				results.add(result);
+			}
+			Worker worker = workerDao.get(Worker.class, userID);
+			//这里未解决??????????需要将正确答案和工人答案打包然后发给对应计算模块
+			//worker.setQuality(CalculatedValue(results));
+			workerDao.save(worker);
+		}
+		return true;
 	}
 
 	@Override

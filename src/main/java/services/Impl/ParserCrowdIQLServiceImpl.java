@@ -13,12 +13,24 @@ import com.csvreader.CsvWriter;
 
 import FunctionsSupport.AlgorithmIn;
 import FunctionsSupport.Parser;
+import daos.Interface.RAlgorithmDao;
+import domains.RAlgorithm;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.ParserCrowdIQLService;
 
 public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	
+	private RAlgorithmDao rAlgorithmDao;
+	
+	public RAlgorithmDao getrAlgorithmDao() {
+		return rAlgorithmDao;
+	}
+
+	public void setrAlgorithmDao(RAlgorithmDao rAlgorithmDao) {
+		this.rAlgorithmDao = rAlgorithmDao;
+	}
+
 	private Parser parser;
 
 	@Override
@@ -296,6 +308,9 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	@Override
 	public boolean uploadAlgorithm(String userID) {
 		// TODO Auto-generated method stub
+		String algorithm_name=null;
+		//????????????????这里算法名字还需要进一步定义
+		rAlgorithmDao.save(new RAlgorithm(Integer.valueOf(userID), algorithm_name));
 		return false;
 	}
 

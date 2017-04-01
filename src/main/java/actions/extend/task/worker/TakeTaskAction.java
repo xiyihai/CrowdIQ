@@ -4,7 +4,7 @@ import actions.base.TaskProcessBaseAction;
 
 public class TakeTaskAction extends TaskProcessBaseAction {
 
-	//用于接受前端需要的ID号
+			//用于接受前端需要的ID号
 			private String taskID;
 			private String userID;
 

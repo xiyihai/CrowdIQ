@@ -9,7 +9,7 @@ public interface RegisterService {
 	String getTestTask(String userID, String taskID);
 	
 	//后端Service存入数据库 工人ID，测试任务ID，完成状态，测试答案。
-	//同时需要判断表中测试问题是否全部完成，全部完成之后更新计算工人质量矩阵
+	//同时需要判断表中测试问题是否完成大于10题，若大于则更新计算工人质量矩阵
 	boolean finishTestTask(String userID, String taskID, String answer);
 	
 	//需要区分雇主和工人

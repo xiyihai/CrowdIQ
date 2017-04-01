@@ -20,7 +20,7 @@ public class InspectionServiceImpl implements InspectionService {
 		problems.put("redundancyRow", redundancyRow(jsontable_show));
 		//可能是[headers], 或者[headers[2],headers[4]]
 		problems.put("headersmiss", headermiss(jsontable_show));
-		return null;
+		return JSONObject.fromObject(problems).toString();
 	}
 
 	@Override

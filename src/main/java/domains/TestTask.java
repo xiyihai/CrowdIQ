@@ -11,26 +11,24 @@ import javax.persistence.Table;
 @Table(name="testtask_info")
 public class TestTask {
 
+
 	@Id
-	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	@Column(name="test_id")
+	private Integer test_id;
 	
 	@Column(name="content")
 	private String content;
 
-	public TestTask(String content) {
-		super();
-		this.content = content;
+	@Column(name="answer")
+	private String answer;
+
+	public Integer getTest_id() {
+		return test_id;
 	}
 
-	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public void setTest_id(Integer test_id) {
+		this.test_id = test_id;
 	}
 
 	public String getContent() {
@@ -40,5 +38,15 @@ public class TestTask {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	
+	
 	
 }

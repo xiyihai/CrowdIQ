@@ -7,6 +7,15 @@ public class DeleteTaskAction extends TaskProcessBaseAction {
 	//用于接受前端需要的ID号
 		private String taskID;
 		private String userID;
+		private String flag;
+		
+		public String getFlag() {
+			return flag;
+		}
+
+		public void setFlag(String flag) {
+			this.flag = flag;
+		}
 
 		public String getUserID() {
 			return userID;
@@ -25,7 +34,7 @@ public class DeleteTaskAction extends TaskProcessBaseAction {
 		}
 
 		public String execute() {
-			taskProcessService.deleteTask(userID, taskID);
+			taskProcessService.deleteTask(userID, taskID, flag);
 			return SUCCESS;
 		}
 }

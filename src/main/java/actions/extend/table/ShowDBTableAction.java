@@ -1,6 +1,7 @@
 package actions.extend.table;
 
 import actions.base.InspectionAndReadTableBaseAction;
+import net.sf.json.JSONObject;
 
 public class ShowDBTableAction extends InspectionAndReadTableBaseAction {
 
@@ -26,7 +27,7 @@ public class ShowDBTableAction extends InspectionAndReadTableBaseAction {
 	}
 
 	public String execute(){
-		tableID = readservice.showAllTable(userID).toString();
+		tableID = readservice.showAllTable(userID);
 		return SUCCESS;
 	}
 }

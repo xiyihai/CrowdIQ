@@ -7,15 +7,14 @@ public class FinishTestTaskAction extends RegisterBaseAction {
 	//用于接受前端数据，任务ID，工人答案
 	private String taskID;
 	private String userID;
-
+	private String answer;
+	
 	public String getUserID() {
 		return userID;
 	}
-
 	public void setUserID(String userID) {
 		this.userID = userID;
 	}
-	private String answer;
 	public String getTaskID() {
 		return taskID;
 	}
