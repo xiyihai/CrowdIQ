@@ -17,7 +17,7 @@
 	</listener>
 	<context-param>
   		<param-name>contextConfigLocation</param-name>
-  		<param-value>WEB-INF/classes/servicesAndActions.xml</param-value>
+  		<param-value>WEB-INF/classes/servicesAndActions.xml,WEB-INF/classes/datasourceAndDaos.xml,WEB-INF/classes/servicesAndActions.xml,WEB-INF/classes/transactionAndCache.xml</param-value>
 	</context-param>
   
   

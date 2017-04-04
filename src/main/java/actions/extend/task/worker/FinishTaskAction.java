@@ -33,8 +33,12 @@ public class FinishTaskAction extends TaskProcessBaseAction {
 	}
 	
 	public String execute(){
-		taskProcessService.finishTask(userID, taskID, answers);
-		return SUCCESS;
+		if (taskProcessService.finishTask(userID, taskID, answers)) {
+			return SUCCESS;	
+		}else {
+			return ERROR;
+		}
+		
 	}
 	
 }

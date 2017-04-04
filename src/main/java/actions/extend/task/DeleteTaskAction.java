@@ -34,7 +34,10 @@ public class DeleteTaskAction extends TaskProcessBaseAction {
 		}
 
 		public String execute() {
-			taskProcessService.deleteTask(userID, taskID, flag);
-			return SUCCESS;
+			if (taskProcessService.deleteTask(userID, taskID, flag)) {
+				return SUCCESS;
+			}else {
+				return ERROR;
+			}
 		}
 }

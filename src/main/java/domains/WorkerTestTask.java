@@ -1,11 +1,17 @@
 package domains;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name="worker_testtask")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 public class WorkerTestTask {
 
 	@Column(name="worker_id")

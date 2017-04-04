@@ -26,8 +26,6 @@ public class ReadTableServiceImpl implements ReadTableService {
 	private InspectionService inspectionService;
 
 	private RTableDao rtableDao;
-	
-	
 
 	public RTableDao getRtableDao() {
 		return rtableDao;

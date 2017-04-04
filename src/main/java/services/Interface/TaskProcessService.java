@@ -14,7 +14,8 @@ public interface TaskProcessService {
 	//雇主点击发布任务，根据任务ID，索引到对应任务发布，需要更改任务状态
 	boolean publishTask(String userID, String taskID);
 	
-	//雇主针对发布中的任务暂停
+	//雇主针对发布中的任务暂停，需要先确定是否有工人收录了但未提交
+	//暂停前提是没有工人收录了但未做
 	boolean pauseTask(String userID, String taskID);
 	
 	//删除任务，需要区分雇主和工人。雇主必须是暂停之后才能删除，工人则都可以
@@ -29,8 +30,7 @@ public interface TaskProcessService {
 	//工人做好该任务，需要将答案写入工人task的属性中，然后根据ID号找到雇主taskID号，修改雇主任务
 	boolean finishTask(String userID, String taskID, String answers);
 	
-	//工人提交了任务之后，对应雇主任务也需要修改。此函数放在finishTask里面，同时需要判断雇主任务是否已满，
-	//若满则还需要更改雇主ID详情表的中任务状态，并且调用决策模块得到答案，在写入数据库
-	boolean addAnswerTask(String taskID, String answer);
+	//雇主请求修改任务，需要先判断可不可修改，然后利用showtask来返回给前端内容
+	String editTask(String userID, String taskID);
 	
 }

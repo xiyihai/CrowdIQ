@@ -24,7 +24,11 @@ public class PauseTaskAction extends TaskProcessBaseAction{
 		}
 
 		public String execute() {
-			taskProcessService.pauseTask(userID, taskID);
-			return SUCCESS;
+			if (taskProcessService.pauseTask(userID, taskID)) {
+				return SUCCESS;	
+			}else {
+				return ERROR;
+			}
+			
 		}
 }

@@ -2,12 +2,18 @@ package domains;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name="rtask_info")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 public class RTask {
 
 	@Column(name="task_id")

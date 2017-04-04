@@ -72,7 +72,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	//根据HQL语句查询实体
 	public List<T> find(String hql){
 		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
-		return (List<T>)query.list();
+		return (List<T>)query.setCacheable(true).list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -83,7 +83,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		for(int i=0;i<params.length;i++){
 			query.setParameter(i+"",params[i]);//因为第一个参数需要String类型，这里把i变为String
 		}
-		return (List<T>)query.list();
+		return (List<T>)query.setCacheable(true).list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -93,7 +93,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(sql); 
 		//这里是比hql多个方法，用来关联实体，这样又可以用实体的方法来操作
 		query.addEntity(entityClazz);
-		return (List<T>)query.list();
+		return (List<T>)query.setCacheable(true).list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -105,7 +105,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}
 		query.setFirstResult(offset);
 		query.setMaxResults(length);
-		return (List<T>)query.list();
+		return (List<T>)query.setCacheable(true).list();
 	}
 	
 	

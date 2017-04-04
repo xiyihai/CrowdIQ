@@ -24,8 +24,11 @@ public class PublishTaskAction extends TaskProcessBaseAction {
 	}
 
 	public String execute() {
-		taskProcessService.publishTask(userID, taskID);
-		return SUCCESS;
+		if (taskProcessService.publishTask(userID, taskID)) {
+			return SUCCESS;		
+		}else {
+			return ERROR;
+		}
 	}
 }
 

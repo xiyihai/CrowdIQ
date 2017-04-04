@@ -2,6 +2,7 @@ package services.Impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import daos.Interface.RTaskDao;
 import daos.Interface.RequesterTaskDao;
@@ -97,7 +98,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		// TODO Auto-generated method stub
 		RTask rTask = rtaskDao.get(RTask.class, Integer.valueOf(taskID));
 		rTask.setState(1);
-		rtaskDao.save(rTask);
+		rtaskDao.update(rTask);
 		//?????????????发布的任务可能还要进行额外的操作
 		return true;
 	}
@@ -105,7 +106,21 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	@Override
 	public boolean pauseTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		return false;
+		//先判断对应工人任务是否有未做的（收录的）
+		List<WTask> wTasks = wtaskDao.getByTid(taskID);
+		for(int i=0;i<wTasks.size();i++){
+			if (wTasks.get(i).getState()==0) {
+				return false;
+			}
+		}
+		//找对对应雇主任务，修改状态为暂停，可能还有后续变化（任务暂停之后怎么处理）
+		RTask rTask = rtaskDao.get(RTask.class, taskID);
+		rTask.setState(3);
+		rtaskDao.update(rTask);
+		
+		//?????????????????????????暂停之后的任务怎么处理
+		
+		return true;
 	}
 
 	@Override
@@ -113,12 +128,26 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		// TODO Auto-generated method stub
 		//这里需要判断任务状态才能删除
 		if (flag.equals("worker")) {
-			wtaskDao.delete(wtaskDao.getByWidTid(userID, taskID).get(0));
+			WTask wTask = wtaskDao.getByWidTid(userID, taskID).get(0);
+			Integer state = wTask.getState();
+			if (state==4||state==2) {
+				wtaskDao.delete(wtaskDao.getByWidTid(userID, taskID).get(0));	
+				return true;
+			}else {
+				return false;
+			}
+			
 		}else if (flag.equals("requester")) {
-			rtaskDao.delete(rtaskDao.get(RTask.class, taskID));
-			requestertaskDao.delete(requestertaskDao.getBy2ID(userID, taskID).get(0));
+			RTask rTask = rtaskDao.get(RTask.class, taskID);
+			Integer state = rTask.getState();
+			if (state==0||state==2||state==4) {
+				rtaskDao.delete(rtaskDao.get(RTask.class, taskID));
+				requestertaskDao.delete(requestertaskDao.getBy2ID(userID, taskID).get(0));
+				return true;
+			}else {
+				return false;
+			}
 		}
-		
 		return false;
 	}
 
@@ -128,7 +157,9 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		String result = null;
 		
 		if (flag.equals("worker")) {
-			result = wtaskDao.getByWidTid(userID, taskID).get(0).getContent();
+			WTask wTask = wtaskDao.getByWidTid(userID, taskID).get(0);
+			result = JSONObject.fromObject(wTask).toString();
+			
 		}else if (flag.equals("requester")) {
 			//这里应该获取数据库中所有参数，最终作为一个JSONObject返回给用户，删选工作交给前端
 			RTask rTask = rtaskDao.get(RTask.class, taskID);
@@ -160,7 +191,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 
 		//有工人收录，则对应雇主任务中已收录工人数参数也要变化
 		rtaskObject.setHastaken_number(rtaskObject.getHastaken_number()+1);
-		rtaskDao.save(rtaskObject);
+		rtaskDao.update(rtaskObject);
 		//？？？？？？？？？？？？？？？？？需要解决若收录工人数已满则怎么处理
 		
 		return true;
@@ -175,7 +206,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		wTask.setContent(wtaskContent.toString());
 		//修改任务详情，任务状态
 		wTask.setState(2);
-		wtaskDao.save(wTask);
+		wtaskDao.update(wTask);
 		
 		//需要修改雇主对应task字段,修改任务详情，已收到工人数，任务已花费
 		RTask rTask = rtaskDao.get(RTask.class, taskID);
@@ -189,16 +220,21 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		rTask.setHasanswer_number(rTask.getHasanswer_number()+1);
 		rTask.setHaspaid_cost(rTask.getHaspaid_cost()+rTask.getEach_reward());
 		
-		rtaskDao.save(rTask);
+		rtaskDao.update(rTask);
 		//???????????????这里还需要考虑雇主任务已经收集满了，需要决策等后续任务，雇主任务状态修改等
 		
 		return true;
 	}
 
 	@Override
-	public boolean addAnswerTask(String taskID, String answer) {
+	public String editTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		return false;
+		String jsonTask = null;
+		RTask rTask = rtaskDao.get(RTask.class, taskID);
+		if (rTask.getState()!=1) {
+			jsonTask = showTask(userID, taskID, "requester");
+		}
+		return jsonTask;
 	}
 
 	

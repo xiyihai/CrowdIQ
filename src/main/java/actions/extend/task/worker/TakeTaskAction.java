@@ -25,7 +25,10 @@ public class TakeTaskAction extends TaskProcessBaseAction {
 			}
 
 			public String execute() {
-				taskProcessService.takeTask(userID, taskID);
-				return SUCCESS;
+				if (taskProcessService.takeTask(userID, taskID)) {
+					return SUCCESS;	
+				}else {
+					return ERROR;
+				}
 			}
 }

@@ -16,8 +16,13 @@ public class RegisterAction extends RegisterBaseAction {
 	}
 	
 	public String execute(){
-		registerService.register(informationJSON);
-		return SUCCESS;
+		
+		if (registerService.register(informationJSON)) {
+			return SUCCESS;	
+		}else {
+			return ERROR;
+		}
+		
 	}
 	
 }

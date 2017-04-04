@@ -29,6 +29,40 @@ public class RegisterServiceImpl implements RegisterService {
 	private TestTaskDao testtaskDao;
 	private WorkerTestTaskDao workertesttaskDao;
 	
+	
+	
+	public RequesterDao getRequesterDao() {
+		return requesterDao;
+	}
+
+	public void setRequesterDao(RequesterDao requesterDao) {
+		this.requesterDao = requesterDao;
+	}
+
+	public WorkerDao getWorkerDao() {
+		return workerDao;
+	}
+
+	public void setWorkerDao(WorkerDao workerDao) {
+		this.workerDao = workerDao;
+	}
+
+	public TestTaskDao getTesttaskDao() {
+		return testtaskDao;
+	}
+
+	public void setTesttaskDao(TestTaskDao testtaskDao) {
+		this.testtaskDao = testtaskDao;
+	}
+
+	public WorkerTestTaskDao getWorkertesttaskDao() {
+		return workertesttaskDao;
+	}
+
+	public void setWorkertesttaskDao(WorkerTestTaskDao workertesttaskDao) {
+		this.workertesttaskDao = workertesttaskDao;
+	}
+
 	@Override
 	public boolean register(String information) {
 		// TODO Auto-generated method stub
@@ -87,7 +121,7 @@ public class RegisterServiceImpl implements RegisterService {
 		WorkerTestTask task = workertesttaskDao.findByWidTid(userID, taskID).get(0);
 		task.setState(1);
 		task.setWorker_answer(answer);
-		workertesttaskDao.save(task);
+		workertesttaskDao.update(task);
 		
 		//需要判断该用户的测试题是否全部完成
 		List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
@@ -108,7 +142,7 @@ public class RegisterServiceImpl implements RegisterService {
 			Worker worker = workerDao.get(Worker.class, userID);
 			//这里未解决??????????需要将正确答案和工人答案打包然后发给对应计算模块
 			//worker.setQuality(CalculatedValue(results));
-			workerDao.save(worker);
+			workerDao.update(worker);
 		}
 		return true;
 	}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 配置数据源 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+			<property name="configLocations" value="classpath:hibernate.cfg.xml"></property>
+	</bean>
+
+	<!-- 为dao组件依赖注入session -->
+	<bean id="daoTemplate" abstract="true">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="RAlgorithmDao" class="daos.Impl.RAlgorithmDaoImpl" parent="daoTemplate"></bean>
+	<bean id="RequesterDao" class="daos.Impl.RequesterDaoImpl" parent="daoTemplate"></bean>
+	<bean id="RequesterTaskDao" class="daos.Impl.RequesterTaskDaoImpl" parent="daoTemplate"></bean>
+	<bean id="RTableDao" class="daos.Impl.RTableDaoImpl" parent="daoTemplate"></bean>
+	<bean id="RTaskDao" class="daos.Impl.RTaskDaoImpl" parent="daoTemplate"></bean>
+	<bean id="TestTaskDao" class="daos.Impl.TestTaskDaoImpl" parent="daoTemplate"></bean>
+	<bean id="WorkerDao" class="daos.Impl.WorkerDaoImpl" parent="daoTemplate"></bean>
+	<bean id="WorkerTestTaskDao" class="daos.Impl.WorkerTestTaskDaoImpl" parent="daoTemplate"></bean>
+	<bean id="WTaskDao" class="daos.Impl.WTaskDaoImpl" parent="daoTemplate"></bean>
+	
+	<!-- spring的属性加载器，加载properties文件中的属性 -->  
+	<bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+    	<property name="location" value="classpath:config.properties"></property>  
+    </bean>
+</beans>

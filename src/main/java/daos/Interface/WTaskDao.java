@@ -8,4 +8,7 @@ public interface WTaskDao extends BaseDao<WTask> {
 
 	//根据工人id，任务id查找
 	List<WTask> getByWidTid(String userID, String taskID);
+	
+	//根据任务ID查找
+	List<WTask> getByTid(String taskID);
 }

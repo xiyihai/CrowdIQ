@@ -25,7 +25,10 @@ public class CommitTaskAction extends TaskProcessBaseAction {
 	}
 
 	public String execute(){
-		taskProcessService.commitTask(userID, taskJSON);
-		return SUCCESS;
+		if (taskProcessService.commitTask(userID, taskJSON)) {
+			return SUCCESS;	
+		}else {
+			return ERROR;
+		}
 	}
 }
