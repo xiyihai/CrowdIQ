@@ -3,6 +3,8 @@ package domains;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -10,13 +12,16 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="requester_task")
+@IdClass(domains.key.RequesterTaskKey.class)
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class RequesterTask {
 
+	@Id
 	@Column(name="requester_id")
 	private Integer requester_id;
 	
+	@Id
 	@Column(name="task_id")
 	private Integer task_id;
 

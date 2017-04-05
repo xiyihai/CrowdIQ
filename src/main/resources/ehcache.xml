@@ -17,8 +17,8 @@
         />
       
       
-     <!-- hibernate使用的缓存配置 
-     <cache name="domains.County"
+     <!-- hibernate使用的缓存配置 -->
+     <cache name="domains.RAlgorithm"
        maxElementsInMemory="30"
        eternal="false"
        timeToIdleSeconds="300"   
