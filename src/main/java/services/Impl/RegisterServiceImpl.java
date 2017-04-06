@@ -131,17 +131,26 @@ public class RegisterServiceImpl implements RegisterService {
 			for(int i=0;i<tasks.size();i++){
 				String taskid = String.valueOf(tasks.get(i).getTesttask_id());
 				TestTask testtask = testtaskDao.get(TestTask.class, taskid);
-				//这个truth是由JSONArray变换来的
-				String truth = testtask.getAnswer();
-				//这个由JSONArray变换来的
-				String wanswer = tasks.get(i).getWorker_answer();
+				
+				//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
+				JSONArray truthArray = JSONArray.fromObject(testtask.getAnswer());
+				String truth = truthArray.getString(0);
+				//这个由JSONArray变换来的， 目前假设长度为1
+				JSONArray wanswerArray = JSONArray.fromObject(tasks.get(i).getWorker_answer());
+				String wanswer = wanswerArray.getString(0);
+				//还得获取候选答案长度，这里假定都是选择题
+				JSONObject content = JSONObject.fromObject(testtask.getContent());
+				JSONArray candidateItems = content.getJSONArray("candidateItems");
+				JSONArray items = candidateItems.getJSONArray(0);
+				int length = items.size();
+				
 				//以：分割
-				String result = wanswer+":"+truth;
+				String result = wanswer+":"+truth+":"+length;
 				results.add(result);
 			}
 			Worker worker = workerDao.get(Worker.class, userID);
 			//这里未解决??????????需要将正确答案和工人答案打包然后发给对应计算模块
-			//worker.setQuality(CalculatedValue(results));
+			//worker.setQuality(CalculatedTestValue(results));
 			workerDao.update(worker);
 		}
 		return true;

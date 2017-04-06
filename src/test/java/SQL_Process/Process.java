@@ -304,7 +304,7 @@ public class Process {
 		// TODO Auto-generated method stub
 		Process process = new Process();
 		
-		process.process( " using algorithm(zlf0320.impl.entityfind) on table.columns ","src/test/resources/Winners.csv");
+		process.process( " showing table01.headers,table01.columns[2] ","src/test/resources/Winners.csv");
 	}
 
 }

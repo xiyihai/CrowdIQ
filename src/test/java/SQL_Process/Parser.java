@@ -181,8 +181,8 @@ public class Parser {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stubJ
 		Parser parser = new Parser();
-		String initsql = "   select table01.rows[3][5],table01.headers[2] showing table01.rows[2],table01.columns[4] \n"
-				+ "  using outer algorithm(header_recover) on table01.columns[2],table01.columns[3] and algorithm(entity_find) on table01.columns   ";
+		String initsql = "   showing table01.rows[3],table01.columns[2]";
+			
 		parser.test(initsql);
 	}
 

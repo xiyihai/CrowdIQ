@@ -52,6 +52,12 @@ public class TestTask {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+
+	public TestTask(String content, String answer) {
+		super();
+		this.content = content;
+		this.answer = answer;
+	}
 	
 	
 	
