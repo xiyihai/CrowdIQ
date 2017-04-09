@@ -10,7 +10,7 @@ public interface ParserCrowdIQLService {
 	String parser(String sql, JSONObject jsonTable);
 	
 	//雇主上传外部算法,这里需要检查一下，是否按照要求上传，是否成功。并将用户id，算法id写入数据库
-	boolean uploadAlgorithm(String userID);
+	boolean uploadAlgorithm(String userID, String algorithmname);
 	
 	//这个函数用于在TaskProcessService中addAnswerTask函数中调用，将task中数据取出，写入json表,第三个参数是JSON表
 	boolean fillContent(String[] subattributes,String value, JSONObject jsonTable);

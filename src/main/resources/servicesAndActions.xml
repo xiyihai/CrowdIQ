@@ -12,6 +12,7 @@
 	<bean id="ReadTableService" class="services.Impl.ReadTableServiceImpl">
 		<property name="InspectionService" ref="InspectionService"></property>
 		<property name="rtableDao" ref="RTableDao"></property>
+		<property name="rtaskDao" ref="RTaskDao"></property>
 	</bean>
 	
 	<bean id="RegisterService" class="services.Impl.RegisterServiceImpl">
@@ -25,6 +26,7 @@
 		<property name="rtaskDao" ref="RTaskDao"></property>
 		<property name="wtaskDao" ref="WTaskDao"></property>
 		<property name="requestertaskDao" ref="RequesterTaskDao"></property>
+		<property name="workerDao" ref="WorkerDao"></property>
 	</bean>
 	
 	<bean id="ParserCrowdIQLService" class="services.Impl.ParserCrowdIQLServiceImpl">
@@ -84,9 +86,7 @@
 	<bean id="FinishTaskAction" class="actions.extend.task.worker.PublishTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PreviewTaskAction" class="actions.extend.task.worker.PreviewTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="TakeTaskAction" class="actions.extend.task.worker.TakeTaskAction" parent="TaskProcessAction"></bean>
-	
-	
-	
+	<bean id="ShowAllTaskAction" class="actions.extend.task.worker.ShowAllTaskAction" parent="TaskProcessAction"></bean>
 	
 	
 	

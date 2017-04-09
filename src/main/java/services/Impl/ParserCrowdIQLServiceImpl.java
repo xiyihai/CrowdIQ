@@ -306,18 +306,20 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		}
 
 	@Override
-	public boolean uploadAlgorithm(String userID) {
+	public boolean uploadAlgorithm(String userID, String algorithmname) {
 		// TODO Auto-generated method stub
-		String algorithm_name=null;
-		//????????????????这里算法名字还需要进一步定义
-		rAlgorithmDao.save(new RAlgorithm(Integer.valueOf(userID), algorithm_name));
-		return false;
+		//先要判断是否存在这个算法
+		if (true) {
+			rAlgorithmDao.save(new RAlgorithm(Integer.valueOf(userID), algorithmname));	
+			return true;
+		}
+		return false;			
 	}
 
 	@Override
 	public boolean returnTable(JSONObject jsonTable, String tableID) {
 		// TODO Auto-generated method stub
-		String path = "";
+		String path = "WEB-INF/uploadTables/"+tableID;
 		String csvWriteFile = path;
 	     CsvWriter writer = new CsvWriter(csvWriteFile, ',', Charset.forName("utf-8"));  
 	     

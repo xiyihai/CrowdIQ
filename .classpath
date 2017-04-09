@@ -36,5 +36,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/ryr0231_header.jar"/>
 	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/zlf0320_entity.jar"/>
+	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/ComputeTestQuestion.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -20,6 +20,9 @@ public class RequesterTaskVos{
 		//已提交任务的工人答案， 每一个工人答案是一个ArrayList<String>，这个问题可能多个空，所以是数组
 		private ArrayList<ArrayList<String>> receiveAnswers;
 		
+		//记录对应工人的id号，主要是为了和对应答案顺序匹配
+		private ArrayList<String> receiveWorkerID;
+		
 		//这里answer是经过决策过后获取的答案， String对应sqlTarger，可能是一维或者二维数组
 		private ArrayList<String> finalAnswers;
 

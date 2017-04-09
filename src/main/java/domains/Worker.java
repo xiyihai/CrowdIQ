@@ -37,13 +37,25 @@ public class Worker {
 	@Column(name="quality")
 	private String quality;
 
-	public Worker(String name, String password, Double account, String email, String quality) {
+	@Column(name="level")
+	private Integer level;
+	
+	public Worker(String name, String password, Double account, String email, String quality, Integer level) {
 		super();
 		this.name = name;
 		this.password = password;
 		this.account = account;
 		this.email = email;
 		this.quality = quality;
+		this.level = level;
+	}
+	
+
+	public Integer getLevel() {
+		return level;
+	}	
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
 	public Integer getWorker_id() {

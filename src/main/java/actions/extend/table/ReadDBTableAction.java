@@ -7,7 +7,6 @@ public class ReadDBTableAction extends InspectionAndReadTableBaseAction {
 	private String userID;
 	private String tablename;
 	
-	
 	public String getUserID() {
 		return userID;
 	}

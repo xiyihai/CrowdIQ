@@ -85,7 +85,7 @@
       	<!-- 雇主查看数据库中所有自己对应的表格，返回所有对应表的ID号供雇主选择 -->
         <action name="readUploadTableAction" class="ReadUploadTableAction">
         	<result type="json">
-                <param name="root">tableID</param>
+                <param name="root">tableInfo</param>
             </result>  
         </action>     
         

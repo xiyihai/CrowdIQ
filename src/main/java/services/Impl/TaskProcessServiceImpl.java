@@ -4,12 +4,20 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.dialect.Ingres10Dialect;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
+import com.mysql.fabric.xmlrpc.base.Array;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
+
 import daos.Interface.RTaskDao;
 import daos.Interface.RequesterTaskDao;
 import daos.Interface.WTaskDao;
+import daos.Interface.WorkerDao;
 import domains.RTask;
 import domains.RequesterTask;
 import domains.WTask;
+import domains.Worker;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.TaskProcessService;
@@ -21,8 +29,16 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	private RTaskDao rtaskDao;
 	private WTaskDao wtaskDao;
 	private RequesterTaskDao requestertaskDao;
+	private WorkerDao workerDao;
 	
-	
+	public WorkerDao getWorkerDao() {
+		return workerDao;
+	}
+
+	public void setWorkerDao(WorkerDao workerDao) {
+		this.workerDao = workerDao;
+	}
+
 	public RTaskDao getRtaskDao() {
 		return rtaskDao;
 	}
@@ -55,6 +71,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//把UI中内容取出来，组成RTask	, 直接加入两个新的元素即可
 		taskUI.put("receiveAnswers", null);
 		taskUI.put("finalAnswers", null);
+		taskUI.put("receiveWorkerID", null);
 		
 		//这里是要返回给前端查看的所有参数
 		JSONObject taskVos = new JSONObject();
@@ -80,7 +97,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//为了利用数据库生成唯一ID，只能再将内容判断一遍来获取id值，只能假设content不可能重复
 		
 		JSONObject UI = JSONObject.fromObject(taskString);
-		rtaskDao.save(new RTask((String)UI.get("content"), (Timestamp)UI.get("deadline"),
+		rtaskDao.save(new RTask((String)UI.get("content"), (Integer)UI.get("table_id"), (Timestamp)UI.get("deadline"),
 				(Double)UI.get("each_reward"),(Integer)UI.get("hastaken_number"),
 				(Integer)UI.get("hasanswer_number"),(Integer)UI.get("state"),
 				(Double)UI.get("difficult_degree"), (Integer)UI.get("worker_number"),
@@ -90,7 +107,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		
 		RequesterTask requestertask = new RequesterTask(Integer.valueOf(userID), task_id);
 		requestertaskDao.save(requestertask);
-		return false;
+		return true;
 	}
 
 	@Override
@@ -99,7 +116,6 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		RTask rTask = rtaskDao.get(RTask.class, Integer.valueOf(taskID));
 		rTask.setState(1);
 		rtaskDao.update(rTask);
-		//?????????????发布的任务可能还要进行额外的操作
 		return true;
 	}
 
@@ -118,7 +134,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		rTask.setState(3);
 		rtaskDao.update(rTask);
 		
-		//?????????????????????????暂停之后的任务怎么处理
+		//暂停之后的任务怎么处理， 从商品架下架
 		
 		return true;
 	}
@@ -171,30 +187,44 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	@Override
 	public boolean takeTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
+		//先要判断该工人是否满足要求，即level是否为1
 		//先要根据taskID，找到对应雇主的task、从中构造出工人task
 		//然后将对应字段存入worker-task表数据库
+		Worker worker = workerDao.get(Worker.class, userID);
+		if (worker.getLevel()==0) {
+			return false;
+		}else {
+			
+			RTask rtaskObject = rtaskDao.get(RTask.class, taskID);
+			//需要先判断该任务是否能被收录
+			if (rtaskObject.getState()!=1) {
+				return false;
+			}else {
+				//从这个String中获取工人任务需要的信息成分,本质删除不要的，填入工人特有的
+				String rtaskContent =  rtaskObject.getContent();
+				JSONObject jsonObject = JSONObject.fromObject(rtaskContent);
+				jsonObject.remove("receiveAnswers");
+				jsonObject.remove("finalAnswers");
+				jsonObject.put("submitAnswer", null);
+				
+				Timestamp deadline = rtaskObject.getDeadline();
+				Integer state = 0;
+				Double each_reward =rtaskObject.getEach_reward();
+				
+				wtaskDao.save(new WTask(Integer.valueOf(userID), Integer.valueOf(taskID), jsonObject.toString(), 
+						deadline, state , each_reward));
 		
-		RTask rtaskObject = rtaskDao.get(RTask.class, taskID);
-		//从这个String中获取工人任务需要的信息成分,本质删除不要的，填入工人特有的
-		String rtaskContent =  rtaskObject.getContent();
-		JSONObject jsonObject = JSONObject.fromObject(rtaskContent);
-		jsonObject.remove("receiveAnswers");
-		jsonObject.remove("finalAnswers");
-		jsonObject.put("submitAnswer", null);
-		
-		Timestamp deadline = rtaskObject.getDeadline();
-		Integer state = 0;
-		Double each_reward =rtaskObject.getEach_reward();
-		
-		wtaskDao.save(new WTask(Integer.valueOf(userID), Integer.valueOf(taskID), jsonObject.toString(), 
-				deadline, state , each_reward));
-
-		//有工人收录，则对应雇主任务中已收录工人数参数也要变化
-		rtaskObject.setHastaken_number(rtaskObject.getHastaken_number()+1);
-		rtaskDao.update(rtaskObject);
-		//？？？？？？？？？？？？？？？？？需要解决若收录工人数已满则怎么处理
-		
-		return true;
+				//有工人收录，则对应雇主任务中已收录工人数参数也要变化
+				rtaskObject.setHastaken_number(rtaskObject.getHastaken_number()+1);
+				rtaskDao.update(rtaskObject);
+				//需要解决若收录工人数已满则怎么处理
+				//看状态标志是否为5，表示是否还能被其他工人收录
+				if (rtaskObject.getHastaken_number()==rtaskObject.getWorker_number()) {
+					rtaskObject.setState(5);
+				}
+				return true;
+			}
+		}
 	}
 
 	@Override
@@ -208,20 +238,77 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		wTask.setState(2);
 		wtaskDao.update(wTask);
 		
-		//需要修改雇主对应task字段,修改任务详情，已收到工人数，任务已花费
+		//需要修改雇主对应task字段,修改任务详情，已收到工人数，任务已花费，记录工人id
 		RTask rTask = rtaskDao.get(RTask.class, taskID);
 		JSONObject rtask = JSONObject.fromObject(rTask.getContent());
 		JSONArray hasReceivedAnswers = rtask.getJSONArray("receiveAnswers");
 		//这个answers本质是一个JSONArray,相当于ArrayList<String>,所以不用修改直接加入即可
 		hasReceivedAnswers.add(answers);
 		rtask.replace("receiveAnswers", hasReceivedAnswers);
+		JSONArray receiveWorkerID = rtask.getJSONArray("receiveWorkerID");
+		receiveWorkerID.add(userID);
+		rtask.replace("receiveWorkerID", receiveWorkerID);
+	
 		rTask.setContent(rtask.toString());
 		
 		rTask.setHasanswer_number(rTask.getHasanswer_number()+1);
 		rTask.setHaspaid_cost(rTask.getHaspaid_cost()+rTask.getEach_reward());
-		
+
 		rtaskDao.update(rTask);
-		//???????????????这里还需要考虑雇主任务已经收集满了，需要决策等后续任务，雇主任务状态修改等
+		
+		
+		if (rTask.getHasanswer_number()==rTask.getWorker_number()) {
+			//这里还需要考虑雇主任务已经收集满了，需要决策等后续任务，雇主任务状态修改等
+			rTask.setState(2);
+			//决策函数按照每一空来决策，所以需要for循环
+			//每一空决策输入： top_k(ArrayString), anwers(ArrayString), workerQuality(ArrayString)
+			//输出： quality(ArrayString), finalAnswer(String)
+			
+			//获取这个task的空数
+			int length = rtask.getJSONArray("sqlTarget").size();
+			JSONArray finalAnswers = rtask.getJSONArray("finalAnswer");
+			for (int i = 0; i < length; i++) {
+				//制作参数 top_k
+				JSONArray candidateItems = rtask.getJSONArray("candidateItems").getJSONArray(i);
+				ArrayList<String> top_k = new ArrayList<>();
+				for (int j = 0; j < candidateItems.size(); j++) {
+					top_k.add(candidateItems.getString(j));
+				}
+				//制作参数answers
+				ArrayList<String> worker_answer = new ArrayList<>();
+				for (int j = 0; j < rTask.getWorker_number(); j++) {
+					worker_answer.add(hasReceivedAnswers.getJSONArray(j).getString(i));
+				}
+				//制作工人质量矩阵
+				ArrayList<String> worker_quality = new ArrayList<>();
+				for (int j = 0; j < rTask.getWorker_number(); j++) {
+					String workerID = receiveWorkerID.getString(j);
+					Worker worker = workerDao.get(Worker.class, workerID);
+					String quality = worker.getQuality();
+					worker_quality.add(quality);
+				}
+				//这里都只是决策出的一个答案？？？？？？？？？？？？？？？
+				String finalAnswer = null;
+				ArrayList<String> update_qualitys = null;
+				
+				//更新工人质量矩阵
+				for (int j = 0; j < update_qualitys.size(); j++) {
+					String update_quality = update_qualitys.get(j);
+					String workerID = receiveWorkerID.getString(j);
+					Worker worker = workerDao.get(Worker.class, workerID);
+					worker.setQuality(update_quality);
+					workerDao.update(worker);
+				}
+				//更新雇主任务最终答案
+				finalAnswers.add(finalAnswer);
+			}
+			//将所有决策出的答案都放入
+			rtask.put("finalAnswers", finalAnswers);
+			rTask.setContent(rtask.toString());
+			
+			//更新数据库对应雇主字段
+			rtaskDao.update(rTask);
+		}
 		
 		return true;
 	}
@@ -238,5 +325,45 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	}
 
 	
+	@Override
+	public String showAllAvailableTask() {
+		// TODO Auto-generated method stub
+		List<RTask> tasks = rtaskDao.showAllTaskByState(1);
+		JSONArray infoArray = new JSONArray();
+		for(int i=0;i<tasks.size();i++){
+			RTask rTask = tasks.get(i);
+			JSONObject task = new JSONObject();
+			task.put("taskID", rTask.getTask_id());
+			task.put("deadline", rTask.getDeadline());
+			task.put("each_reward", rTask.getEach_reward());
+			task.put("worker_number", rTask.getWorker_number());
+			task.put("hastaken_number", rTask.getHastaken_number());
+			task.put("difficult_degree", rTask.getDifficult_degree());
+			infoArray.add(task);
+		}
+		return infoArray.toString();
+	}
+
+	@Override
+	public String showAllRTask(String userID) {
+		// TODO Auto-generated method stub
+		JSONArray tasks = new JSONArray();
+		
+		List<RequesterTask> requesterTasks = requestertaskDao.getByRID(userID);
+		for (int i = 0; i < requesterTasks.size(); i++) {
+			Integer taskID = requesterTasks.get(i).getTask_id();
+			RTask rTask = rtaskDao.get(RTask.class, taskID);
+			//需要展示的信息： 任务ID，任务状态，截止时间，已收录工人数，已收到工人答案数，任务需要的工人数
+			JSONObject task = new JSONObject();
+			task.put("task_id", taskID);
+			task.put("state", rTask.getState());
+			task.put("deadline", rTask.getDeadline());
+			task.put("hastaken_number", rTask.getHastaken_number());
+			task.put("hasanswer_number", rTask.getHasanswer_number());
+			task.put("worker_number", rTask.getWorker_number());
+			tasks.add(task);
+		}
+		return tasks.toString();
+	}
 
 }

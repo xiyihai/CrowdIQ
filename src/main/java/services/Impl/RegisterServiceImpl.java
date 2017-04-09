@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
-import com.sun.javafx.css.CalculatedValue;
 
 import FunctionsSupport.MailSender;
+import TestQuestion.CalculateTest;
+import TestQuestion.CalculateTestImp;
 import daos.Interface.RequesterDao;
 import daos.Interface.TestTaskDao;
 import daos.Interface.WorkerDao;
@@ -29,6 +30,8 @@ public class RegisterServiceImpl implements RegisterService {
 	private TestTaskDao testtaskDao;
 	private WorkerTestTaskDao workertesttaskDao;
 	
+	//导入计算初始质量举证的类
+	private CalculateTest calculateTest;
 	
 	
 	public RequesterDao getRequesterDao() {
@@ -91,7 +94,7 @@ public class RegisterServiceImpl implements RegisterService {
 			Requester requester = new Requester(name, password, account, email);
 			requesterDao.save(requester);
 		}else if (flag.equals("worker")) {
-			Worker worker = new Worker(name, password, account, email, "");
+			Worker worker = new Worker(name, password, account, email, null, 0);
 			workerDao.save(worker);
 			//只可能返回一个
 			Worker worker2 = workerDao.getByEmail(email).get(0);
@@ -123,36 +126,40 @@ public class RegisterServiceImpl implements RegisterService {
 		task.setWorker_answer(answer);
 		workertesttaskDao.update(task);
 		
-		//需要判断该用户的测试题是否全部完成
-		List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
-		if (tasks.size()>=10) {
-			//需要计算工人初步质量举证
-			ArrayList<String> results = new ArrayList<>();
-			for(int i=0;i<tasks.size();i++){
-				String taskid = String.valueOf(tasks.get(i).getTesttask_id());
-				TestTask testtask = testtaskDao.get(TestTask.class, taskid);
-				
-				//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
-				JSONArray truthArray = JSONArray.fromObject(testtask.getAnswer());
-				String truth = truthArray.getString(0);
-				//这个由JSONArray变换来的， 目前假设长度为1
-				JSONArray wanswerArray = JSONArray.fromObject(tasks.get(i).getWorker_answer());
-				String wanswer = wanswerArray.getString(0);
-				//还得获取候选答案长度，这里假定都是选择题
-				JSONObject content = JSONObject.fromObject(testtask.getContent());
-				JSONArray candidateItems = content.getJSONArray("candidateItems");
-				JSONArray items = candidateItems.getJSONArray(0);
-				int length = items.size();
-				
-				//以：分割
-				String result = wanswer+":"+truth+":"+length;
-				results.add(result);
+		//工人每做一题就要更新质量矩阵，若是做满10题更改工人level
+		TestTask testtask = testtaskDao.get(TestTask.class, taskID);
+		//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
+		JSONArray truthArray = JSONArray.fromObject(testtask.getAnswer());
+		String truth = truthArray.getString(0);
+		//这个由JSONArray变换来的， 目前假设长度为1
+		JSONArray wanswerArray = JSONArray.fromObject(task.getWorker_answer());
+		String wanswer = wanswerArray.getString(0);
+		//还得获取候选答案长度，这里假定都是选择题
+		JSONObject content = JSONObject.fromObject(testtask.getContent());
+		JSONArray candidateItems = content.getJSONArray("candidateItems");
+		JSONArray items = candidateItems.getJSONArray(0);
+		int length = items.size();
+		//以：分割
+		String result = wanswer+":"+truth+":"+length;
+		//需要计算工人初步质量举证
+		ArrayList<String> results = new ArrayList<>();
+		results.add(result);
+		
+		Worker worker = workerDao.get(Worker.class, userID);
+		//需要将正确答案和工人答案打包然后发给对应计算模块
+		calculateTest = new CalculateTestImp();
+		worker.setQuality(calculateTest.CaculateTestQuestion(results));
+		workerDao.update(worker);
+		
+		//需要判断该用户的测试题完成的是否足够多,若完成且工人目前level为0，则修改工人level为1
+		if (worker.getLevel()==0) {
+			List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
+			if (tasks.size()>=10) {
+				//需要更改工人的level
+				worker.setLevel(1);
+				workerDao.update(worker);
 			}
-			Worker worker = workerDao.get(Worker.class, userID);
-			//这里未解决??????????需要将正确答案和工人答案打包然后发给对应计算模块
-			//worker.setQuality(CalculatedTestValue(results));
-			workerDao.update(worker);
-		}
+		}	
 		return true;
 	}
 

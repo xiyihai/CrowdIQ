@@ -25,6 +25,17 @@ public class RTable {
 	@Column(name="table_name")
 	private String table_name;
 	
+	@Column(name="available")
+	private Integer available;
+	
+	public Integer getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(Integer available) {
+		this.available = available;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -49,10 +60,11 @@ public class RTable {
 		this.table_name = table_name;
 	}
 
-	public RTable(Integer requester_id, String table_name) {
+	public RTable(Integer requester_id, String table_name, Integer available) {
 		super();
 		this.requester_id = requester_id;
 		this.table_name = table_name;
+		this.available = available;
 	}
 	
 	

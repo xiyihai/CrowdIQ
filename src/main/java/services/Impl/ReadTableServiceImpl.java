@@ -10,7 +10,9 @@ import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import com.csvreader.CsvReader;
 
 import daos.Interface.RTableDao;
+import daos.Interface.RTaskDao;
 import domains.RTable;
+import domains.RTask;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.InspectionService;
@@ -26,6 +28,15 @@ public class ReadTableServiceImpl implements ReadTableService {
 	private InspectionService inspectionService;
 
 	private RTableDao rtableDao;
+	private RTaskDao rtaskDao;
+	
+	public RTaskDao getRtaskDao() {
+		return rtaskDao;
+	}
+
+	public void setRtaskDao(RTaskDao rtaskDao) {
+		this.rtaskDao = rtaskDao;
+	}
 
 	public RTableDao getRtableDao() {
 		return rtableDao;
@@ -128,66 +139,77 @@ public class ReadTableServiceImpl implements ReadTableService {
 
 	
 	@Override
-	public boolean readUploadTable(String userID) {
+	public boolean readUploadTable(String userID, String tablename) {
 		// TODO Auto-generated method stub
+		//先判断一下是否存在这么一张表？？？？？？？？？？？？？
 		
-		readList = new ArrayList<>();
-		
-		try {
-			//？？？？？？？？？？？？？这边路径还需要细化
-			String table_name = null;
-			CsvReader reader = new CsvReader("WEB-INF/classes/Winners.csv",',',Charset.forName("utf-8"));
-		    while(reader.readRecord()){ //逐行读入数据      
-		        readList.add(reader.getValues());  
-		    }              
-		    reader.close();
-
+		if (true) {
 			//将用户上传的表写入数据库
-			rtableDao.save(new RTable(Integer.valueOf(userID), table_name));
-		    
-		}catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			rtableDao.save(new RTable(Integer.valueOf(userID), tablename, 0));
+			return true;
 		}
-		return true;
+		return false;	   
 	}
-
 
 	@Override
 	public boolean readDBTable(String userID, String tablename) {
 		// TODO Auto-generated method stub
-		//这里的操作应该和readUploadTable差不多
-		readList = new ArrayList<>();
-		try {
-			//？？？？？？？？？？？？？这边路径还需要细化
-			CsvReader reader = new CsvReader("WEB-INF/classes/Winners.csv",',',Charset.forName("utf-8"));
-		    while(reader.readRecord()){ //逐行读入数据      
-		        readList.add(reader.getValues());  
-		    }              
-		    reader.close();
-		    
-		}catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (rtableDao.findByIDName(userID, tablename).isEmpty()) {
+			return false;
+		}else {
+			readList = new ArrayList<>();
+			try {
+				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename,',',Charset.forName("utf-8"));
+			    while(reader.readRecord()){ //逐行读入数据      
+			        readList.add(reader.getValues());  
+			    }              
+			    reader.close();
+			    
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
 		}
-		return true;
 	}
-
 
 	@Override
 	public String showAllTable(String userID) {
 		// TODO Auto-generated method stub
 		List<RTable> rTables = rtableDao.findAllByRid(userID);
-		ArrayList<String> names = new ArrayList<>();
+		ArrayList<String> tableInfo = new ArrayList<>();
 		for(int i=0;i<rTables.size();i++){
-			names.add(rTables.get(i).getTable_name());
+			Integer state = 1;
+			RTable rTable = rTables.get(i);
+			String tablename = rTable.getTable_name();
+			List<RTask> rTasks = rtaskDao.showTaskByTableID(tablename);
+			for (int j = 0; j < rTasks.size(); j++) {
+				RTask rTask = rTasks.get(j);
+				//雇主任务只有为2 完成，4超期，才能让雇主下载对应表
+				if (!(rTask.getState()==2||rTask.getState()==4)) {
+					state = 0;
+					break;
+				}
+			}
+			rTable.setAvailable(state);
+			rtableDao.update(rTable);
+			tableInfo.add(tablename+":"+state);
 		}
-		return JSONObject.fromObject(rTables).toString();
+		return JSONArray.fromObject(tableInfo).toString();
 	}
 
 	@Override
 	public boolean downloadTable(String tableID, String userID) {
 		// TODO Auto-generated method stub
+		//先要判断数据库中对应表格的状态，理论上没有问题都是1
+		RTable rTable = rtableDao.findByIDName(userID, tableID).get(0);
+		if (rTable.getAvailable()==1) {
+			//先要整合对应任务的答案，写入到数据库
+			
+			
+			//将对应表格下载
+			return true;
+		}
 		return false;
 	}
 

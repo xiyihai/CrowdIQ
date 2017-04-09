@@ -5,6 +5,15 @@ import actions.base.InspectionAndReadTableBaseAction;
 public class ReadUploadTableAction extends InspectionAndReadTableBaseAction {
 
 	private String userID;
+	private String tablename;
+
+	public String getTablename() {
+		return tablename;
+	}
+
+	public void setTablename(String tablename) {
+		this.tablename = tablename;
+	}
 
 	public String getUserID() {
 		return userID;
@@ -14,21 +23,9 @@ public class ReadUploadTableAction extends InspectionAndReadTableBaseAction {
 		this.userID = userID;
 	}
 
-	//用于返回读取的JSONTable，用于前端展示jsontable树
-	private String jsonTable;
-
-	public String getJsonTable() {
-		return jsonTable;
-	}
-
-	public void setJsonTable(String jsonTable) {
-		this.jsonTable = jsonTable;
-	}
 		
 	public String execute(){	
-		readservice.readUploadTable(userID);
-		readservice.tranferJSONTable();
-		jsonTable = readservice.getJSONTable_show().toString();
+		readservice.readUploadTable(userID, tablename);
 		return SUCCESS;
 	}
 }

@@ -13,4 +13,10 @@ public class RTableDaoImpl extends BaseDaoImpl<RTable> implements RTableDao {
 		return find("from RTable as r where r.requester_id = ?0", userID);
 	}
 
+	@Override
+	public List<RTable> findByIDName(String userID, String tablename) {
+		// TODO Auto-generated method stub
+		return find("from RTable as r where r.requester_id = ?0 and r.table_name = ?1", userID, tablename);
+	}
+
 }

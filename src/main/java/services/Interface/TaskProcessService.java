@@ -33,4 +33,9 @@ public interface TaskProcessService {
 	//雇主请求修改任务，需要先判断可不可修改，然后利用showtask来返回给前端内容
 	String editTask(String userID, String taskID);
 	
+	//从数据库中显示所有当前可收录的任务， 并且展示其中相关主要信息
+	String showAllAvailableTask();
+	
+	//展示所有雇主任务简要信息
+	String showAllRTask(String userID);
 }

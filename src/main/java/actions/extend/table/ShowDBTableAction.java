@@ -7,15 +7,15 @@ public class ShowDBTableAction extends InspectionAndReadTableBaseAction {
 
 	//接受前端雇主ID
 	private String userID;
-	//返回前端对应所有的tableID
-	private String tableID;
-	
-	public String getTableID() {
-		return tableID;
+	//返回前端对应所有的table信息，包括ID和状态, JSONArray[ tableID:state, tableID:state ]
+	private String tableInfo;
+
+	public String getTableInfo() {
+		return tableInfo;
 	}
 
-	public void setTableID(String tableID) {
-		this.tableID = tableID;
+	public void setTableinfo(String tableInfo) {
+		this.tableInfo = tableInfo;
 	}
 
 	public String getUserID() {
@@ -27,7 +27,7 @@ public class ShowDBTableAction extends InspectionAndReadTableBaseAction {
 	}
 
 	public String execute(){
-		tableID = readservice.showAllTable(userID);
+		tableInfo = readservice.showAllTable(userID);
 		return SUCCESS;
 	}
 }
