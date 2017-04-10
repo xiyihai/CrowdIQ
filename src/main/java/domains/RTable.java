@@ -28,6 +28,17 @@ public class RTable {
 	@Column(name="available")
 	private Integer available;
 	
+	@Column(name="jsontable")
+	private String jsontable;
+	
+	public String getJsontable() {
+		return jsontable;
+	}
+
+	public void setJsontable(String jsontable) {
+		this.jsontable = jsontable;
+	}
+
 	public Integer getAvailable() {
 		return available;
 	}
@@ -60,11 +71,12 @@ public class RTable {
 		this.table_name = table_name;
 	}
 
-	public RTable(Integer requester_id, String table_name, Integer available) {
+	public RTable(Integer requester_id, String table_name, Integer available, String jsontable) {
 		super();
 		this.requester_id = requester_id;
 		this.table_name = table_name;
 		this.available = available;
+		this.jsontable = jsontable;
 	}
 	
 	

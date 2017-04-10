@@ -4,12 +4,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 import org.hibernate.dialect.Ingres10Dialect;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 import com.sun.corba.se.spi.orbutil.threadpool.Work;
 
+import QualityControl.AggregateAnswer;
+import QualityControl.AggregateAnswerImp;
 import daos.Interface.RTaskDao;
 import daos.Interface.RequesterTaskDao;
 import daos.Interface.WTaskDao;
@@ -134,8 +137,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		rTask.setState(3);
 		rtaskDao.update(rTask);
 		
-		//暂停之后的任务怎么处理， 从商品架下架
-		
+		//暂停之后的任务怎么处理， 从商品架下架， 这里无需额外操作
 		return true;
 	}
 
@@ -258,6 +260,9 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		
 		
 		if (rTask.getHasanswer_number()==rTask.getWorker_number()) {
+
+			AggregateAnswer aggregateAnswer = new AggregateAnswerImp();
+			
 			//这里还需要考虑雇主任务已经收集满了，需要决策等后续任务，雇主任务状态修改等
 			rTask.setState(2);
 			//决策函数按照每一空来决策，所以需要for循环
@@ -287,9 +292,11 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					String quality = worker.getQuality();
 					worker_quality.add(quality);
 				}
-				//这里都只是决策出的一个答案？？？？？？？？？？？？？？？
-				String finalAnswer = null;
-				ArrayList<String> update_qualitys = null;
+				//这里都只是决策出的一个答案
+				aggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
+				
+				String finalAnswer = aggregateAnswer.AggFinalAnswer().get(0);
+				ArrayList<String> update_qualitys = aggregateAnswer.WriteWm();
 				
 				//更新工人质量矩阵
 				for (int j = 0; j < update_qualitys.size(); j++) {

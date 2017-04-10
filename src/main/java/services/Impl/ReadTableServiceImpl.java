@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import com.csvreader.CsvReader;
 
@@ -16,6 +15,7 @@ import domains.RTask;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.InspectionService;
+import services.Interface.ParserCrowdIQLService;
 import services.Interface.ReadTableService;
 import vos.JSONTableVos;
 
@@ -26,7 +26,9 @@ public class ReadTableServiceImpl implements ReadTableService {
 	//存放二维表原始数据
 	private ArrayList<String[]> readList;
 	private InspectionService inspectionService;
-
+	private ParserCrowdIQLService parserCrowdIQLService;
+	
+	
 	private RTableDao rtableDao;
 	private RTaskDao rtaskDao;
 	
@@ -144,19 +146,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 		//先判断一下是否存在这么一张表？？？？？？？？？？？？？
 		
 		if (true) {
-			//将用户上传的表写入数据库
-			rtableDao.save(new RTable(Integer.valueOf(userID), tablename, 0));
-			return true;
-		}
-		return false;	   
-	}
-
-	@Override
-	public boolean readDBTable(String userID, String tablename) {
-		// TODO Auto-generated method stub
-		if (rtableDao.findByIDName(userID, tablename).isEmpty()) {
-			return false;
-		}else {
+			//将用户上传的表写入数据库,还有转换好的jsontable
 			readList = new ArrayList<>();
 			try {
 				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename,',',Charset.forName("utf-8"));
@@ -169,8 +159,27 @@ public class ReadTableServiceImpl implements ReadTableService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//获取到转换后的jsontable
+			tranferJSONTable();
+			rtableDao.save(new RTable(Integer.valueOf(userID), tablename, 0, jsonTable.toString()));
 			return true;
 		}
+		return false;	   
+	}
+
+	@Override
+	public String readDBTable(String userID, String tablename) {
+		// TODO Auto-generated method stub
+		//从数据库中找到对应的表
+		List<RTable> rTables = rtableDao.findByIDName(userID, tablename);
+		if (rTables.size()==0) {
+			return null;
+		}else {
+			RTable rTable = rtableDao.findByIDName(userID, tablename).get(0);
+			//需要这么来回折腾是为了让这个类属性jsontable存在值
+			jsonTable = JSONObject.fromObject(rTable.getJsontable());
+		}
+		return getJSONTable_show().toString();
 	}
 
 	@Override
@@ -203,11 +212,32 @@ public class ReadTableServiceImpl implements ReadTableService {
 		// TODO Auto-generated method stub
 		//先要判断数据库中对应表格的状态，理论上没有问题都是1
 		RTable rTable = rtableDao.findByIDName(userID, tableID).get(0);
+		JSONObject jsontable = JSONObject.fromObject(rTable.getJsontable());
+		
 		if (rTable.getAvailable()==1) {
-			//先要整合对应任务的答案，写入到数据库
+			//先要整合对应任务的答案，写入到表格，这里需要判断对应任务sqlTarget是否为 header，columns，rows.
+			//这三者需要写入原表，其余的只需要显示答案即可
+			List<RTask> rTasks = rtaskDao.showTaskByTableID(tableID);
+			for (int i = 0; i < rTasks.size(); i++) {
+				RTask rtask = rTasks.get(i);
+				String content = rtask.getContent();
+				//判断是否为 header，columns，rows
+				//不是则不用管，若是则需要获取finalAnswer，注意顺序对应
+				JSONArray sqlTargets = JSONObject.fromObject(content).getJSONArray("sqlTargets");
+				JSONArray finalAnswers = JSONObject.fromObject(content).getJSONArray("finalAnswer");
+				for (int j = 0; j < sqlTargets.size(); j++) {
+					String target = sqlTargets.getString(j);
+					if (target.startsWith("headers")||target.startsWith("columns")||target.startsWith("rows")) {
+						//对于这些需要解析然后写入表格，利用parser中的fillcontent
+						String answer = finalAnswers.getString(j);
+						jsontable = parserCrowdIQLService.fillContent(target, answer, jsontable);
+					}
+				}
+			}
+			//全部完成之后需要将jsontable写入到二维表中
+			parserCrowdIQLService.returnTable(jsontable, tableID);
 			
-			
-			//将对应表格下载
+			//将对应表格下载?????????????
 			return true;
 		}
 		return false;

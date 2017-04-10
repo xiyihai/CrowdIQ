@@ -14,7 +14,9 @@ import com.csvreader.CsvWriter;
 import FunctionsSupport.AlgorithmIn;
 import FunctionsSupport.Parser;
 import daos.Interface.RAlgorithmDao;
+import daos.Interface.RTableDao;
 import domains.RAlgorithm;
+import domains.RTable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.ParserCrowdIQLService;
@@ -23,6 +25,16 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	
 	private RAlgorithmDao rAlgorithmDao;
 	
+	private RTableDao rTableDao;
+	
+	public RTableDao getrTableDao() {
+		return rTableDao;
+	}
+
+	public void setrTableDao(RTableDao rTableDao) {
+		this.rTableDao = rTableDao;
+	}
+
 	public RAlgorithmDao getrAlgorithmDao() {
 		return rAlgorithmDao;
 	}
@@ -34,10 +46,12 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	private Parser parser;
 
 	@Override
-	public String parser(String sql, JSONObject jsonTable) {
+	public String parser(String sql, String userID, String tablename) {
 		// TODO Auto-generated method stub
-		//返回的值是一个Map转换而成的JSONObject
-		return process(sql, jsonTable);
+		//先要找对对应的jsontable数据
+		RTable rTable = rTableDao.findByIDName(userID, tablename).get(0);
+		
+		return process(sql, userID, tablename, JSONObject.fromObject(rTable.getJsontable()));
 	}
 
 	//找出元素的正则表达式
@@ -121,7 +135,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		}
 		
 	//插入对应的内容，用于insert rows[2] columns[3](对应表头个数也要变化) 新增2行 3列
-	private boolean insertAttribute(String[] subattributes, JSONObject jsonTable) {
+	private JSONObject insertAttribute(String[] subattributes, JSONObject jsonTable) {
 			String attribute_name = subattributes[0];
 			int first_number;
 			
@@ -154,18 +168,18 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				}else {
 					System.out.println("这个属性不能增加[]");
 				}
-				return true;
 			}else {
 				//这个直接放一个属性名即可
 				jsonTable.put(attribute_name, "");
-				return true;
 			}
+			return jsonTable;
 		}
 
 	//根据众包用户获取值之后，填充select,update的值.
 	//value 具体形态需要更具subattribute来定，可能是一维，或者字符串。理论上不可能是二维数组，没有这样的任务
-	public boolean fillContent(String[] subattributes,String value, JSONObject jsonTable){
-
+	public JSONObject fillContent(String attributes,String value, JSONObject jsonTable){
+		
+		String[] subattributes = regex(attributes);
 		String attribute_name = subattributes[0];
 		int first_number;
 		int second_number;
@@ -209,10 +223,10 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 			//这里value肯定是字符串
 			jsonTable.put(attribute_name, value);
 		}
-		return true;	
+		return jsonTable;
 	}
 	
-	private String process(String sql, JSONObject jsonTable){
+	private String process(String sql, String userID, String tablename, JSONObject jsonTable){
 			
 			//得到每个元素，且操作对应的table
 			parser=new Parser();
@@ -247,13 +261,15 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					String[] attribute = insert[i].split("\\.");
 					String[] subattributes = regex(attribute[1]);
 					
-					//插入新的一行，一列，新的属性
-					if (insertAttribute(subattributes, jsonTable)) {
-						System.out.println("插入成功！");		
-					}else {
-						System.out.println("插入失败！");
-					}
+					//插入新的一行，一列，新的属性， 这里jsonTable需要迭代计算
+					jsonTable = insertAttribute(subattributes, jsonTable);
 				}
+				//最后把最新的jsontable插入数据库
+				RTable rTable = rTableDao.findByIDName(userID, tablename).get(0);
+				rTable.setJsontable(jsonTable.toString());
+				rTableDao.update(rTable);
+				//插入语句和其他语句不通，本质不需要返回值
+				return null;
 			}
 			
 			//select需要返回前端值,但返回的还是之前map里的东西

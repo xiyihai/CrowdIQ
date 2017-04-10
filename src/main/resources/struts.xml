@@ -75,15 +75,14 @@
             </result>  
         </action>     
         
-        <!-- 雇主读取对应上传的某表格，返回表对应json数据 -->
+        <!-- 雇主读取对应上传的某表格，将对应数据写入数据库 -->
         <action name="readUploadTableAction" class="ReadUploadTableAction">
-        	<result type="json">
-                <param name="root">jsonTable</param>
-            </result>  
+        	<result name="success"  type="json"></result>
+      		<result name="error"></result>  
         </action>     
         
       	<!-- 雇主查看数据库中所有自己对应的表格，返回所有对应表的ID号供雇主选择 -->
-        <action name="readUploadTableAction" class="ReadUploadTableAction">
+        <action name="showDBTableAction" class="ShowDBTableAction">
         	<result type="json">
                 <param name="root">tableInfo</param>
             </result>  
@@ -110,7 +109,7 @@
         </action> 
         
         <!-- 雇主确定完某任务所有元素提交确定, 无返回结果-->
-        <action name="deleteTaskAction" class="DeleteTaskAction">
+        <action name="commitTaskAction" class="CommitTaskAction">
       		<result name="success"  type="json"></result>
       		<result name="error"></result>
       	</action>
@@ -129,16 +128,36 @@
       		<result name="error"></result>
       	</action>
       	
+      	<!-- 雇主请求发布某任务，无返回值 -->
+      	<action name="publishTaskAction" class="PublishTaskAction">
+      		<result name="success"  type="json"></result>
+      		<result name="error"></result>
+      	</action>
+      	
+      	<!-- 雇主请求查看所有任务的简要情况，返回json数据 -->
+      	<action name="showAllRTaskAction" class="ShowAllRTaskAction">
+        	<result type="json">
+                <param name="root">tasksInfo</param>
+            </result>  
+        </action>  	
+      	
       	<!-- 工人根据ID号完成某任务提交自己的答案，无返回值 -->
       	<action name="finishTaskAction" class="FinishTaskAction">
       		<result name="success"  type="json"></result>
       		<result name="error"></result>
       	</action>
       	
-      	<!-- 雇主根据ID号请求预览某任务，返回该任务所有参数值 -->
+      	<!-- 工人根据ID号请求预览某任务，返回该任务所有参数值 -->
       	<action name="previewTaskAction" class="PreviewTaskAction">
       		<result type="json">
                 <param name="root">taskJSON</param>
+            </result>
+      	</action>
+      	
+      	<!-- 工人请求查看所有可做任务的简要信息，返回json数据 -->
+      	<action name="showAllTaskAction" class="ShowAllTaskAction">
+      		<result type="json">
+                <param name="root">taskInfo</param>
             </result>
       	</action>
       	

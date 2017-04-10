@@ -12,8 +12,8 @@ public interface ReadTableService {
 	//读取上传的的表原始数据,对上传上的表需要给出tableID，然后写入数据库
 	boolean readUploadTable(String userID, String tablename);
 	
-	//读取对应的表格，根据tbale_name
-	boolean readDBTable(String userID, String tablename);
+	//读取对应的表格，根据tbale_name,返回给前端jsontable数据
+	String readDBTable(String userID, String tablename);
 	
 	//获取jsontable_show的形式
 	JSONObject getJSONTable_show();

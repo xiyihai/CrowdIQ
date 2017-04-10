@@ -30,7 +30,8 @@
 	</bean>
 	
 	<bean id="ParserCrowdIQLService" class="services.Impl.ParserCrowdIQLServiceImpl">
-		<property name="RAlgorithmDao" ref="RAlgorithmDao"></property>
+		<property name="rAlgorithmDao" ref="RAlgorithmDao"></property>
+		<property name="rTableDao" ref="RTableDao"></property>
 	</bean>
 
 	
@@ -87,6 +88,7 @@
 	<bean id="PreviewTaskAction" class="actions.extend.task.worker.PreviewTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="TakeTaskAction" class="actions.extend.task.worker.TakeTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowAllTaskAction" class="actions.extend.task.worker.ShowAllTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
 	
 	
 	

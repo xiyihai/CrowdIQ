@@ -29,10 +29,9 @@ public class RegisterServiceImpl implements RegisterService {
 	private WorkerDao workerDao;
 	private TestTaskDao testtaskDao;
 	private WorkerTestTaskDao workertesttaskDao;
-	
+
 	//导入计算初始质量举证的类
-	private CalculateTest calculateTest;
-	
+	private CalculateTest calculateTest = new CalculateTestImp();
 	
 	public RequesterDao getRequesterDao() {
 		return requesterDao;
@@ -147,6 +146,7 @@ public class RegisterServiceImpl implements RegisterService {
 		
 		Worker worker = workerDao.get(Worker.class, userID);
 		//需要将正确答案和工人答案打包然后发给对应计算模块
+
 		calculateTest = new CalculateTestImp();
 		worker.setQuality(calculateTest.CaculateTestQuestion(results));
 		workerDao.update(worker);
