@@ -71,6 +71,8 @@
 	<bean id="RegisterAction" class="actions.extend.register.RegisterAction" parent="RegisterBaseAction"></bean>
 	<bean id="ShowAllTestTaskAction" class="actions.extend.register.ShowAllTestTaskAction" parent="RegisterBaseAction"></bean>
 	<bean id="TestTaskAction" class="actions.extend.register.TestTaskAction" parent="RegisterBaseAction"></bean>
+	<bean id="ShowDoneTestTaskAction" class="actions.extend.register.ShowDoneTestTaskAction" parent="RegisterBaseAction"></bean>
+	
 	
 	<bean id="DownloadTableAction" class="actions.extend.table.DownloadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadDBTableAction" class="actions.extend.table.ReadDBTableAction" parent="InspectionAndReadTableAction"></bean>
@@ -89,6 +91,7 @@
 	<bean id="TakeTaskAction" class="actions.extend.task.worker.TakeTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowAllTaskAction" class="actions.extend.task.worker.ShowAllTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="ShowRecommendTaskAction" class="actions.extend.task.worker.ShowRecommendTaskAction" parent="TaskProcessAction"></bean>
 	
 	
 	

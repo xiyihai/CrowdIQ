@@ -34,22 +34,12 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/ryr0231_header.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CrowdIQModules">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/zlf0320_entity.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/ComputeTestQuestion.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="E:/Probase/CrowdIQ/QuestionControl.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CrowdIQAlgorithms">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

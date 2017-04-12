@@ -29,8 +29,12 @@ public class FinishTestTaskAction extends RegisterBaseAction {
 	}
 	
 	public String execute() {
-		registerService.finishTestTask(userID, taskID, answer);
-		return SUCCESS;
+		if (registerService.finishTestTask(userID, taskID, answer)) {
+			return SUCCESS;	
+		}else {
+			return ERROR;
+		}
+		
 	}
 	
 }

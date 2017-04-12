@@ -31,7 +31,8 @@
         
 	    <!--  完成测试题，无返回结果 -->
         <action name="finishTestTaskAction" class="FinishTestTaskAction">
-        	<result type="json"></result>  
+        	<result name="success"  type="json"></result>
+      		<result name="error"></result>
         </action> 
         
         <!-- 雇主、工人登录，返回ID号 -->
@@ -61,6 +62,14 @@
                 <param name="root">taskJSON</param>
             </result>  
         </action>     
+        
+        <!-- 工人请求查看某个测试任务（已完成的），返回该任务具体数据（任务详情，任务答案） -->
+      	<action name="showDoneTestTaskAction" class="ShowDoneTestTaskAction">
+        	<result type="json">
+                <param name="root">taskJSON</param>
+            </result>  
+        </action>     
+        
         
         <!-- 雇主请求下载某任务对应的表， 无返回结果-->
         <action name="dowloadTableAction" class="DowloadTableAction">
@@ -156,6 +165,13 @@
       	
       	<!-- 工人请求查看所有可做任务的简要信息，返回json数据 -->
       	<action name="showAllTaskAction" class="ShowAllTaskAction">
+      		<result type="json">
+                <param name="root">taskInfo</param>
+            </result>
+      	</action>
+      	
+      	<!-- 工人请求查看推荐任务的简要信息，返回json数据 -->
+      	<action name="showRecommendTaskAction" class="ShowRecommendTaskAction">
       		<result type="json">
                 <param name="root">taskInfo</param>
             </result>

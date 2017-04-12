@@ -17,4 +17,7 @@ public interface RegisterService {
 	
 	//返回所有该工人的测试任务ID号
 	String getAllTestTask(String userID);
+	
+	//返回测试任务详情
+	String showDoneTestTask(String userID, String taskID);
 }

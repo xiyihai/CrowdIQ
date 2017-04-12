@@ -38,4 +38,14 @@ public interface TaskProcessService {
 	
 	//展示所有雇主任务简要信息
 	String showAllRTask(String userID);
+	
+	//向工人展示推荐任务的简要信息
+	String getRecommendTask(String userID);
+	
+	//向工人展示自己收录的所有任务的简要信息
+	String getTakenTask(String userID);
+
+	//用于定时任务，找到过期任务
+	void findDeadlineTask();
 }
+

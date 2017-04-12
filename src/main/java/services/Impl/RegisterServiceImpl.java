@@ -196,6 +196,14 @@ public class RegisterServiceImpl implements RegisterService {
 		return JSONArray.fromObject(testTasks).toString();
 	}
 
+	@Override
+	public String showDoneTestTask(String userID, String taskID) {
+		// TODO Auto-generated method stub
+		TestTask testTask = testtaskDao.get(TestTask.class, taskID);
+		//这个返回的数据中包含 content，answer两部分
+		return JSONObject.fromObject(testTask).toString();
+	}
+
 	
 
 }

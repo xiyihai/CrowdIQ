@@ -1,5 +1,6 @@
 package services.Impl;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,9 +144,10 @@ public class ReadTableServiceImpl implements ReadTableService {
 	@Override
 	public boolean readUploadTable(String userID, String tablename) {
 		// TODO Auto-generated method stub
-		//先判断一下是否存在这么一张表？？？？？？？？？？？？？
+		//先判断一下是否存在这么一张表
+		File file = new File("WEB-INF/uploadTables/"+tablename);
 		
-		if (true) {
+		if (file.exists()) {
 			//将用户上传的表写入数据库,还有转换好的jsontable
 			readList = new ArrayList<>();
 			try {
@@ -176,7 +178,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 			return null;
 		}else {
 			RTable rTable = rtableDao.findByIDName(userID, tablename).get(0);
-			//需要这么来回折腾是为了让这个类属性jsontable存在值
+			//需要这么来回折腾是为了让这个类属性jsontable存在值，这样返回的showtable才能都显示
 			jsonTable = JSONObject.fromObject(rTable.getJsontable());
 		}
 		return getJSONTable_show().toString();

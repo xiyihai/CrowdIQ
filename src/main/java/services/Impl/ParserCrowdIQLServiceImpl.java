@@ -1,5 +1,6 @@
 package services.Impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -325,7 +326,9 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	public boolean uploadAlgorithm(String userID, String algorithmname) {
 		// TODO Auto-generated method stub
 		//先要判断是否存在这个算法
-		if (true) {
+		File file = new File("WEB-INF/lib/"+algorithmname);
+		
+		if (file.exists()) {
 			rAlgorithmDao.save(new RAlgorithm(Integer.valueOf(userID), algorithmname));	
 			return true;
 		}

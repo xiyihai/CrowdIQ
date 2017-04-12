@@ -1,7 +1,9 @@
 package services.Impl;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
@@ -371,6 +373,58 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			tasks.add(task);
 		}
 		return tasks.toString();
+	}
+
+	@Override
+	public String getRecommendTask(String userID) {
+		// TODO Auto-generated method stub
+		//???????????????????????????
+		return null;
+	}
+
+	@Override
+	public String getTakenTask(String userID) {
+		// TODO Auto-generated method stub
+		JSONArray tasks = new JSONArray();
+		
+		List<WTask> wTasks = wtaskDao.getByWid(userID);
+		for (int i = 0; i < wTasks.size(); i++) {
+			WTask wTask = wTasks.get(i);
+			
+			//需要展示的信息： 任务ID，任务状态，截止时间,每个HIT花费
+			JSONObject task = new JSONObject();
+			task.put("task_id", wTask.getTask_id());
+			task.put("state", wTask.getState());
+			task.put("deadline", wTask.getDeadline());
+			task.put("each_reward", wTask.getEach_reward());
+			tasks.add(task);
+		}
+		return tasks.toString();
+	}
+
+	@Override
+	public void findDeadlineTask() {
+		// TODO Auto-generated method stub
+		//首先找到对应超期的雇主任务
+		//时间格式  %Y-%m-%d %H:%i
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		Date now=new Date();
+		String deadline=dateFormat.format(now); 
+		List<RTask> rTasks = rtaskDao.findDeadlineTask(deadline);	
+		for (int i = 0; i < rTasks.size(); i++) {
+			RTask rTask = rTasks.get(i);
+			rTask.setState(4);
+			rtaskDao.update(rTask);
+			
+			//找到对应的工人任务表
+			String taskID = String.valueOf(rTask.getTask_id());
+			List<WTask> wTasks = wtaskDao.getByTid(taskID);
+			for (int j = 0; j < wTasks.size(); j++) {
+				WTask wTask = wTasks.get(j);
+				wTask.setState(4);
+				wtaskDao.update(wTask);
+			}
+		}
 	}
 
 }

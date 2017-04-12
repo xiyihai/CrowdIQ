@@ -25,4 +25,10 @@ public class RTaskDaoImpl extends BaseDaoImpl<RTask> implements RTaskDao {
 		// TODO Auto-generated method stub
 		return find("from RTask as t where t.table_id = ?0", tableID);
 	}
+
+	@Override
+	public List<RTask> findDeadlineTask(String deadline) {
+		// TODO Auto-generated method stub
+		return findBySql("select * from rtask_info where date_format(deadline,'%Y-%m-%d %H:%i') <= '"+deadline+"'", RTask.class);
+	}
 }
