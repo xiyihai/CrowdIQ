@@ -10,8 +10,10 @@ import java.util.List;
 import com.csvreader.CsvReader;
 
 import daos.Interface.RTableDao;
+import daos.Interface.RTableListDao;
 import daos.Interface.RTaskDao;
 import domains.RTable;
+import domains.RTableList;
 import domains.RTask;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -29,10 +31,20 @@ public class ReadTableServiceImpl implements ReadTableService {
 	private InspectionService inspectionService;
 	private ParserCrowdIQLService parserCrowdIQLService;
 	
-	
+	private RTableListDao rtableListDao;
 	private RTableDao rtableDao;
 	private RTaskDao rtaskDao;
 	
+	
+	
+	public RTableListDao getRtableListDao() {
+		return rtableListDao;
+	}
+
+	public void setRtableListDao(RTableListDao rtableListDao) {
+		this.rtableListDao = rtableListDao;
+	}
+
 	public RTaskDao getRtaskDao() {
 		return rtaskDao;
 	}
@@ -68,10 +80,12 @@ public class ReadTableServiceImpl implements ReadTableService {
 	}
 
 	@Override
-	public boolean tranferJSONTable() {
+	public boolean tranferJSONTable(String tablename) {
 		
 		//用于数据转换方便映入的bean类
 		JSONTableVos jsonTableVos = new JSONTableVos();
+		//放入表名
+		jsonTableVos.setTablename(tablename);
 		
 		if (readList.size()>0) {
 			
@@ -144,14 +158,14 @@ public class ReadTableServiceImpl implements ReadTableService {
 	@Override
 	public boolean readUploadTable(String userID, String tablename) {
 		// TODO Auto-generated method stub
-		//先判断一下是否存在这么一张表
-		File file = new File("WEB-INF/uploadTables/"+tablename);
+		//先判断一下是否存在这么一张表,都默认以csv结尾，这样还能辨别文件格式
+		File file = new File("WEB-INF/uploadTables/"+tablename+".csv");
 		
 		if (file.exists()) {
 			//将用户上传的表写入数据库,还有转换好的jsontable
 			readList = new ArrayList<>();
 			try {
-				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename,',',Charset.forName("utf-8"));
+				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename+".csv",',',Charset.forName("utf-8"));
 			    while(reader.readRecord()){ //逐行读入数据      
 			        readList.add(reader.getValues());  
 			    }              
@@ -162,7 +176,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 				e.printStackTrace();
 			}
 			//获取到转换后的jsontable
-			tranferJSONTable();
+			tranferJSONTable(tablename);
 			rtableDao.save(new RTable(Integer.valueOf(userID), tablename, 0, jsonTable.toString()));
 			return true;
 		}
@@ -242,6 +256,20 @@ public class ReadTableServiceImpl implements ReadTableService {
 			//将对应表格下载?????????????
 			return true;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean uploadTableList(String userID, String tablelist) {
+		// TODO Auto-generated method stub
+		//先判断一下是否存在这么文件,都默认以zip结尾，这样还能辨别文件格式
+		File file = new File("WEB-INF/uploadTables/"+tablelist+".zip");
+					
+			if (file.exists()) {
+				rtableListDao.save(new RTableList(Integer.valueOf(userID), tablelist));
+				return true;
+			}   
+		
 		return false;
 	}
 

@@ -13,6 +13,7 @@
 		<property name="InspectionService" ref="InspectionService"></property>
 		<property name="rtableDao" ref="RTableDao"></property>
 		<property name="rtaskDao" ref="RTaskDao"></property>
+		<property name="rtableListDao" ref="RTableListDao"></property>
 	</bean>
 	
 	<bean id="RegisterService" class="services.Impl.RegisterServiceImpl">
@@ -32,6 +33,7 @@
 	<bean id="ParserCrowdIQLService" class="services.Impl.ParserCrowdIQLServiceImpl">
 		<property name="rAlgorithmDao" ref="RAlgorithmDao"></property>
 		<property name="rTableDao" ref="RTableDao"></property>
+		<property name="rTableListDao" ref="RTableListDao"></property>
 	</bean>
 
 	
@@ -78,6 +80,8 @@
 	<bean id="ReadDBTableAction" class="actions.extend.table.ReadDBTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadUploadTableAction" class="actions.extend.table.ReadUploadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ShowDBTableAction" class="actions.extend.table.ShowDBTableAction" parent="InspectionAndReadTableAction"></bean>
+	<bean id="UploadTableListAction" class="actions.extend.table.UploadTableListAction" parent="InspectionAndReadTableAction"></bean>
+	
 	
 	<bean id="DeleteTaskAction" class="actions.extend.task.requester.DeleteTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowTaskAction" class="actions.extend.task.requester.ShowTaskAction" parent="TaskProcessAction"></bean>
@@ -92,11 +96,7 @@
 	<bean id="ShowAllTaskAction" class="actions.extend.task.worker.ShowAllTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowRecommendTaskAction" class="actions.extend.task.worker.ShowRecommendTaskAction" parent="TaskProcessAction"></bean>
-	
-	
-	
-	<bean id="ReadTableAction" class="actions.extend.ReadTableAction" parent="InspectionAndReadTableAction"></bean>
-	
+	<bean id="ShowTakenTaskAction" class="actions.extend.task.worker.ShowTakenTaskAction" parent="TaskProcessAction"></bean>
 	
 	
 </beans>

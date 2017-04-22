@@ -16,8 +16,10 @@ import FunctionsSupport.AlgorithmIn;
 import FunctionsSupport.Parser;
 import daos.Interface.RAlgorithmDao;
 import daos.Interface.RTableDao;
+import daos.Interface.RTableListDao;
 import domains.RAlgorithm;
 import domains.RTable;
+import domains.RTableList;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.ParserCrowdIQLService;
@@ -28,6 +30,18 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	
 	private RTableDao rTableDao;
 	
+	private RTableListDao rTableListDao;
+	
+	
+	
+	public RTableListDao getrTableListDao() {
+		return rTableListDao;
+	}
+
+	public void setrTableListDao(RTableListDao rTableListDao) {
+		this.rTableListDao = rTableListDao;
+	}
+
 	public RTableDao getrTableDao() {
 		return rTableDao;
 	}
@@ -227,6 +241,18 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		return jsonTable;
 	}
 	
+	//先判断数据库中是否存在这个tablelist
+	//然后把包里面的表格全部转换成二维数组
+	//这样总的就是一个三维数组,但返回值是String，不过这个String本质是三维数组
+	//ArrayList<String>和String的互相转换关系没有，所以用JSONArray更加方便
+	private String getTableList(String userID, String tablelist){
+		
+		if (!rTableListDao.findByIDName(userID, tablelist).isEmpty()) {
+			//在uploadtable目录下找到对应zip压缩包，然后然后将里面每一张表格转成二维数组
+		}
+		return null;
+	}
+	
 	private String process(String sql, String userID, String tablename, JSONObject jsonTable){
 			
 			//得到每个元素，且操作对应的table
@@ -243,12 +269,17 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				JSONArray results = new JSONArray();
 				
 				for(int i=0;i<showing.length;i++){
-					String[] attribute = showing[i].split("\\.");
-					//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
-					//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
-					String[] subattributes = regex(attribute[1]);
-					//得到showing具体元素值,result可能是一维数组，也可能是二维，ArrayList.fromObject可以直接转换
-					String result = findAttribute(subattributes, jsonTable);
+					String result;
+					if (showing[i].startsWith("tablelist[")) {
+						result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+					}else {
+						String[] attribute = showing[i].split("\\.");
+						//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
+						//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
+						String[] subattributes = regex(attribute[1]);
+						//得到showing具体元素值,result可能是一维数组，也可能是二维，ArrayList.fromObject可以直接转换
+						result = findAttribute(subattributes, jsonTable);
+					}
 					results.add(result);
 				}
 				
@@ -289,32 +320,54 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				//每一维针对一个select的内容，形成的top-k，按顺序排列
 				ArrayList<ArrayList<String>> results = new ArrayList<>();
 				
-				Map<String, String[]> using = (Map<String, String[]>) map_element.get("using");
+				Map<String, ArrayList<ArrayList<String>>> using = (Map<String, ArrayList<ArrayList<String>>>)
+						map_element.get("using");
 				//需要遍历map
 				Set<String> sets = using.keySet();
 				for(String algorithm : sets){
 				
 					//获取算法作用的属性
-					String[] elements = using.get(algorithm);
-					for(int i=0;i<elements.length;i++){
+					ArrayList<ArrayList<String>> elements = using.get(algorithm);
+					//第一个for循环是算法依次作用的属性 on table.headers,table.rows ,互相之间无关系
+					for(int i=0;i<elements.size();i++){
+						//这里属性要作为一个数组形式传到算法中,大小已知
+						String[] attributes = new String[elements.get(i).size()];
 						
-						//获取属性中的内容 table01.rows[][]
-						String[] attribute = elements[i].split("\\.");
-						//通过id号对应表格，这里table直接定义为table01，所以这里attribute[0]没啥用
-						//输出的是rows[][]
-						//System.out.println(attribute[1]);
-						//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
-						String[] subattributes = regex(attribute[1]);
-						//findAttribute()返回的即是算法作用属性的具体内容，以字符串形式返回，但其可能是数组
-						String findresult = findAttribute(subattributes, jsonTable);
-						
+						//第二个for循环是 on (table.name,table.rows) 可能存在带括号的数组，
+						//不带括号的数组中都只有1个,里面的属性需要作为一个整体计算
+						for (int j = 0; j < elements.get(i).size(); j++) {
+							//先要获取属性
+							String element = elements.get(i).get(j);
+							String findresult;
+							//如果这个属性是tablelist开头的则处理方式不同\
+							if (element.startsWith("tablelist[")) {
+								findresult = getTableList(userID, element.substring(10, element.length()-1));
+							}else{
+								//获取属性中的内容 table01.rows[][]
+								String[] attribute = element.split("\\.");
+								//通过id号对应表格，这里table直接定义为table01，所以这里attribute[0]没啥用
+								//输出的是rows[][]
+								//System.out.println(attribute[1]);
+								//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
+								String[] subattributes = regex(attribute[1]);
+								//findAttribute()返回的即是算法作用属性的具体内容，以字符串形式返回，但其可能是数组
+								findresult = findAttribute(subattributes, jsonTable);
+							}
+							//将找到的具体内容放入数组中
+							attributes[j]=findresult;
+						}
 						//这里需要利用java反射机制，根据算法名字调用不同算法
 						//先要区分是否是外部算法,执行时无区别，但是外部算法需要存储在数据库中，以方便删除
 						String algorithm_name = algorithm.split(":")[1];
-						AlgorithmIn algorithmIn = new AlgorithmIn();
-						ArrayList<String> items = algorithmIn.find(algorithm_name, findresult);
-						//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
-						results.add(items);
+						//判断数据库中，该用户是否存在这个算法
+						if (!rAlgorithmDao.findByIDAlgorithm(userID, algorithm_name).isEmpty()) {
+							AlgorithmIn algorithmIn = new AlgorithmIn();
+							ArrayList<String> items = algorithmIn.find(algorithm_name, attributes);
+							//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
+							results.add(items);
+						}else {
+							results.add(null);
+						}
 					}
 				}
 				map_result.put("top_k", results);
@@ -338,7 +391,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	@Override
 	public boolean returnTable(JSONObject jsonTable, String tableID) {
 		// TODO Auto-generated method stub
-		String path = "WEB-INF/uploadTables/"+tableID;
+		String path = "WEB-INF/uploadTables/"+tableID+".csv";
 		String csvWriteFile = path;
 	     CsvWriter writer = new CsvWriter(csvWriteFile, ',', Charset.forName("utf-8"));  
 	     

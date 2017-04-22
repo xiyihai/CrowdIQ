@@ -97,6 +97,13 @@
             </result>  
         </action>     
         
+        <!-- 雇主上传对应的某表格库，将对应数据写入数据库 -->
+        <action name="UploadTableListAction" class="UploadTableListAction">
+        	<result name="success"  type="json"></result>
+      		<result name="error"></result>  
+        </action>  
+        
+        
       	<!-- 雇主\工人请求删除某任务, 无返回结果-->
         <action name="deleteTaskAction" class="DeleteTaskAction">
       		<result name="success"  type="json"></result>

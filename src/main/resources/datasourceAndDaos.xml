@@ -22,6 +22,8 @@
 	<bean id="WorkerDao" class="daos.Impl.WorkerDaoImpl" parent="daoTemplate"></bean>
 	<bean id="WorkerTestTaskDao" class="daos.Impl.WorkerTestTaskDaoImpl" parent="daoTemplate"></bean>
 	<bean id="WTaskDao" class="daos.Impl.WTaskDaoImpl" parent="daoTemplate"></bean>
+	<bean id="RTableListDao" class="daos.Impl.RTableListDaoImpl" parent="daoTemplate"></bean>
+	
 	
 	<!-- spring的属性加载器，加载properties文件中的属性 -->  
 	<bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  

@@ -38,6 +38,8 @@
   <mapping class="domains.Worker"/>
   <mapping class="domains.WorkerTestTask"/>
   <mapping class="domains.WTask"/>
+  <mapping class="domains.RTableList"/>
+  
   
  </session-factory>
 </hibernate-configuration>

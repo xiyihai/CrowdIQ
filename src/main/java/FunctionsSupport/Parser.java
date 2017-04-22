@@ -1,9 +1,13 @@
 package FunctionsSupport;
 
+import java.security.AlgorithmParameterGeneratorSpi;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import Algorithm_Process.Algorithm;
 
 public class Parser {
 	// 预处理：
@@ -122,8 +126,9 @@ public class Parser {
 		//using里面仍是一个map<算法名字String，作用的属性[]>
 		String using = segment(regex("using"),sql);
 		if (using!=null) {
-			//对算法操作
-			HashMap<String, String[]> algorithm_map = new HashMap<>();
+			//对算法操作,这里采用map存<算法名, 作用的属性>，这里作用的属性是二维数组存
+			//二维数组是为了括号准备的即 [[columns,headers],tablename]：(table.columns,table.headers),table.tablename
+			HashMap<String, ArrayList<ArrayList<String>>> algorithm_map = new HashMap<>();
 			String[] algor = using.split(" and ");
 			for(int i=0;i<algor.length;i++){
 				String algorithm;
@@ -132,7 +137,36 @@ public class Parser {
 				}else {
 					algorithm = "inter-algorithm:"+segment(regex("algorithm"), algor[i]);			
 				}
-				algorithm_map.put(algorithm, segment(regex("on"), algor[i]+" END").split(","));
+				//用来存放属性
+				ArrayList<ArrayList<String>> attributes = new ArrayList<>();
+				//先全部按照逗号区分，然后利用括号来判断
+				String[] elements = segment(regex("on"), algor[i]+" END").split(",");
+				for (int j = 0; j < elements.length; j++) {
+					ArrayList<String> attribute = new ArrayList<>();
+					if (elements[j].startsWith("(")) {
+						String element = elements[j].substring(1, elements[j].length());
+						attribute.add(element);
+						//如果出现一个 以左括号 开头的，则一直要加到 以右括号结尾为止
+						while (!elements[++j].endsWith(")")) {
+							attribute.add(elements[j]);
+						}
+						//最后加上以右括号结尾的元素
+						attribute.add(elements[j].substring(0, elements[j].length()-1));
+					}else{
+						//由于右括号的元素已经不可能独自出现了，所以只可能是单独无括号的元素,直接放入即可
+						attribute.add(elements[j]);
+					}
+					attributes.add(attribute);	
+				}
+				//这里将attribute打印输出，作为test
+//				for (int j = 0; j < attributes.size(); j++) {
+//					for (int j2 = 0; j2 < attributes.get(j).size(); j2++) {
+//						System.out.print(attributes.get(j).get(j2)+" ");
+//					}
+//					System.out.println();
+//				}
+				
+				algorithm_map.put(algorithm, attributes);
 			}
 			map.put("using", algorithm_map);
 		}else {
@@ -140,4 +174,13 @@ public class Parser {
 		}		
 		return map;
 	}
+//	
+//	public static void main(String[] main){
+//		Parser parser = new Parser();
+//		Map<String, Object> elements = parser.getElements("using algorithm(ddd) on (table.columns,table.rows[1],"
+//				+ "TableList[xyh.cc]),"
+//				+ "table.tablename,table.columns[2][3]");
+//		
+//	}
+	
 }

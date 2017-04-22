@@ -7,7 +7,7 @@ import net.sf.json.JSONObject;
 public interface ReadTableService {
 
 	//将原始数据其转换为jsontable
-	boolean tranferJSONTable();
+	boolean tranferJSONTable(String tablename);
 	
 	//读取上传的的表原始数据,对上传上的表需要给出tableID，然后写入数据库
 	boolean readUploadTable(String userID, String tablename);
@@ -29,4 +29,7 @@ public interface ReadTableService {
 	
 	//雇主下载完成的表，这里需要把对应任务中finalanswer写入到最终的表格中
 	boolean downloadTable(String tableID, String userID);
+	
+	//雇主上传tablelist表集合，需要写入数据库
+	boolean uploadTableList(String userID, String tablelist);
 }
