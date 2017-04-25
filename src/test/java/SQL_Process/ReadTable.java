@@ -17,13 +17,23 @@ public class ReadTable {
 	private TableBean table = new TableBean();
 	private ArrayList<String[]> readList = new ArrayList<>(); //用来保存读取的数据
 
+	
+	
+	public ArrayList<String[]> getReadList() {
+		return readList;
+	}
+
+	public void setReadList(ArrayList<String[]> readList) {
+		this.readList = readList;
+	}
+
 	//判断是否存在表头，会影响jsontable的形成
 	private boolean hasHeader(){
 		return true;
 	}
 	
 	//读取csv格式的table，输入参数 path为路径
-	private void readTable(String path){
+	public void readTable(String path){
 		try {
 			CsvReader reader = new CsvReader(path,',',Charset.forName("utf-8"));
 		    while(reader.readRecord()){ //逐行读入数据      

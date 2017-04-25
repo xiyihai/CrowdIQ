@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import com.csvreader.CsvWriter;
 
+import Cluster.ClusterImpl;
 import FunctionsSupport.AlgorithmIn;
 import FunctionsSupport.Parser;
 import daos.Interface.RAlgorithmDao;
@@ -268,17 +269,52 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				String[] showing = (String[]) map_element.get("showing");
 				JSONArray results = new JSONArray();
 				
+				//这里处理方式太繁琐，代码冗余！！！
 				for(int i=0;i<showing.length;i++){
 					String result;
-					if (showing[i].startsWith("tablelist[")) {
-						result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+					//若是以cluster(开头，则需要先把里面的数据取出来，然后变成二维数组传入，
+					//返回值是一个JSONArray的String，本质是一个二维数组
+					if (showing[i].startsWith("cluster(")) {
+						String cluster_target = showing[i].substring(8, showing[i].length()-1);
+						if (showing[i].startsWith("tablelist[")) {
+							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+							//这个result是一个三维数组，里面包含表头，先要解析出每一个二维数组，分离表头和数据
+							//数据聚类之后，再和表头合并，然后组成三维数组
+							JSONArray tables = JSONArray.fromObject(result); //三维
+							for (int j = 0; j < tables.size(); j++) {
+								JSONArray table = tables.getJSONArray(j); //二维
+								JSONArray headers = table.getJSONArray(0);
+								
+								//聚类好的二维表
+								JSONArray ptable = JSONArray.fromObject(ClusterImpl.process(table.remove(0).toString(),10));
+								ptable.add(0, headers);
+								
+								tables.remove(j);
+								tables.add(j, ptable);
+							}
+							//这样出来的tables就是处理好的三维数组
+							result = tables.toString();
+							
+						}else {
+							String[] attribute = showing[i].split("\\.");
+							//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
+							//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
+							String[] subattributes = regex(attribute[1]);
+							//得到showing具体元素值,result只能是二维，ArrayList.fromObject可以直接转换
+							result = findAttribute(subattributes, jsonTable);
+							result = ClusterImpl.process(result, 10);
+						}	
 					}else {
-						String[] attribute = showing[i].split("\\.");
-						//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
-						//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
-						String[] subattributes = regex(attribute[1]);
-						//得到showing具体元素值,result可能是一维数组，也可能是二维，ArrayList.fromObject可以直接转换
-						result = findAttribute(subattributes, jsonTable);
+						if (showing[i].startsWith("tablelist[")) {
+							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+						}else {
+							String[] attribute = showing[i].split("\\.");
+							//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
+							//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
+							String[] subattributes = regex(attribute[1]);
+							//得到showing具体元素值,result可能是一维数组，也可能是二维，ArrayList.fromObject可以直接转换
+							result = findAttribute(subattributes, jsonTable);
+						}	
 					}
 					results.add(result);
 				}
