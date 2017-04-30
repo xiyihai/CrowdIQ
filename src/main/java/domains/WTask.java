@@ -41,6 +41,41 @@ public class WTask {
 	@Column(name="each_reward")
 	private Double each_reward;
 
+	@Column(name="get_reward")
+	private Double get_reward;
+	
+	@Column(name="taken_time")
+	private Timestamp taken_time;
+	
+	@Column(name="finish_time")
+	private Timestamp finish_time;
+	
+	
+	
+	public Timestamp getTaken_time() {
+		return taken_time;
+	}
+
+	public void setTaken_time(Timestamp taken_time) {
+		this.taken_time = taken_time;
+	}
+
+	public Timestamp getFinish_time() {
+		return finish_time;
+	}
+
+	public void setFinish_time(Timestamp finish_time) {
+		this.finish_time = finish_time;
+	}
+
+	public Double getGet_reward() {
+		return get_reward;
+	}
+
+	public void setGet_reward(Double get_reward) {
+		this.get_reward = get_reward;
+	}
+
 	public Integer getWorker_id() {
 		return worker_id;
 	}
@@ -90,7 +125,7 @@ public class WTask {
 	}
 
 	public WTask(Integer worker_id, Integer task_id, String content, Timestamp deadline, Integer state,
-			Double each_reward) {
+			Double each_reward, Timestamp taken_time) {
 		super();
 		this.worker_id = worker_id;
 		this.task_id = task_id;
@@ -98,6 +133,7 @@ public class WTask {
 		this.deadline = deadline;
 		this.state = state;
 		this.each_reward = each_reward;
+		this.taken_time = taken_time;
 	}
 	
 	

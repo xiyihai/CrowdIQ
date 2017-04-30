@@ -9,8 +9,9 @@ public class ClusterImpl {
 
 	//输出肯定是一个二维数组
 	//返回值也是个二维数组
-	public static String process(String target, int size){
+	public static String process(String target, double scale){
 		JSONArray rows = JSONArray.fromObject(target);
+		int size = (int)(scale * rows.size());
 		String[][] data = new String[rows.size()][rows.getJSONArray(0).size()];
 		
 		for (int i = 0; i < rows.size(); i++) {

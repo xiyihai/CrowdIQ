@@ -158,14 +158,14 @@ public class ReadTableServiceImpl implements ReadTableService {
 	@Override
 	public boolean readUploadTable(String userID, String tablename) {
 		// TODO Auto-generated method stub
-		//先判断一下是否存在这么一张表,都默认以csv结尾，这样还能辨别文件格式
-		File file = new File("WEB-INF/uploadTables/"+tablename+".csv");
+		//先判断一下是否存在这么一张表
+		File file = new File("WEB-INF/uploadTables/"+tablename);
 		
 		if (file.exists()) {
 			//将用户上传的表写入数据库,还有转换好的jsontable
 			readList = new ArrayList<>();
 			try {
-				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename+".csv",',',Charset.forName("utf-8"));
+				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename,',',Charset.forName("utf-8"));
 			    while(reader.readRecord()){ //逐行读入数据      
 			        readList.add(reader.getValues());  
 			    }              
@@ -262,8 +262,8 @@ public class ReadTableServiceImpl implements ReadTableService {
 	@Override
 	public boolean uploadTableList(String userID, String tablelist) {
 		// TODO Auto-generated method stub
-		//先判断一下是否存在这么文件,都默认以zip结尾，这样还能辨别文件格式
-		File file = new File("WEB-INF/uploadTables/"+tablelist+".zip");
+		//先判断一下是否存在这么文件
+		File file = new File("WEB-INF/tablelists/"+tablelist);
 					
 			if (file.exists()) {
 				rtableListDao.save(new RTableList(Integer.valueOf(userID), tablelist));

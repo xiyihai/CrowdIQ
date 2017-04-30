@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javassist.bytecode.annotation.DoubleMemberValue;
+
 @Entity
 @Table(name="worker_info")
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
@@ -40,7 +42,60 @@ public class Worker {
 	@Column(name="level")
 	private Integer level;
 	
-	public Worker(String name, String password, Double account, String email, String quality, Integer level) {
+	@Column(name="average_costtime")
+	private Double average_costtime;
+	
+	@Column(name="average_di")
+	private Double average_di;
+	
+	@Column(name="average_reward")
+	private Double average_reward;
+	
+	@Column(name="total_tasks")
+	private Integer total_tasks;
+	
+	
+	public Double getAverage_di() {
+		return average_di;
+	}
+
+
+	public void setAverage_di(Double average_di) {
+		this.average_di = average_di;
+	}
+
+
+	public Double getAverage_reward() {
+		return average_reward;
+	}
+
+
+	public void setAverage_reward(Double average_reward) {
+		this.average_reward = average_reward;
+	}
+
+
+	public Integer getTotal_tasks() {
+		return total_tasks;
+	}
+
+
+	public void setTotal_tasks(Integer total_tasks) {
+		this.total_tasks = total_tasks;
+	}
+
+
+	public Double getAverage_costtime() {
+		return average_costtime;
+	}
+
+
+	public void setAverage_costtime(Double average_costtime) {
+		this.average_costtime = average_costtime;
+	}
+
+	public Worker(String name, String password, Double account, String email, String quality,
+			Integer level, Double average_costtime, Double average_di, Double average_reward, Integer total_tasks) {
 		super();
 		this.name = name;
 		this.password = password;
@@ -48,8 +103,12 @@ public class Worker {
 		this.email = email;
 		this.quality = quality;
 		this.level = level;
+		this.average_costtime = average_costtime;
+		this.average_di = average_di;
+		this.average_reward = average_reward;
+		this.total_tasks = total_tasks;
 	}
-	
+
 
 	public Integer getLevel() {
 		return level;

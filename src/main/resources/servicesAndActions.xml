@@ -23,19 +23,21 @@
 		<property name="workertesttaskDao" ref="WorkerTestTaskDao"></property>
 	</bean>
 	
-	<bean id="TaskProcessService" class="services.Impl.TaskProcessServiceImpl">
-		<property name="rtaskDao" ref="RTaskDao"></property>
-		<property name="wtaskDao" ref="WTaskDao"></property>
-		<property name="requestertaskDao" ref="RequesterTaskDao"></property>
-		<property name="workerDao" ref="WorkerDao"></property>
-	</bean>
-	
 	<bean id="ParserCrowdIQLService" class="services.Impl.ParserCrowdIQLServiceImpl">
 		<property name="rAlgorithmDao" ref="RAlgorithmDao"></property>
 		<property name="rTableDao" ref="RTableDao"></property>
 		<property name="rTableListDao" ref="RTableListDao"></property>
 	</bean>
-
+	
+	<bean id="TaskProcessService" class="services.Impl.TaskProcessServiceImpl">
+		<property name="parserCrowdIQLService" ref="ParserCrowdIQLService"></property>
+		<property name="rtaskDao" ref="RTaskDao"></property>
+		<property name="wtaskDao" ref="WTaskDao"></property>
+		<property name="requestertaskDao" ref="RequesterTaskDao"></property>
+		<property name="workerDao" ref="WorkerDao"></property>
+		<property name="requesterDao" ref="RequesterDao"></property>
+	</bean>
+	
 	
 	<!-- 配置action 
    =================================================================================== -->

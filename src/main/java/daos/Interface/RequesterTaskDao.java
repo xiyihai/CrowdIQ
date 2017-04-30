@@ -11,4 +11,7 @@ public interface RequesterTaskDao extends BaseDao<RequesterTask> {
 	
 	//根据雇主id，返回内容
 	List<RequesterTask> getByRID(String userID);
+	
+	//根据雇主任务id，返回内容
+	List<RequesterTask> getByTID(String taskID);
 }

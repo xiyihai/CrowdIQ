@@ -121,7 +121,7 @@ public class ReadTable {
 		ReadTable table = new ReadTable();
 		table.tranfer("src/test/resources/Winners.csv");
 		table.showJSONTable();
-		System.out.println(table.jsonTable_show.toString());
+		//System.out.println(table.jsonTable_show.toString());
 		System.out.println(table.jsonTable.toString());
 	}
 

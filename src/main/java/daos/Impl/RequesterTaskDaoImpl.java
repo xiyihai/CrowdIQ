@@ -18,5 +18,10 @@ public class RequesterTaskDaoImpl extends BaseDaoImpl<RequesterTask> implements 
 		// TODO Auto-generated method stub
 		return find("from RequesterTask as t where t.requester_id = ?0", userID);
 	}
-
+	
+	@Override
+	public List<RequesterTask> getByTID(String taskID) {
+		// TODO Auto-generated method stub
+		return find("from RequesterTask as t where t.task_id = ?0", taskID);
+	}
 }

@@ -93,7 +93,7 @@ public class RegisterServiceImpl implements RegisterService {
 			Requester requester = new Requester(name, password, account, email);
 			requesterDao.save(requester);
 		}else if (flag.equals("worker")) {
-			Worker worker = new Worker(name, password, account, email, null, 0);
+			Worker worker = new Worker(name, password, account, email, null, 0, 0.0, 0.0, 0.0, 0);
 			workerDao.save(worker);
 			//只可能返回一个
 			Worker worker2 = workerDao.getByEmail(email).get(0);

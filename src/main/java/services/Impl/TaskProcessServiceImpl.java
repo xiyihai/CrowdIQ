@@ -1,10 +1,14 @@
 package services.Impl;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.mail.search.ReceivedDateTerm;
+import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 import org.hibernate.dialect.Ingres10Dialect;
@@ -16,17 +20,22 @@ import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import QualityControl.AggregateAnswer;
 import QualityControl.AggregateAnswerImp;
 import daos.Interface.RTaskDao;
+import daos.Interface.RequesterDao;
 import daos.Interface.RequesterTaskDao;
 import daos.Interface.WTaskDao;
 import daos.Interface.WorkerDao;
 import domains.RTask;
+import domains.Requester;
 import domains.RequesterTask;
 import domains.WTask;
 import domains.Worker;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import services.Interface.ParserCrowdIQLService;
 import services.Interface.TaskProcessService;
+import vos.RequesterTaskInfo;
 import vos.RequesterTaskVos;
+import vos.WorkerInfo;
 import vos.WorkerTaskVos;
 
 public class TaskProcessServiceImpl implements TaskProcessService {
@@ -35,7 +44,27 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	private WTaskDao wtaskDao;
 	private RequesterTaskDao requestertaskDao;
 	private WorkerDao workerDao;
+	private RequesterDao requesterDao;
 	
+	private ParserCrowdIQLService parserCrowdIQLService;
+	
+	
+	public ParserCrowdIQLService getParserCrowdIQLService() {
+		return parserCrowdIQLService;
+	}
+
+	public void setParserCrowdIQLService(ParserCrowdIQLService parserCrowdIQLService) {
+		this.parserCrowdIQLService = parserCrowdIQLService;
+	}
+
+	public RequesterDao getRequesterDao() {
+		return requesterDao;
+	}
+
+	public void setRequesterDao(RequesterDao requesterDao) {
+		this.requesterDao = requesterDao;
+	}
+
 	public WorkerDao getWorkerDao() {
 		return workerDao;
 	}
@@ -83,13 +112,29 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		taskVos.put("content", taskUI);
 		taskVos.put("deadline", null);
 		//下面这些参数待计算？？？？？？？？？？？？？？？？
-		taskVos.put("each_reward", null);
+		
+		//实现接口 ： CaculateParameter
+		//实现类： CaculateParameterImpl
+		//里面函数包括： 主要是难度系数，其余两个和难度系数成正比
+		//Double getDiffDegree(Integer[] selects, Integer[] showings, Double top_k)
+		//Double getEachReward(Integer[] selects, Integer[] showings, Double top_k)
+		//Integer getWorkNumber(Integer[] selects, Integer[] showings, Double top_k)
+		CaculateParameter caculateParameter = new CaculateParameterImpl();
+		Double di = caculateParameter.getDiffDegree(parserCrowdIQLService.getTargetsBlank(), 
+				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
+		Double each_reward = caculateParameter.getEachReward(parserCrowdIQLService.getTargetsBlank(), 
+				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
+		Double workNumber = caculateParameter.getWorkNumber(parserCrowdIQLService.getTargetsBlank(), 
+				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
+		
+		
+		taskVos.put("each_reward", each_reward);
 		taskVos.put("hastaken_number", 0);
 		taskVos.put("hasanswer_number", 0);
 		taskVos.put("state", 0);
-		taskVos.put("difficult_degree", null);
-		taskVos.put("worker_number", null);
-		taskVos.put("predict_cost", null);
+		taskVos.put("difficult_degree", di);
+		taskVos.put("worker_number", workNumber);
+		taskVos.put("predict_cost", workNumber*each_reward);
 		taskVos.put("haspaid_cost", 0);
 		
 		return taskVos.toString();
@@ -214,9 +259,11 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				Timestamp deadline = rtaskObject.getDeadline();
 				Integer state = 0;
 				Double each_reward =rtaskObject.getEach_reward();
+				//获取当前时间
+				Timestamp taken_time = new Timestamp(new Date().getTime());
 				
 				wtaskDao.save(new WTask(Integer.valueOf(userID), Integer.valueOf(taskID), jsonObject.toString(), 
-						deadline, state , each_reward));
+						deadline, state , each_reward, taken_time));
 		
 				//有工人收录，则对应雇主任务中已收录工人数参数也要变化
 				rtaskObject.setHastaken_number(rtaskObject.getHastaken_number()+1);
@@ -240,7 +287,47 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		wTask.setContent(wtaskContent.toString());
 		//修改任务详情，任务状态
 		wTask.setState(2);
+		//获取当前时间
+		Timestamp finish_time = new Timestamp(new Date().getTime());
+		wTask.setFinish_time(finish_time);
+		
+		//这里计算工人工资，需要引入外部算法
+		//基础工资
+		Double wbase = wTask.getEach_reward();
+		//工人质量矩阵
+		String wquality = workerDao.get(Worker.class, Integer.valueOf(userID)).getQuality();
+		//任务难度系数
+		Double di = rtaskDao.get(RTask.class, taskID).getDifficult_degree();
+		//回答问题所用的时间长度，以分钟为单位 , getTime单位为毫秒，毫秒转换成分钟
+		Double tfloat_minute = (double)(finish_time.getTime() - wTask.getTaken_time().getTime()) / (1000*60);
+		
+		//计算工人工资
+		//接口：  CaculateSalary  实现类： CaculateSalaryImpl
+		//接口中方法：  Double getSalary(String wquality, Double tfloat_minute, Double wbase, Double di)
+		CaculateSalary caculateSalary = new CaculateSalaryImpl();
+		Double get_reward = caculateSalary.getSalary(wquality, tfloat_minute, wbase, di);
 		wtaskDao.update(wTask);
+		
+		//这里需要跟新工人表,计算平均答题时间，还有收录的报酬等参数
+		Worker worker = workerDao.get(Worker.class, userID);
+		worker.setAverage_costtime(((worker.getAverage_costtime()*worker.getTotal_tasks())+tfloat_minute)/
+				(worker.getTotal_tasks()+1));
+		worker.setAverage_reward(((worker.getAverage_reward()*worker.getTotal_tasks())+get_reward)/
+				(worker.getTotal_tasks()+1));
+		worker.setAverage_di(((worker.getAverage_di()*worker.getTotal_tasks())+di)/
+				(worker.getTotal_tasks()+1));
+		worker.setTotal_tasks(worker.getTotal_tasks()+1);
+		//能finish则等级至少为1
+		int level;
+		if (worker.getTotal_tasks()<200) {
+			level = 1;
+		}else {
+			level = worker.getTotal_tasks()%100;	
+		}
+		worker.setLevel(level);
+		worker.setAccount(worker.getAccount()+get_reward);
+		
+		workerDao.update(worker);
 		
 		//需要修改雇主对应task字段,修改任务详情，已收到工人数，任务已花费，记录工人id
 		RTask rTask = rtaskDao.get(RTask.class, taskID);
@@ -256,10 +343,16 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		rTask.setContent(rtask.toString());
 		
 		rTask.setHasanswer_number(rTask.getHasanswer_number()+1);
-		rTask.setHaspaid_cost(rTask.getHaspaid_cost()+rTask.getEach_reward());
-
+		
+		//这里需要获取上面工人浮动工资，再写入		
+		rTask.setHaspaid_cost(rTask.getHaspaid_cost()+get_reward);
 		rtaskDao.update(rTask);
 		
+		//需要将雇主账户扣钱
+		Integer requester_id = requestertaskDao.getByTID(taskID).get(0).getRequester_id();
+		Requester requester = requesterDao.get(Requester.class, requester_id);
+		requester.setAccount(requester.getAccount()-get_reward);
+		requesterDao.update(requester);
 		
 		if (rTask.getHasanswer_number()==rTask.getWorker_number()) {
 
@@ -290,8 +383,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				ArrayList<String> worker_quality = new ArrayList<>();
 				for (int j = 0; j < rTask.getWorker_number(); j++) {
 					String workerID = receiveWorkerID.getString(j);
-					Worker worker = workerDao.get(Worker.class, workerID);
-					String quality = worker.getQuality();
+					Worker worker2 = workerDao.get(Worker.class, workerID);
+					String quality = worker2.getQuality();
 					worker_quality.add(quality);
 				}
 				//这里都只是决策出的一个答案
@@ -304,9 +397,9 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				for (int j = 0; j < update_qualitys.size(); j++) {
 					String update_quality = update_qualitys.get(j);
 					String workerID = receiveWorkerID.getString(j);
-					Worker worker = workerDao.get(Worker.class, workerID);
+					Worker worker2 = workerDao.get(Worker.class, workerID);
 					worker.setQuality(update_quality);
-					workerDao.update(worker);
+					workerDao.update(worker2);
 				}
 				//更新雇主任务最终答案
 				finalAnswers.add(finalAnswer);
@@ -378,8 +471,31 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	@Override
 	public String getRecommendTask(String userID) {
 		// TODO Auto-generated method stub
-		//???????????????????????????
-		return null;
+		//输入工人： 工人质量矩阵， 工人等级， 平均答题时间， 平均任务难度系数， 平均任务报酬
+		//输入任务数组： 任务ID， 截止时间， each_reward， 已收录工人数，需要工人数， 任务难度系数
+		Worker worker = workerDao.get(Worker.class, userID);
+		WorkerInfo workerInfo = new WorkerInfo(worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
+				worker.getAverage_di(), worker.getAverage_reward());
+		
+		//找到所有发布中的任务，取出其中有用的信息，包装发给接口类
+		List<RTask> rTasks = rtaskDao.showAllTaskByState(1);
+		List<RequesterTaskInfo> requesterTaskInfos = new ArrayList<>();
+		for (int i = 0; i < rTasks.size(); i++) {
+			RTask rTask = rTasks.get(i);
+			RequesterTaskInfo requesterTaskInfo = new RequesterTaskInfo(rTask.getTask_id(), 
+					rTask.getDeadline(), rTask.getEach_reward(), rTask.getHastaken_number(),
+					rTask.getWorker_number(), rTask.getDifficult_degree());
+			requesterTaskInfos.add(requesterTaskInfo);
+		}
+		
+		//任务推荐接口： RecommendTask
+		//实现类： RecommendTaskImpl
+		//接口方法： String[] getRecommendTask(WorkerInfo workerInfo, List<RequesterTaskInfo> )
+		//这里面两个类，是自己封装的，方便取信息
+		RecommendTask recommendTask = new RecommendTaskImpl();
+		String[] taskIDs = recommendTask.getRecommendTask(workerInfo, requesterTaskInfos);
+		
+		return JSONArray.fromObject(taskIDs).toString();
 	}
 
 	@Override
@@ -410,6 +526,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		Date now=new Date();
 		String deadline=dateFormat.format(now); 
+		
 		List<RTask> rTasks = rtaskDao.findDeadlineTask(deadline);	
 		for (int i = 0; i < rTasks.size(); i++) {
 			RTask rTask = rTasks.get(i);

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import SQL_Process.ReadTable;
 import net.sf.json.JSONArray;
@@ -39,17 +41,25 @@ public class ClusterEntry {
 		return centerList;
 	}
 	
-//	public static void main(String args[]) throws FileNotFoundException, IOException{
-//		
-//		ReadTable table = new ReadTable();
-//		table.tranfer("src/test/resources/Winners.csv");
-//		ArrayList<String[]> odata = table.getReadList();
-//		
-//		System.out.println(JSONArray.fromObject(odata).toString());
-//	
-//		
-//		
-//	}
+	public static void main(String args[]) throws FileNotFoundException, IOException{
+		
+		ReadTable table = new ReadTable();
+		table.tranfer("src/test/resources/Winners.csv");
+		ArrayList<String[]> odata = table.getReadList();
+		JSONArray results = JSONArray.fromObject(odata);
+		System.out.println(results.toString());
+			
+		//以 " 出现的个数即可判断，个数/2就是 showing内容单元格数
+			String content = results.toString();
+			int count = 0;
+			Pattern pattern = Pattern.compile("\"");
+			Matcher matcher = pattern.matcher(content);
+			while (matcher.find()) {
+				count++;
+			}
+			System.out.println(count/2);
+		}
+	
 	
 	// 对源数据进行预处理，去除空白列和空白行
 		public static String[][] goodData(String[][] data) {

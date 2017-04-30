@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.csvreader.CsvWriter;
+import com.sun.prism.Material;
 
 import Cluster.ClusterImpl;
 import FunctionsSupport.AlgorithmIn;
@@ -33,7 +34,9 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	
 	private RTableListDao rTableListDao;
 	
-	
+	private Integer[] targetsBlank;
+	private Integer[] showingsBlank;
+	private Double top_kPerc; 
 	
 	public RTableListDao getrTableListDao() {
 		return rTableListDao;
@@ -242,6 +245,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		return jsonTable;
 	}
 	
+	//这部分只有showing有用，on部分不再使用
 	//先判断数据库中是否存在这个tablelist
 	//然后把包里面的表格全部转换成二维数组
 	//这样总的就是一个三维数组,但返回值是String，不过这个String本质是三维数组
@@ -275,7 +279,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					//若是以cluster(开头，则需要先把里面的数据取出来，然后变成二维数组传入，
 					//返回值是一个JSONArray的String，本质是一个二维数组
 					if (showing[i].startsWith("cluster(")) {
-						String cluster_target = showing[i].substring(8, showing[i].length()-1);
+						String cluster_target = showing[i].substring(8, showing[i].length()-1).split(";")[0];
+						String cluster_top = showing[i].substring(8, showing[i].length()-1).split(";")[1];
 						if (showing[i].startsWith("tablelist[")) {
 							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
 							//这个result是一个三维数组，里面包含表头，先要解析出每一个二维数组，分离表头和数据
@@ -286,7 +291,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 								JSONArray headers = table.getJSONArray(0);
 								
 								//聚类好的二维表
-								JSONArray ptable = JSONArray.fromObject(ClusterImpl.process(table.remove(0).toString(),10));
+								JSONArray ptable = JSONArray.fromObject(
+										ClusterImpl.process(table.remove(0).toString(),Double.valueOf(cluster_top)));
 								ptable.add(0, headers);
 								
 								tables.remove(j);
@@ -302,7 +308,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							String[] subattributes = regex(attribute[1]);
 							//得到showing具体元素值,result只能是二维，ArrayList.fromObject可以直接转换
 							result = findAttribute(subattributes, jsonTable);
-							result = ClusterImpl.process(result, 10);
+							result = ClusterImpl.process(result, Double.valueOf(cluster_top));
 						}	
 					}else {
 						if (showing[i].startsWith("tablelist[")) {
@@ -320,6 +326,20 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				}
 				
 				map_result.put("showing", results);
+				
+				//这里results需要解析出blanks个数
+				//以 " 出现的个数即可判断，个数/2就是 showing内容单元格数
+				showingsBlank = new Integer[results.size()];
+				for (int j = 0; j < showingsBlank.length; j++) {
+					String content = results.getString(j);
+					int count = 0;
+					Pattern pattern = Pattern.compile("\"");
+					Matcher matcher = pattern.matcher(content);
+					while (matcher.find()) {
+						count++;
+					}
+					showingsBlank[j] = count;
+				}
 			}
 			
 			//insert不需要返回值
@@ -343,6 +363,11 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 			//select需要返回前端值,但返回的还是之前map里的东西
 			if (map_element.get("select")!=null){
 				String[] select = (String[]) map_element.get("select");
+				//这里计算出select的单元格数
+				targetsBlank = new Integer[select.length];
+				for (int i = 0; i < select.length; i++) {
+					targetsBlank[i] = getAttributeNumber(select[i], jsonTable);
+				}
 				map_result.put("select", select);
 			}
 			if (map_element.get("update")!=null){
@@ -375,9 +400,14 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							//先要获取属性
 							String element = elements.get(i).get(j);
 							String findresult;
-							//如果这个属性是tablelist开头的则处理方式不同\
+							//如果这个属性是tablelist开头的则结果是 表示路径的字符串
 							if (element.startsWith("tablelist[")) {
-								findresult = getTableList(userID, element.substring(10, element.length()-1));
+								String tablelistName = element.substring(10, element.length()-1);
+								if (!rTableListDao.findByIDName(userID, tablelistName).isEmpty()) {
+									findresult = "WEB-INF/tablelists/"+tablelistName;
+								}else{
+									findresult = null;
+								}
 							}else{
 								//获取属性中的内容 table01.rows[][]
 								String[] attribute = element.split("\\.");
@@ -394,11 +424,23 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						}
 						//这里需要利用java反射机制，根据算法名字调用不同算法
 						//先要区分是否是外部算法,执行时无区别，但是外部算法需要存储在数据库中，以方便删除
-						String algorithm_name = algorithm.split(":")[1];
+						
+						//先要判断是否有top-k提示，才能分离出数字
+						String algorithm_name_top = algorithm.split(":")[1];
+						String algorithm_name = null;
+						String algorithm_top = null;
+						if (algorithm_name_top.contains(";")) {
+							algorithm_name = algorithm_name_top.split(";")[0];
+							algorithm_top = algorithm_name_top.split(";")[1];	
+						}else{
+							algorithm_name = algorithm_name_top;
+							algorithm_top = "0";
+						}
+						
 						//判断数据库中，该用户是否存在这个算法
 						if (!rAlgorithmDao.findByIDAlgorithm(userID, algorithm_name).isEmpty()) {
 							AlgorithmIn algorithmIn = new AlgorithmIn();
-							ArrayList<String> items = algorithmIn.find(algorithm_name, attributes);
+							ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top) );
 							//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
 							results.add(items);
 						}else {
@@ -407,6 +449,9 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					}
 				}
 				map_result.put("top_k", results);
+				
+				//计算使用算法的比例
+				top_kPerc = results.size() / (double)targetsBlank.length;
 			}
 			return JSONObject.fromObject(map_result).toString();
 		}
@@ -427,7 +472,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	@Override
 	public boolean returnTable(JSONObject jsonTable, String tableID) {
 		// TODO Auto-generated method stub
-		String path = "WEB-INF/uploadTables/"+tableID+".csv";
+		String path = "WEB-INF/uploadTables/"+tableID;
 		String csvWriteFile = path;
 	     CsvWriter writer = new CsvWriter(csvWriteFile, ',', Charset.forName("utf-8"));  
 	     
@@ -460,6 +505,50 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		 writer.close();
 
 	     return true;
+	}
+
+	
+	@Override
+	public Integer getAttributeNumber(String attribute, JSONObject jsonTable) {
+		// TODO Auto-generated method stub
+		String[] subattributes = regex(attribute);
+		String attribute_name = subattributes[0];
+
+		if (!subattributes[1].equals("")) {
+			if (!subattributes[2].equals("")) {
+				//这里value肯定是单纯字符串
+				return 1;
+			}else {
+				if (attribute_name.equals("rows")) {
+					//这里应该是一个数组
+					return jsonTable.getJSONArray("data").getJSONArray(0).size();
+				}else if (attribute_name.equals("columns")) {
+					//这里二维数组长度是columns[2]的长度
+					return jsonTable.getJSONArray("data").size();
+				}
+			}
+		}else {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer[] getTargetsBlank() {
+		// TODO Auto-generated method stub
+		return targetsBlank;
+	}
+
+	@Override
+	public Integer[] getShowingsBlank() {
+		// TODO Auto-generated method stub
+		return showingsBlank;
+	}
+
+	@Override
+	public Double getTop_kPerc() {
+		// TODO Auto-generated method stub
+		return top_kPerc;
 	}
 	
 }
