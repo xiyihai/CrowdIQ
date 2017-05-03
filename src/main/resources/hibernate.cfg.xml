@@ -39,6 +39,7 @@
   <mapping class="domains.WorkerTestTask"/>
   <mapping class="domains.WTask"/>
   <mapping class="domains.RTableList"/>
+  <mapping class="domains.WorkerRTask"/>
   
   
  </session-factory>

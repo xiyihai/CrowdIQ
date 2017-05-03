@@ -253,7 +253,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	private String getTableList(String userID, String tablelist){
 		
 		if (!rTableListDao.findByIDName(userID, tablelist).isEmpty()) {
-			//在uploadtable目录下找到对应zip压缩包，然后然后将里面每一张表格转成二维数组
+			//在uploadtable目录下找到对应文件夹（里面文件xlsx,csv,xls都可以），然后然后将里面每一张表格转成二维数组
+			fff
 		}
 		return null;
 	}

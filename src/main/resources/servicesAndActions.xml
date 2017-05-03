@@ -36,6 +36,7 @@
 		<property name="requestertaskDao" ref="RequesterTaskDao"></property>
 		<property name="workerDao" ref="WorkerDao"></property>
 		<property name="requesterDao" ref="RequesterDao"></property>
+		<property name="workerRTaskDao" ref="WorkerRTaskDao"></property>
 	</bean>
 	
 	
@@ -85,20 +86,20 @@
 	<bean id="UploadTableListAction" class="actions.extend.table.UploadTableListAction" parent="InspectionAndReadTableAction"></bean>
 	
 	
-	<bean id="DeleteTaskAction" class="actions.extend.task.requester.DeleteTaskAction" parent="TaskProcessAction"></bean>
-	<bean id="ShowTaskAction" class="actions.extend.task.requester.ShowTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="DeleteTaskAction" class="actions.extend.task.DeleteTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="ShowTaskAction" class="actions.extend.task.ShowTaskAction" parent="TaskProcessAction"></bean>
+	
 	<bean id="BuildTaskAction" class="actions.extend.task.requester.BuildTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="CommitTaskAction" class="actions.extend.task.requester.CommitTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="EditTaskAction" class="actions.extend.task.requester.EditTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PauseTaskAction" class="actions.extend.task.requester.PauseTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PublishTaskAction" class="actions.extend.task.requester.PublishTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
+	
 	<bean id="FinishTaskAction" class="actions.extend.task.worker.PublishTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PreviewTaskAction" class="actions.extend.task.worker.PreviewTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="TakeTaskAction" class="actions.extend.task.worker.TakeTaskAction" parent="TaskProcessAction"></bean>
-	<bean id="ShowAllTaskAction" class="actions.extend.task.worker.ShowAllTaskAction" parent="TaskProcessAction"></bean>
-	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowRecommendTaskAction" class="actions.extend.task.worker.ShowRecommendTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowTakenTaskAction" class="actions.extend.task.worker.ShowTakenTaskAction" parent="TaskProcessAction"></bean>
-	
 	
 </beans>

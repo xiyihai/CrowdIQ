@@ -3,11 +3,19 @@ package vos;
 public class WorkerInfo {
 	
 	//为了制作推荐任务用的类
+	private Integer worker_id;
 	private String quality;
 	private Integer level;
 	private Double aver_costtime;
 	private Double aver_di;
 	private Double aver_reward;
+	
+	public Integer getWorker_id() {
+		return worker_id;
+	}
+	public void setWorker_id(Integer worker_id) {
+		this.worker_id = worker_id;
+	}
 	public String getQuality() {
 		return quality;
 	}
@@ -38,14 +46,15 @@ public class WorkerInfo {
 	public void setAver_reward(Double aver_reward) {
 		this.aver_reward = aver_reward;
 	}
-	public WorkerInfo(String quality, Integer level, Double aver_costtime, Double aver_di, Double aver_reward) {
+	public WorkerInfo(Integer worker_id, String quality, Integer level, Double aver_costtime, Double aver_di,
+			Double aver_reward) {
 		super();
+		this.worker_id = worker_id;
 		this.quality = quality;
 		this.level = level;
 		this.aver_costtime = aver_costtime;
 		this.aver_di = aver_di;
 		this.aver_reward = aver_reward;
 	}
-	
 	
 }

@@ -1,5 +1,6 @@
 package domains;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.persistence.Cacheable;
@@ -54,6 +55,19 @@ public class RTask {
 	@Column(name="table_id")
 	private Integer table_id;
 	
+	@Column(name="begin_time")
+	private Timestamp begin_time;
+	
+	
+	
+	public Timestamp getBegin_time() {
+		return begin_time;
+	}
+
+	public void setBegin_time(Timestamp begin_time) {
+		this.begin_time = begin_time;
+	}
+
 	public Integer getTable_id() {
 		return table_id;
 	}
@@ -150,12 +164,13 @@ public class RTask {
 		this.haspaid_cost = haspaid_cost;
 	}
 
-	public RTask(String content, Integer table_id, Timestamp deadline, Double each_reward, Integer hastaken_number,
+	public RTask(String content, Integer table_id, Timestamp begin_time, Timestamp deadline, Double each_reward, Integer hastaken_number,
 			Integer hasanswer_number, Integer state, Double difficult_degree, Integer worker_number,
 			Double predict_cost, Double haspaid_cost) {
 		super();
 		this.content = content;
 		this.table_id = table_id;
+		this.begin_time = begin_time;
 		this.deadline = deadline;
 		this.each_reward = each_reward;
 		this.hastaken_number = hastaken_number;

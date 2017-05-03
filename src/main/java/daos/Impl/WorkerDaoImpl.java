@@ -13,4 +13,10 @@ public class WorkerDaoImpl extends BaseDaoImpl<Worker> implements WorkerDao {
 		return find("from Worker as w where w.email = ?0", email);
 	}
 
+	@Override
+	public List<Worker> getByLevel(Integer level) {
+		// TODO Auto-generated method stub
+		return find("from Worker as w where w.level >= ?0", level);
+	}
+
 }

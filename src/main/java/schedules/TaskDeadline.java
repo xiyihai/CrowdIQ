@@ -22,6 +22,7 @@ public class TaskDeadline {
 			
 			isRunning=true;
 			taskProcessService.findDeadlineTask();
+			taskProcessService.findTakenDeadlineTask();
 			isRunning=false;
 			
 		}
