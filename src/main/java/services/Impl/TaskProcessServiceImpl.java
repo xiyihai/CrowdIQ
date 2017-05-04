@@ -134,14 +134,20 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//里面函数包括： 主要是难度系数，其余两个和难度系数成正比
 		//Double getDiffDegree(Integer[] selects, Integer[] showings, Double top_k)
 		//Double getEachReward(Integer[] selects, Integer[] showings, Double top_k)
-		//Integer getWorkNumber(Integer[] selects, Integer[] showings, Double top_k)
+		//Integer getWorkNumber(String[] qualities)
 		CaculateParameter caculateParameter = new CaculateParameterImpl();
 		Double di = caculateParameter.getDiffDegree(parserCrowdIQLService.getTargetsBlank(), 
 				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
 		Double each_reward = caculateParameter.getEachReward(parserCrowdIQLService.getTargetsBlank(), 
 				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
-		Double workNumber = caculateParameter.getWorkNumber(parserCrowdIQLService.getTargetsBlank(), 
-				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
+		
+		//传入所有工人的质量矩阵
+		List<Worker> workers = workerDao.getByLevel(1);
+		String[] qualities = new String[workers.size()];
+		for (int i = 0; i < qualities.length; i++) {
+			qualities[i] = workers.get(i).getQuality();
+		}
+		Double workNumber = caculateParameter.getWorkNumber(qualities);
 		
 		
 		taskVos.put("each_reward", each_reward);

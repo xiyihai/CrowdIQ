@@ -175,8 +175,8 @@ public class ReadTableServiceImpl implements ReadTableService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//获取到转换后的jsontable
-			tranferJSONTable(tablename);
+			//获取到转换后的jsontable,这里传入的表名需要 .csv 后缀去除
+			tranferJSONTable(tablename.substring(0, tablename.length()-4));
 			rtableDao.save(new RTable(Integer.valueOf(userID), tablename, 0, jsonTable.toString()));
 			return true;
 		}
