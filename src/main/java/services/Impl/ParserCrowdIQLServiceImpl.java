@@ -2,6 +2,7 @@ package services.Impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.sun.prism.Material;
 
@@ -253,8 +255,26 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	private String getTableList(String userID, String tablelist){
 		
 		if (!rTableListDao.findByIDName(userID, tablelist).isEmpty()) {
-			//在uploadtable目录下找到对应文件夹（里面文件csv都可以），然后然后将里面每一张表格转成二维数组
-			fff
+			//在tablelists目录下找到对应文件夹（里面文件csv格式），然后然后将里面每一张表格转成二维数组
+			File file = new File("WEB-INF/tablelists/"+tablelist);
+			File[] tables = file.listFiles();
+			JSONArray tablesJSON = new JSONArray();
+			for (int i = 0; i < tables.length; i++) {
+				String tablename = tables[i].getName();
+				ArrayList<String[]> readList = new ArrayList<>();
+				try {
+					CsvReader reader = new CsvReader("WEB-INF/tablelists/"+tablelist+"/"+tablename,',',Charset.forName("utf-8"));
+				    while(reader.readRecord()){ //逐行读入数据      
+				        readList.add(reader.getValues());  
+				    }              
+				    reader.close();
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				tablesJSON.add(JSONArray.fromObject(readList));
+			}
+			return tablesJSON.toString();
 		}
 		return null;
 	}
