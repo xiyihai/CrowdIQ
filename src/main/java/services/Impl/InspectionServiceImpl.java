@@ -3,6 +3,7 @@ package services.Impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import csy4367.impl.HeaderDetecter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.InspectionService;
@@ -28,8 +29,9 @@ public class InspectionServiceImpl implements InspectionService {
 		// TODO Auto-generated method stub
 		//这里借助readTable的ArrayList<String[]> 来判断是否存在表头
 		
-		flag_header=true;
-		return true;
+		HeaderDetecter headerDetecter = new HeaderDetecter();
+		flag_header = headerDetecter.hasHeader(readTable, "E:\\Probase\\CrowdIQ\\ConceptAndAttribute.txt");
+		return flag_header;
 	}
 
 	//检查每一列数据规范性,输入是json中data，以列输入

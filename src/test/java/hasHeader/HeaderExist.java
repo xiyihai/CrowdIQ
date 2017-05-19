@@ -14,13 +14,13 @@ import com.csvreader.CsvReader;
 
 public class HeaderExist {
 
-	public ArrayList<String[]> readFirstLine(String path){
-		ArrayList<String[]> readList = new ArrayList<>();
+	public String[] readFirstLine(String path){
+		
 		try {
 			CsvReader reader = new CsvReader(path,',',Charset.forName("utf-8"));
 			try {
-				while(reader.readRecord()){
-					readList.add(reader.getValues());				
+				if(reader.readRecord()){
+					return reader.getValues();				
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -30,7 +30,7 @@ public class HeaderExist {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return readList;
+		return null;
 	}
 	
 	public ArrayList<String> findInProBase(String concept, String ProbasePath){
@@ -131,6 +131,7 @@ public class HeaderExist {
 	public double getValue(ArrayList<String> tuples){
 		double result = 0;
 		for (int i = 0; i < tuples.size(); i++) {
+			System.out.println(tuples.get(i));
 			result = result + Double.valueOf(tuples.get(i).split(",")[2]);
 		}
 		return result;
@@ -139,15 +140,15 @@ public class HeaderExist {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HeaderExist hasHeader = new HeaderExist();
-		ArrayList<String[]> concepts = hasHeader.readFirstLine("g:\\Winners.csv");
-		for (int j = 0; j < concepts.size(); j++) {
-			ArrayList<String> Allresults = new ArrayList<>();
-			String[] concept = concepts.get(j);			
-			for (int i = 0; i < concept.length; i++) {
-				ArrayList<String> result = hasHeader.findInProBase(concept[i], "E:\\Probase\\CrowdIQ\\ConceptAndAttribute.txt");
-				Allresults.addAll(result);
-			}
-			System.out.println(hasHeader.getValue(hasHeader.calculate(hasHeader.mergeConcept(Allresults))));
-		}	
+		String[] concepts = hasHeader.readFirstLine("g:\\9.csv");
+		
+		ArrayList<String> Allresults = new ArrayList<>();
+		for (int i = 0; i < concepts.length; i++) {
+			String concept = concepts[i];			
+			ArrayList<String> result = hasHeader.findInProBase(concept, "E:\\Probase\\CrowdIQ\\ConceptAndAttribute.txt");
+			Allresults.addAll(result);
+		}
+		System.out.println(hasHeader.getValue(hasHeader.calculate(hasHeader.mergeConcept(Allresults))));
+			
 	}
 }

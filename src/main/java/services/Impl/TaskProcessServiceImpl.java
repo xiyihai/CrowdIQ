@@ -1,27 +1,19 @@
 package services.Impl;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.mail.search.ReceivedDateTerm;
-import javax.persistence.criteria.CriteriaBuilder.In;
-
-import org.apache.commons.collections.functors.ForClosure;
-import org.apache.struts2.components.DoubleListUIBean;
-import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
-import org.hibernate.dialect.Ingres10Dialect;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-
-import com.mysql.fabric.xmlrpc.base.Array;
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
-import com.sun.javafx.stage.EmbeddedWindow;
-
+import CaculateParams.CaculateParameter;
+import CaculateParams.CaculateParameterImpl;
+import CaculateParams.CaculateSalary;
+import CaculateParams.CaculateSalaryImpl;
 import QualityControl.AggregateAnswer;
 import QualityControl.AggregateAnswerImp;
+import RecommendTask.RecommendTask;
+import RecommendTask.RecommendTaskImpl;
 import daos.Interface.RTaskDao;
 import daos.Interface.RequesterDao;
 import daos.Interface.RequesterTaskDao;
@@ -147,7 +139,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		for (int i = 0; i < qualities.length; i++) {
 			qualities[i] = workers.get(i).getQuality();
 		}
-		Double workNumber = caculateParameter.getWorkNumber(qualities);
+		int workNumber = caculateParameter.getWorkNumber(qualities);
 		
 		
 		taskVos.put("each_reward", each_reward);
@@ -212,7 +204,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//这里面两个类，是自己封装的，方便取信息
 		RecommendTask recommendTask = new RecommendTaskImpl();
 		String[] workerIDs = recommendTask.getRecommendTask(rTask.getWorker_number(), 1, workerInfos, requesterTaskInfo);
-		Timestamp taken_deadline = recommendTask.getRecommendTask(rTask.getWorker_number(), 1, workerInfos, requesterTaskInfo);
+		Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number(), 1, workerInfos, requesterTaskInfo);
 		
 		//要写入数据库
 		for(int i=0;i<workerIDs.length;i++){
@@ -644,18 +636,17 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 							rTask.getWorker_number(), rTask.getDifficult_degree());
 			
 				//任务推荐接口： RecommendTask
-				//实现类： RecommendTaskImpl
+				//实现类： RecommendTaskIm
 				//接口方法(返回工人ID组成的数组)： String[] getRecommendTask(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo)
 				//(返回本次轮回的截止日期) TimeStamp getTakenDeadline(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo);
 				//这里面两个类，是自己封装的，方便取信息
 				RecommendTask recommendTask = new RecommendTaskImpl();
 				String[] workerIDs = recommendTask.getRecommendTask(worker_number-taken_number, times+1, workerInfos, requesterTaskInfo);
-				Timestamp taken_deadline = recommendTask.getRecommendTask(worker_number-taken_number, times+1, workerInfos, requesterTaskInfo);
+				Timestamp taken_deadline = recommendTask.getTakenDeadline(worker_number-taken_number, times+1, workerInfos, requesterTaskInfo);
 				
 				//要写入数据库
 				for(int j=0;j<workerIDs.length;j++){
 					WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[j]), Integer.valueOf(taskID), times+1, taken_deadline);
-					workerRTaskDao.save(workerRTask);
 				}
 			}
 		}
