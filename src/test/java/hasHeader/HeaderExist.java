@@ -12,6 +12,8 @@ import java.util.Set;
 
 import com.csvreader.CsvReader;
 
+import net.sf.json.JSONObject;
+
 public class HeaderExist {
 
 	public String[] readFirstLine(String path){
@@ -139,16 +141,21 @@ public class HeaderExist {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		HeaderExist hasHeader = new HeaderExist();
-		String[] concepts = hasHeader.readFirstLine("g:\\9.csv");
+//		HeaderExist hasHeader = new HeaderExist();
+//		String[] concepts = hasHeader.readFirstLine("g:\\9.csv");
+//		
+//		ArrayList<String> Allresults = new ArrayList<>();
+//		for (int i = 0; i < concepts.length; i++) {
+//			String concept = concepts[i];			
+//			ArrayList<String> result = hasHeader.findInProBase(concept, "E:\\Probase\\CrowdIQ\\ConceptAndAttribute.txt");
+//			Allresults.addAll(result);
+//		}
+//		System.out.println(hasHeader.getValue(hasHeader.calculate(hasHeader.mergeConcept(Allresults))));
+//			
+		JSONObject jObject = new JSONObject();
+		jObject.put("d", 0);
+		jObject.put("e", "");
+		System.out.println(jObject.toString());
 		
-		ArrayList<String> Allresults = new ArrayList<>();
-		for (int i = 0; i < concepts.length; i++) {
-			String concept = concepts[i];			
-			ArrayList<String> result = hasHeader.findInProBase(concept, "E:\\Probase\\CrowdIQ\\ConceptAndAttribute.txt");
-			Allresults.addAll(result);
-		}
-		System.out.println(hasHeader.getValue(hasHeader.calculate(hasHeader.mergeConcept(Allresults))));
-			
 	}
 }

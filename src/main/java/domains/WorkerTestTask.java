@@ -31,12 +31,16 @@ public class WorkerTestTask {
 	@Column(name="worker_answer")
 	private String worker_answer;
 
-	public WorkerTestTask(Integer worker_id, Integer testtask_id, Integer state, String worker_answer) {
+	@Column(name="iscorrect")
+	private Integer iscorrect;
+	
+	public WorkerTestTask(Integer worker_id, Integer testtask_id, Integer state, String worker_answer, Integer iscorrect) {
 		super();
 		this.worker_id = worker_id;
 		this.testtask_id = testtask_id;
 		this.state = state;
 		this.worker_answer = worker_answer;
+		this.iscorrect = iscorrect;
 	}
 
 	public Integer getWorker_id() {
@@ -69,6 +73,14 @@ public class WorkerTestTask {
 
 	public void setWorker_answer(String worker_answer) {
 		this.worker_answer = worker_answer;
+	}
+
+	public Integer getIscorrect() {
+		return iscorrect;
+	}
+
+	public void setIscorrect(Integer iscorrect) {
+		this.iscorrect = iscorrect;
 	}
 	
 	

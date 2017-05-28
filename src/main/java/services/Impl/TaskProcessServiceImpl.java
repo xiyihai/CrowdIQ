@@ -489,7 +489,9 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		for (int i = 0; i < requesterTasks.size(); i++) {
 			Integer taskID = requesterTasks.get(i).getTask_id();
 			RTask rTask = rtaskDao.get(RTask.class, taskID);
-			//需要展示的信息： 任务ID，任务状态，截止时间，已收录工人数，已收到工人答案数，任务需要的工人数
+			//需要展示的信息： 任务ID，任务状态，截止时间，已收录工人数，已收到工人答案数，任务需要的工人数,
+			//任务截止时间，任务单个报酬，预计总花费，已支出金额，任务难度系数
+			
 			JSONObject task = new JSONObject();
 			task.put("task_id", taskID);
 			task.put("state", rTask.getState());
@@ -497,6 +499,10 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			task.put("hastaken_number", rTask.getHastaken_number());
 			task.put("hasanswer_number", rTask.getHasanswer_number());
 			task.put("worker_number", rTask.getWorker_number());
+			task.put("each_reward", rTask.getEach_reward());
+			task.put("predict_cost", rTask.getPredict_cost());
+			task.put("haspaid_cost", rTask.getHaspaid_cost());
+			task.put("difficult_degree", rTask.getDifficult_degree());
 			tasks.add(task);
 		}
 		return tasks.toString();
@@ -512,7 +518,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		
 		List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline);
 		
-		//将任务的简要信息给前端, 包括 收录截止时间，基础工资，难度系数，任务截止时间 
+		//将任务的简要信息给前端, 包括 taskid, 收录截止时间，基础工资，难度系数，任务截止时间 ，已收录工人数/需要的工人数
 		JSONArray tasks = new JSONArray();
 		for (int i = 0; i < workerRTasks.size(); i++) {
 			JSONObject task = new JSONObject();
@@ -526,12 +532,15 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				Double wbase = rTask.getEach_reward();
 				Double di = rTask.getDifficult_degree();
 				Timestamp final_deadline = rTask.getDeadline();
+				Integer taken_number = rTask.getHastaken_number();
+				Integer worker_number = rTask.getWorker_number();
 				
 				task.put("taskID", taskID);
 				task.put("taken_deadline", taken_deadline);
 				task.put("wbase", wbase);
 				task.put("di", di);
 				task.put("final_deadline", final_deadline);
+				task.put("work_state", String.valueOf(taken_number)+"/"+String.valueOf(worker_number));
 				
 				tasks.add(task);
 			}
@@ -554,6 +563,13 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			task.put("state", wTask.getState());
 			task.put("deadline", wTask.getDeadline());
 			task.put("each_reward", wTask.getEach_reward());
+			
+			RTask rTask = rtaskDao.get(RTask.class, wTask.getTask_id());
+			task.put("di", rTask.getDifficult_degree());
+			task.put("taken_time", wTask.getTaken_time());
+			task.put("finish_time", wTask.getFinish_time());
+			task.put("get_reward", wTask.getGet_reward());
+			
 			tasks.add(task);
 		}
 		return tasks.toString();

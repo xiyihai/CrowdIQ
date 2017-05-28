@@ -8,7 +8,7 @@ public class LoginAction extends RegisterBaseAction {
 	private String informationJSON;
 
 	//这个ID用于在前端显示
-	private String userID;
+	private String showinformation;
 
 	public String getInformationJSON() {
 		return informationJSON;
@@ -17,18 +17,18 @@ public class LoginAction extends RegisterBaseAction {
 	public void setInformationJSON(String informationJSON) {
 		this.informationJSON = informationJSON;
 	}
-
-	public String getUserID() {
-		return userID;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
 	
+	public String getShowinformation() {
+		return showinformation;
+	}
+
+	public void setShowinformation(String showinformation) {
+		this.showinformation = showinformation;
+	}
+
 	public String execute(){
-		userID = registerService.login(informationJSON);
-		if (userID!=null) {
+		showinformation = registerService.login(informationJSON);
+		if (showinformation!=null) {
 			return SUCCESS;
 		}else {
 			return ERROR;

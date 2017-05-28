@@ -25,4 +25,10 @@ public class WTaskDaoImpl extends BaseDaoImpl<WTask> implements WTaskDao {
 		return find("from WTask w where w.worker_id = ?0", userID);
 	}
 
+	@Override
+	public List<WTask> getByWidState(String userID, Integer state) {
+		// TODO Auto-generated method stub
+		return find("from WTask w where w.worker_id = ?0 and w.state = ?1", userID, state);
+	}
+
 }

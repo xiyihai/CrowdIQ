@@ -14,4 +14,6 @@ public interface WTaskDao extends BaseDao<WTask> {
 	
 	//根据工人id查看
 	List<WTask> getByWid(String userID);
+	
+	List<WTask> getByWidState(String userID, Integer state);
 }

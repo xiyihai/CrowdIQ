@@ -21,6 +21,13 @@
 		<property name="workerDao" ref="WorkerDao"></property>
 		<property name="testtaskDao" ref="TestTaskDao"></property>
 		<property name="workertesttaskDao" ref="WorkerTestTaskDao"></property>
+		<property name="requestertaskDao" ref="RequesterTaskDao"></property>
+		<property name="rtaskDao" ref="RTaskDao"></property>
+		<property name="rtableDao" ref="RTableDao"></property>
+		<property name="ralgorithmDao" ref="RAlgorithmDao"></property>
+		<property name="rtableListDao" ref="RTableListDao"></property>
+		<property name="wtaskDao" ref="WTaskDao"></property>
+		<property name="workerRTaskDao" ref="WorkerRTaskDao"></property>
 	</bean>
 	
 	<bean id="ParserCrowdIQLService" class="services.Impl.ParserCrowdIQLServiceImpl">
