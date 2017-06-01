@@ -119,7 +119,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		JSONObject taskVos = new JSONObject();
 		taskVos.put("content", taskUI);
 		taskVos.put("deadline", null);
-		//下面这些参数待计算？？？？？？？？？？？？？？？？
+		//下面这些参数待计算
 		
 		//实现接口 ： CaculateParameter
 		//实现类： CaculateParameterImpl

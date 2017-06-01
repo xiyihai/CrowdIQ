@@ -97,7 +97,6 @@ public class Process {
 				result = readTable.jsonTable.get(attribute_name).toString();			
 			}
 		}
-		
 		return result;
 	}
 	
@@ -206,14 +205,28 @@ public class Process {
 		
 		if (map_element.get("showing")!=null) {
 			String[] showing = (String[]) map_element.get("showing");
+			ArrayList<String> results = new ArrayList<>();
 			for(int i=0;i<showing.length;i++){
 				String[] attribute = showing[i].split("\\.");
 				//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
-				System.out.println(attribute[1]);
 				//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
 				String[] subattributes = regex(attribute[1]);
-				System.out.println(findAttribute(subattributes));
+				String result = findAttribute(subattributes);
+				//这里需要加入标志符：
+				String ahead = subattributes[0];
+				for (int j = 1; j < subattributes.length; j++) {
+					if (!subattributes[j].equals("")) {
+						ahead = ahead + "-" + subattributes[j];	
+					}
+				}
+				result = ahead+":"+result;
+				results.add(result);
 			}
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("showing", JSONArray.fromObject(results));
+			
+			System.out.println(jsonObject);
+			
 		}
 		if (map_element.get("insert")!=null) {
 			String[] insert = (String[]) map_element.get("insert");
@@ -303,8 +316,7 @@ public class Process {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		Process process = new Process();
-		
-		process.process( " showing table01.headers,table01.columns[2] ","src/test/resources/Winners.csv");
+		process.process( " showing table01.headers ","g:/Winners.csv");
 	}
 
 }

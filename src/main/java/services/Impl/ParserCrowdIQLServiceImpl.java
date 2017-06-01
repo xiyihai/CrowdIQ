@@ -321,19 +321,30 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							}
 							//这样出来的tables就是处理好的三维数组
 							result = tables.toString();
+							result = "tablelist:"+result;
 							
 						}else {
 							String[] attribute = showing[i].split("\\.");
+							
 							//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
 							//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
 							String[] subattributes = regex(attribute[1]);
 							//得到showing具体元素值,result只能是二维，ArrayList.fromObject可以直接转换
 							result = findAttribute(subattributes, jsonTable);
 							result = ClusterImpl.process(result, Double.valueOf(cluster_top));
+							//这里需要加入标志符：
+							String ahead = subattributes[0];
+							for (int j = 1; j < subattributes.length; j++) {
+								if (!subattributes[j].equals("")) {
+									ahead = ahead + "-" + subattributes[j];	
+								}
+							}
+							result = ahead+":"+result;
 						}	
 					}else {
 						if (showing[i].startsWith("tablelist[")) {
 							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+							result = "tablelist:"+result;
 						}else {
 							String[] attribute = showing[i].split("\\.");
 							//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
@@ -341,6 +352,14 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							String[] subattributes = regex(attribute[1]);
 							//得到showing具体元素值,result可能是一维数组，也可能是二维，ArrayList.fromObject可以直接转换
 							result = findAttribute(subattributes, jsonTable);
+							//这里需要加入标志符：
+							String ahead = subattributes[0];
+							for (int j = 1; j < subattributes.length; j++) {
+								if (!subattributes[j].equals("")) {
+									ahead = ahead + "-" + subattributes[j];	
+								}
+							}
+							result = ahead+":"+result;
 						}	
 					}
 					results.add(result);
