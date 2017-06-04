@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.csvreader.CsvReader;
 
+import domains.RTask;
 import net.sf.json.JSONObject;
 
 public class HeaderExist {
@@ -154,8 +155,9 @@ public class HeaderExist {
 //			
 		JSONObject jObject = new JSONObject();
 		jObject.put("d", 0);
-		jObject.put("e", "");
-		System.out.println(jObject.toString());
+		jObject.put("e", "hhhh");
+		RTask rTask = new RTask(jObject.toString(), null, null, null, null, null, null, null, null, null, null, null);
+		System.out.println(JSONObject.fromObject(rTask).toString());
 		
 	}
 }

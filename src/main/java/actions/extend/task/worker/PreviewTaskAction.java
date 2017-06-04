@@ -36,8 +36,8 @@ public class PreviewTaskAction extends TaskProcessBaseAction {
 	}
 	
 	public String execute(){
-		//这本是工人action，但这个预览工作查看的表是雇主task
-		taskJSON = taskProcessService.showTask(userID, taskID, "worker");
+		//这本是工人action，但这个预览工作查看的表是雇主task，因为工人还未收录该任务，查不到
+		taskJSON = taskProcessService.showTask(userID, taskID, "requester");
 		return SUCCESS;
 	}
 }
