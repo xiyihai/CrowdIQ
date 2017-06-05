@@ -15,6 +15,8 @@ public interface RegisterService {
 	//需要区分雇主和工人
 	String login(String informationJSON);
 	
+	String getLoginInfo(String userID, String flag);
+	
 	//返回所有该工人的测试任务ID号
 	String getAllTestTask(String userID);
 	

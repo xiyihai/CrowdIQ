@@ -46,8 +46,6 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	
 	private ParserCrowdIQLService parserCrowdIQLService;
 	
-	
-	
 	public ParserCrowdIQLService getParserCrowdIQLService() {
 		return parserCrowdIQLService;
 	}
@@ -415,7 +413,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			//这里还需要考虑雇主任务已经收集满了，需要决策等后续任务，雇主任务状态修改等
 			rTask.setState(2);
 			//决策函数按照每一空来决策，所以需要for循环
-			//每一空决策输入： top_k(ArrayString), anwers(ArrayString), workerQuality(ArrayString)
+			//每一空决策输入： top_k(ArrayString), answers(ArrayString), workerQuality(ArrayString)
 			//输出： quality(ArrayString), finalAnswer(String)
 			
 			//获取这个task的空数

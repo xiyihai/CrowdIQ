@@ -80,12 +80,13 @@
 	
 	<bean id="FinishTestTaskAction" class="actions.extend.register.FinishTestTaskAction" parent="RegisterBaseAction"></bean>
 	<bean id="LoginAction" class="actions.extend.register.LoginAction" parent="RegisterBaseAction"></bean>
+	<bean id="LoginInfoAction" class="actions.extend.register.LoginInfoAction" parent="RegisterBaseAction"></bean>
 	<bean id="RegisterAction" class="actions.extend.register.RegisterAction" parent="RegisterBaseAction"></bean>
 	<bean id="ShowAllTestTaskAction" class="actions.extend.register.ShowAllTestTaskAction" parent="RegisterBaseAction"></bean>
 	<bean id="TestTaskAction" class="actions.extend.register.TestTaskAction" parent="RegisterBaseAction"></bean>
 	<bean id="ShowDoneTestTaskAction" class="actions.extend.register.ShowDoneTestTaskAction" parent="RegisterBaseAction"></bean>
 	
-	
+	<bean id="DeleteTableAction" class="actions.extend.table.DeleteTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="DownloadTableAction" class="actions.extend.table.DownloadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadDBTableAction" class="actions.extend.table.ReadDBTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadUploadTableAction" class="actions.extend.table.ReadUploadTableAction" parent="InspectionAndReadTableAction"></bean>

@@ -365,7 +365,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					results.add(result);
 				}
 				
-				map_result.put("showing", results);
+				map_result.put("showing_contents", results);
 				
 				//这里results需要解析出blanks个数
 				//以 " 出现的个数即可判断，个数/2就是 showing内容单元格数
@@ -408,7 +408,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				for (int i = 0; i < select.length; i++) {
 					targetsBlank[i] = getAttributeNumber(select[i], jsonTable);
 				}
-				map_result.put("select", select);
+				map_result.put("sqlTarget", select);
 			}
 			if (map_element.get("update")!=null){
 				String[] update = (String[]) map_element.get("update");
@@ -488,7 +488,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						}
 					}
 				}
-				map_result.put("top_k", results);
+				map_result.put("showing_contents", results);
 				
 				//计算使用算法的比例
 				top_kPerc = results.size() / (double)targetsBlank.length;

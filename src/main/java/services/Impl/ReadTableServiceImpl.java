@@ -273,4 +273,15 @@ public class ReadTableServiceImpl implements ReadTableService {
 		return false;
 	}
 
+	@Override
+	public boolean deleteTable(String userID, String tablename) {
+		// TODO Auto-generated method stub
+
+		RTable rTable = rtableDao.findByIDName(userID, tablename).get(0);
+		rtableDao.delete(rTable);
+		//这里缺少本地删除机制
+		
+		return true;
+	}
+
 }

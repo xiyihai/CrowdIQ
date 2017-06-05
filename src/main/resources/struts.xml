@@ -38,10 +38,19 @@
         <!-- 雇主、工人登录，返回ID号 -->
       	<action name="loginAction" class="LoginAction">
       		<result name="success"  type="json">
+      			<param name="root">userID</param>
+      		</result>
+      		<result name="error"></result>
+      	</action>
+      	
+      	 <!-- 获取登录信息 -->
+      	<action name="loginInfoAction" class="LoginInfoAction">
+      		<result name="success"  type="json">
       			<param name="root">showinformation</param>
       		</result>
       		<result name="error"></result>
       	</action>
+      	
         
         <!-- 雇主工人注册，没返回结果 -->
         <action name="registerAction" class="RegisterAction">
@@ -69,6 +78,12 @@
                 <param name="root">taskJSON</param>
             </result>  
         </action>     
+        
+        <!-- 雇主请求删除对应的表， 无返回结果-->
+        <action name="deleteTableAction" class="DeleteTableAction">
+      		<result name="success"  type="json"></result>
+      		<result name="error"></result>
+      	</action>
         
         
         <!-- 雇主请求下载某任务对应的表， 无返回结果-->

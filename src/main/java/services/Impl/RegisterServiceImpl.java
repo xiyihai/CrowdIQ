@@ -260,15 +260,37 @@ public class RegisterServiceImpl implements RegisterService {
 		String password = user.getString("password");
 		String flag = user.getString("flag");
 		
-		//需要返回的信息包括： 已完成任务数量，待发布任务数量，发布中任务数量， 处理中表格数量，
-		//个人信息，上传的算法及外部数据源
-		JSONObject showinformation = new JSONObject();
 		String userid = "";
 		if (flag.equals("worker")) {
 			Worker worker = workerDao.getByEmail(email).get(0);
 			String realpass = worker.getPassword();
 			if (realpass.equals(password)) {
-				userid = worker.getWorker_id().toString();
+				userid = worker.getWorker_id().toString();		
+			}
+		}else {
+			if (flag.equals("requester")) {
+				Requester requester = requesterDao.getByEmail(email).get(0);
+				if (requester.getPassword().equals(password)) {
+					userid = requester.getRequester_id().toString();
+				}
+			}
+		}
+		
+		if (userid.equals("")) {
+			return null;
+		}else {
+			return userid;
+		}
+	}
+
+
+	@Override
+	public String getLoginInfo(String userID, String flag) {
+		// TODO Auto-generated method stub
+		JSONObject showinformation = new JSONObject();
+		
+		if (flag.equals("worker")) {
+				Worker worker = workerDao.get(Worker.class, userID);
 				//下面分装信息个人信息
 				JSONObject personInfo = JSONObject.fromObject(worker);
 				CaculateAccuracy caculateAccuracy = new CaculateAccuracy();
@@ -281,18 +303,18 @@ public class RegisterServiceImpl implements RegisterService {
 				int state0=0;
 				int state4=0;
 				int rtask_number=0;
-				List<WTask> wTasks2 = wtaskDao.getByWidState(userid, 2);
+				List<WTask> wTasks2 = wtaskDao.getByWidState(userID, 2);
 				state2 = wTasks2.size();
-				List<WTask> wTasks0 = wtaskDao.getByWidState(userid, 0);
+				List<WTask> wTasks0 = wtaskDao.getByWidState(userID, 0);
 				state0 = wTasks0.size();
-				List<WTask> wTasks4 = wtaskDao.getByWidState(userid, 4);
+				List<WTask> wTasks4 = wtaskDao.getByWidState(userID, 4);
 				state4 = wTasks4.size();
 				
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 				Date now=new Date();
 				String deadline=dateFormat.format(now); 
 				
-				List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userid, deadline);
+				List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline);
 				rtask_number = workerRTasks.size();
 				
 				JSONObject taskInfo = new JSONObject();
@@ -304,18 +326,17 @@ public class RegisterServiceImpl implements RegisterService {
 				showinformation.put("taskInfo", taskInfo);
 				
 			}
-		}else {
+		
 			if (flag.equals("requester")) {
-				Requester requester = requesterDao.getByEmail(email).get(0);
-				if (requester.getPassword().equals(password)) {
-					userid = requester.getRequester_id().toString();
+				
+					Requester requester = requesterDao.get(Requester.class, userID);
 					//下面分装信息个人信息
 					showinformation.put("personInfo", JSONObject.fromObject(requester));
 					//分装任务信息,思路： 找对其对应的所有任务ID，再根据这些ID统计对应的任务状态信息
 					int state2=0;
 					int state0=0;
 					int state1=0;		
-					List<RequesterTask> requesterTasks = requestertaskDao.getByRID(userid);
+					List<RequesterTask> requesterTasks = requestertaskDao.getByRID(userID);
 					for (int i = 0; i < requesterTasks.size(); i++) {
 						Integer taskID = requesterTasks.get(i).getTask_id();
 						RTask rTask = rtaskDao.get(RTask.class, taskID);
@@ -329,7 +350,7 @@ public class RegisterServiceImpl implements RegisterService {
 							state2++;
 						}
 					}
-					List<RTable> rTables = rtableDao.findAllByRid(userid);
+					List<RTable> rTables = rtableDao.findAllByRid(userID);
 					int table_number = rTables.size();
 					JSONObject taskInfo = new JSONObject();
 					taskInfo.put("state0", state0);
@@ -340,8 +361,8 @@ public class RegisterServiceImpl implements RegisterService {
 					showinformation.put("taskInfo", taskInfo);
 					
 					//下面封装算法及数据源
-					List<RAlgorithm> rAlgorithms = ralgorithmDao.findByID(userid);
-					List<RTableList> rTableLists = rtableListDao.findByID(userid);
+					List<RAlgorithm> rAlgorithms = ralgorithmDao.findByID(userID);
+					List<RTableList> rTableLists = rtableListDao.findByID(userID);
 					JSONObject datasource = new JSONObject();
 					
 					JSONArray ralgorithm = new JSONArray();
@@ -357,16 +378,10 @@ public class RegisterServiceImpl implements RegisterService {
 					
 					showinformation.put("datasource", datasource);		
 				}
-			}
-		}
-		
-		if (userid.equals("")) {
-			return null;
-		}else {
 			return showinformation.toString();
 		}
-	}
-
+	
+	
 	@Override
 	public String getAllTestTask(String userID) {
 		// TODO Auto-generated method stub
@@ -381,6 +396,7 @@ public class RegisterServiceImpl implements RegisterService {
 		//这个返回的数据中包含 content，answer两部分
 		return JSONObject.fromObject(testTask).toString();
 	}
+
 
 	
 

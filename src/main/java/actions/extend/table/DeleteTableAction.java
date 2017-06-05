@@ -1,9 +1,9 @@
-package actions.extend;
+package actions.extend.table;
 
 import actions.base.InspectionAndReadTableBaseAction;
 
-public class InspectionAction extends InspectionAndReadTableBaseAction {
-
+public class DeleteTableAction extends InspectionAndReadTableBaseAction {
+	
 	private String userID;
 	private String tablename;
 	
@@ -22,21 +22,9 @@ public class InspectionAction extends InspectionAndReadTableBaseAction {
 	public void setTablename(String tablename) {
 		this.tablename = tablename;
 	}
-
-	//用来返回存在的问题
-	private String problems;
-
-	public String getProblems() {
-		return problems;
-	}
-
-	public void setProblems(String problems) {
-		this.problems = problems;
-	}
 	
 	public String execute(){	
-		readservice.readDBTable(userID,tablename);
-		problems = inservice.inspect(readservice.getJSONTable_show());
+		readservice.deleteTable(userID,tablename);
 		return SUCCESS;
 	}
 }

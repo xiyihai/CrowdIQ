@@ -2,6 +2,8 @@ package services.Interface;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.ws.developer.StreamingAttachment;
+
 import net.sf.json.JSONObject;
 
 public interface ReadTableService {
@@ -32,4 +34,6 @@ public interface ReadTableService {
 	
 	//雇主上传tablelist表集合，需要写入数据库
 	boolean uploadTableList(String userID, String tablelist);
+	
+	boolean deleteTable(String userID, String tablename);
 }
