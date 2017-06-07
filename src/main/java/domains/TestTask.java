@@ -58,6 +58,11 @@ public class TestTask {
 		this.content = content;
 		this.answer = answer;
 	}
+
+	public TestTask() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

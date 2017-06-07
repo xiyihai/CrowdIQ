@@ -185,19 +185,20 @@
             </result>
       	</action>
       	
-      	<!-- 工人请求查看所有可做任务的简要信息，返回json数据 -->
-      	<action name="showAllTaskAction" class="ShowAllTaskAction">
-      		<result type="json">
-                <param name="root">taskInfo</param>
-            </result>
-      	</action>
-      	
       	<!-- 工人请求查看推荐任务的简要信息，返回json数据 -->
       	<action name="showRecommendTaskAction" class="ShowRecommendTaskAction">
       		<result type="json">
                 <param name="root">taskInfo</param>
             </result>
       	</action>
+      	
+      	<!-- 工人查看所有已收录的任务 -->
+      	<action name="showTakenTaskAction" class="ShowTakenTaskAction">
+      		<result type="json">
+                <param name="root">taskInfo</param>
+            </result>
+      	</action>
+      	
       	
       	<!-- 工人根据ID号收录某任务，无返回值 -->
       	<action name="takeTaskAction" class="TakeTaskAction">

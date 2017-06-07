@@ -110,6 +110,12 @@ public class Worker {
 	}
 
 
+	public Worker() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public Integer getLevel() {
 		return level;
 	}	

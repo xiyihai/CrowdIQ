@@ -3,6 +3,7 @@ package services.Impl;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -109,14 +110,23 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//需要根据前端的数据，计算对应的难度系数等参数
 		JSONObject taskUI = JSONObject.fromObject(taskString);
 		//把UI中内容取出来，组成RTask	, 直接加入两个新的元素即可
-		taskUI.put("receiveAnswers", null);
-		taskUI.put("finalAnswers", null);
-		taskUI.put("receiveWorkerID", null);
+		taskUI.put("receiveAnswers", new ArrayList<>());
+		taskUI.put("finalAnswers", new ArrayList<>());
+		taskUI.put("receiveWorkerID", new ArrayList<>());
 		
 		//这里是要返回给前端查看的所有参数
 		JSONObject taskVos = new JSONObject();
 		taskVos.put("content", taskUI);
-		taskVos.put("deadline", null);
+		
+		//用来增加三天
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		Date now=new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(now);
+		calendar.add(Calendar.DATE, 3);
+		
+		String deadline=dateFormat.format(calendar.getTime()); 
+		taskVos.put("deadline", deadline);
 		//下面这些参数待计算
 		
 		//实现接口 ： CaculateParameter
@@ -125,7 +135,9 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//Double getDiffDegree(Integer[] selects, Integer[] showings, Double top_k)
 		//Double getEachReward(Integer[] selects, Integer[] showings, Double top_k)
 		//Integer getWorkNumber(String[] qualities)
+		
 		CaculateParameter caculateParameter = new CaculateParameterImpl();
+
 		Double di = caculateParameter.getDiffDegree(parserCrowdIQLService.getTargetsBlank(), 
 				parserCrowdIQLService.getShowingsBlank(), parserCrowdIQLService.getTop_kPerc());
 		Double each_reward = caculateParameter.getEachReward(parserCrowdIQLService.getTargetsBlank(), 
@@ -133,12 +145,19 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		
 		//传入所有工人的质量矩阵
 		List<Worker> workers = workerDao.getByLevel(1);
+	
 		String[] qualities = new String[workers.size()];
 		for (int i = 0; i < qualities.length; i++) {
 			qualities[i] = workers.get(i).getQuality();
 		}
 		int workNumber = caculateParameter.getWorkNumber(qualities);
 		
+//		System.out.println(di);
+//		System.out.println(each_reward);
+//		System.out.println(workNumber);
+//		double di = 0.3;
+//		double each_reward = 0.05;
+//		int workNumber = 12;
 		
 		taskVos.put("each_reward", each_reward);
 		taskVos.put("hastaken_number", 0);
@@ -159,16 +178,31 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//为了利用数据库生成唯一ID，只能再将内容判断一遍来获取id值，只能假设content不可能重复
 		
 		JSONObject UI = JSONObject.fromObject(taskString);
-		rtaskDao.save(new RTask((String)UI.get("content"), (Integer)UI.get("table_id"), (Timestamp)UI.get("begin_time")
-				,(Timestamp)UI.get("deadline"),(Double)UI.get("each_reward"),(Integer)UI.get("hastaken_number"),
-				(Integer)UI.get("hasanswer_number"),(Integer)UI.get("state"),
-				(Double)UI.get("difficult_degree"), (Integer)UI.get("worker_number"),
-				(Double)UI.get("predict_cost"), (Double)UI.get("haspaid_cost")));
 		
+		//用来增加三天
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+			Date now=new Date();
+	
+		UI.put("begin_time", dateFormat.format(now));
+		
+		RTask rTask = new RTask(UI.get("content").toString(), (String)UI.get("table_name"), (Timestamp)UI.get("begin_time")
+				,(Timestamp)UI.get("deadline"),Double.valueOf(UI.get("each_reward").toString()),Integer.valueOf(UI.get("hastaken_number").toString()),
+				Integer.valueOf(UI.get("hasanswer_number").toString()),Integer.valueOf(UI.get("state").toString()),
+				Double.valueOf(UI.get("difficult_degree").toString()), Integer.valueOf(UI.get("worker_number").toString()),
+				Double.valueOf(UI.get("predict_cost").toString()), Double.valueOf(UI.get("haspaid_cost").toString()));		
+		
+		System.out.println(43);
+		
+		rtaskDao.save(rTask);
+		
+		System.out.println(33);
 		Integer task_id = rtaskDao.getIDbyContent((String)UI.get("content")).get(0).getTask_id();
-		
+
+		System.out.println(354);
 		RequesterTask requestertask = new RequesterTask(Integer.valueOf(userID), task_id);
 		requestertaskDao.save(requestertask);
+
+		System.out.println(66);
 		return true;
 	}
 
@@ -486,7 +520,9 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		List<RequesterTask> requesterTasks = requestertaskDao.getByRID(userID);
 		for (int i = 0; i < requesterTasks.size(); i++) {
 			Integer taskID = requesterTasks.get(i).getTask_id();
-			RTask rTask = rtaskDao.get(RTask.class, taskID);
+			
+			RTask rTask = rtaskDao.getBytaskID(String.valueOf(taskID)).get(0);
+			
 			//需要展示的信息： 任务ID，任务状态，截止时间，已收录工人数，已收到工人答案数，任务需要的工人数,
 			//任务截止时间，任务单个报酬，预计总花费，已支出金额，任务难度系数
 			
@@ -526,7 +562,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			
 			//还得判断对应任务是未收录过的，先获取taskid，然后在wtask中找有没有
 			if (wtaskDao.getByWidTid(userID, String.valueOf(taskID)).isEmpty()) {
-				RTask rTask = rtaskDao.get(RTask.class, taskID);
+				RTask rTask = rtaskDao.getBytaskID(String.valueOf(taskID)).get(0);
 				Double wbase = rTask.getEach_reward();
 				Double di = rTask.getDifficult_degree();
 				Timestamp final_deadline = rTask.getDeadline();
@@ -549,9 +585,11 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	@Override
 	public String getTakenTask(String userID) {
 		// TODO Auto-generated method stub
-		JSONArray tasks = new JSONArray();
+	
 		
+		JSONArray tasks = new JSONArray();
 		List<WTask> wTasks = wtaskDao.getByWid(userID);
+	
 		for (int i = 0; i < wTasks.size(); i++) {
 			WTask wTask = wTasks.get(i);
 			
@@ -562,7 +600,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			task.put("deadline", wTask.getDeadline());
 			task.put("each_reward", wTask.getEach_reward());
 			
-			RTask rTask = rtaskDao.get(RTask.class, wTask.getTask_id());
+			RTask rTask = rtaskDao.getBytaskID(String.valueOf(wTask.getTask_id())).get(0);
 			task.put("di", rTask.getDifficult_degree());
 			task.put("taken_time", wTask.getTaken_time());
 			task.put("finish_time", wTask.getFinish_time());

@@ -35,7 +35,7 @@ public class ReadDBTableAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){	
-		jsonTable = readservice.readDBTable(userID,tablename);
+		jsonTable = readService.readDBTable(userID,tablename);
 		return SUCCESS;
 	}
 }

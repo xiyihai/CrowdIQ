@@ -1,0 +1,109 @@
+.ulindex{
+    font-size: 16px;
+    margin: 20px 0;
+    list-style-type: none;
+    line-height: 30px;
+}
+
+.ulindex table{
+    margin-top: 10px;
+}
+
+#submitbtn{
+    margin-top: 10px;
+}
+
+.ulindex tr td{
+    padding:5px 10px 5px 5px;
+    /*table-layout: fixed;word-break: break-all; word-wrap: break-word;*/
+    width: auto;
+    vertical-align: text-top;
+}
+#customfill{
+    width:100%;
+}
+.showing-table table tr td{
+    width: 2em;
+}
+.form-row{
+    margin:10px 0;
+}
+.form-row p{
+    font: bold;
+}
+.showing-test{
+    font-weight: bold;
+}
+.top-k{
+    list-style-type: none;
+    font-size: 14px;
+    padding: 5px 20px 5px 0;
+    line-height: 30px;
+    display: inline-block;
+}
+.option-button a{
+    align-content:center;
+    margin-left:20px;
+}
+#jsontree{
+    font-size:25px;
+    height:200px;
+    border:1px solid #d9534f;
+    background-color: #85c5e5;
+}
+/*RequesterHITDEsign*/
+.aim-table span{
+    display: inline-block;
+    padding:5px 20px 5px 0;
+}
+.table-title{
+    font-weight:bold;
+}
+/*RequesterHITDEsign结束*/
+
+/*index_requester*/
+.upload-table button{
+    float: right;
+    margin: 10px;
+}
+
+.a-upload {
+    padding: 4px 10px;
+    height: 30px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    /**display: inline;*/
+    /**zoom: 1*/
+}
+
+.a-upload  input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}
+/*index_requester结束*/
+/*.requester-submit a{*/
+    /*align:center;*/
+/*}*/
+/*#title-design{*/
+    /*width: 80%;*/
+    /*display: inline-block;*/
+/*}*/

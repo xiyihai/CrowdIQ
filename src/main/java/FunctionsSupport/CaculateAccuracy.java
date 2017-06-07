@@ -10,6 +10,9 @@ public class CaculateAccuracy {
 
 	public double getAccuracy(String wm) {
 		// TODO Auto-generated method stub
+		if (wm == null) {
+			return 0;
+		}
 		  ArrayList<Object> list = new ArrayList<Object>();
 		  JSONArray jsonArray = new JSONArray();//定义json，接收数组
 		  Object w ;

@@ -118,7 +118,7 @@ public class Parser {
 		
 		String showing = segment(regex("showing"),sql);
 		if (showing!=null) {
-			map.put("showing", showing.split(","));	
+			map.put("showing", showing.split(","));
 		}else {
 			map.put("showing", null);
 		}

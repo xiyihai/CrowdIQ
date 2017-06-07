@@ -1,0 +1,12 @@
+{
+  "sqlTarget": [
+    "entity_column","header[5]"
+  ],
+  "questionDescribe": "find the entity column and the 3rd header for this table",
+  "showing_contents": ["headers:[\"Year\",\"Author\",\"Title\",\"Genre(s)\",\"Country\"]","tablename:city in china","entity_column:3","foreign_key:3-4",
+    "columns:[[\"1969\",\"1970\",\"1970\",\"2013\",\"2014\",\"2015\"],[\"P. H. Newby\",\"Bernice Rubens\",\"J. G. Farrell\",\"Eleanor Catton\",\"Richard Flanagan\",\"Marlon James\"],[\"Something to Answer For\",\"The Elected Member\",\"Troubles\",\"The Luminaries\",\"The Narrow Road to the Deep North\",\"A Brief History of Seven Killings\"],[\"Novel\",\"Novel\",\"Novel\",\"Historical novel\",\"Historical novel\",\"Historical/experimental novel\"],[\"United Kingdom\",\"United Kingdom\",\"United Kingdom\",\"New Zealand\",\"Australia\",\"Jamaica\"]]"],
+  "candidateItems": [["country:0.12","nation:0.08","china:0.03"],["name","age","hobby","number"]],
+  "each_reward": 0.05,
+  "deadline": "2017-08-23",
+  "worker_number": 12
+}

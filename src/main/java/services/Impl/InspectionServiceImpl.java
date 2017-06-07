@@ -37,7 +37,8 @@ public class InspectionServiceImpl implements InspectionService {
 	//检查每一列数据规范性,输入是json中data，以列输入
 	//返回是一个数组，展示的时候转换成这种形式rows[1][2], String: rows[2][1]
 	private ArrayList<String> dataformat(JSONObject jsontable_show){
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		return result;
 	}
 		
 	//检查缺失数据，输入是data行输入 检查
@@ -61,7 +62,7 @@ public class InspectionServiceImpl implements InspectionService {
 		ArrayList<String> result = new ArrayList<>();
 		
 		//只有存在表头时才要检测表头中的空缺数据
-		if (flag_header) {
+		if (jsontable_show.has("headers")) {
 			JSONArray headers = jsontable_show.getJSONArray("headers");
 			for (int i = 0; i < headers.size(); i++) {
 				if (headers.getString(i).equals("")) {
@@ -77,6 +78,7 @@ public class InspectionServiceImpl implements InspectionService {
 	//检查冗余行，方案没确定
 	//返回值rows[2]
 	private ArrayList<String> redundancyRow(JSONObject jsontable_show){
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		return result;
 	}
 }

@@ -1,0 +1,86 @@
+[
+  {
+    "task_id": 25534,
+    "state": 1,
+    "deadline": "2017-05-28 23:00",
+    "hastaken_number": 4,
+    "hasanswer_number": 2,
+    "worker_number": 8,
+    "each_reward": 0.2,
+    "predict_cost": 1.6,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.3
+  },
+  {
+    "task_id": 255344,
+    "state": 0,
+    "deadline": "2017-07-28 23:00",
+    "hastaken_number": 0,
+    "hasanswer_number": 0,
+    "worker_number": 10,
+    "each_reward": 0.5,
+    "predict_cost": 5,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.8
+  },
+  {
+    "task_id": 21534,
+    "state": 2,
+    "deadline": "2017-05-28 23:00",
+    "hastaken_number": 8,
+    "hasanswer_number": 8,
+    "worker_number": 8,
+    "each_reward": 0.2,
+    "predict_cost": 1.6,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.3
+  },
+  {
+    "task_id": 2553466,
+    "state": 3,
+    "deadline": "2017-05-28 23:00",
+    "hastaken_number": 4,
+    "hasanswer_number": 4,
+    "worker_number": 8,
+    "each_reward": 0.1,
+    "predict_cost": 0.8,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.2
+  },
+  {
+    "task_id": 255345,
+    "state": 4,
+    "deadline": "2017-05-10 23:00",
+    "hastaken_number": 4,
+    "hasanswer_number": 2,
+    "worker_number": 8,
+    "each_reward": 0.2,
+    "predict_cost": 1.6,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.3
+  },
+  {
+    "task_id": 25534,
+    "state": 5,
+    "deadline": "2017-05-28 23:00",
+    "hastaken_number": 12,
+    "hasanswer_number": 2,
+    "worker_number": 12,
+    "each_reward": 0.2,
+    "predict_cost": 2.4,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.3
+  },
+  {
+    "task_id": 25534,
+    "state": 1,
+    "deadline": "2017-05-28 23:00",
+    "hastaken_number": 4,
+    "hasanswer_number": 3,
+    "worker_number": 5,
+    "each_reward": 0.5,
+    "predict_cost": 2.5,
+    "haspaid_cost": 0.4,
+    "difficult_degree": 0.4
+  }
+]

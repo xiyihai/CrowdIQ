@@ -27,7 +27,7 @@ public class UploadTableListAction extends InspectionAndReadTableBaseAction {
 
 		
 	public String execute(){	
-		if (readservice.uploadTableList(userID, tablelist)) {
+		if (readService.uploadTableList(userID, tablelist)) {
 			return SUCCESS;	
 		}else {
 			return ERROR;

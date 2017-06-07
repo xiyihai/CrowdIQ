@@ -6,7 +6,6 @@ public class ShowAllTestTaskAction extends RegisterBaseAction {
 
 	//用于接受前端
 	private String userID;
-	private String flag;
 	
 	//工人点击测试任务模块，用来返回其对应的worker-testtask表内容，以JSONArray[ JSONObject, JSONObject]形式
 	//删减工作交给前端
@@ -18,14 +17,6 @@ public class ShowAllTestTaskAction extends RegisterBaseAction {
 
 	public void setUserID(String userID) {
 		this.userID = userID;
-	}
-
-	public String getFlag() {
-		return flag;
-	}
-
-	public void setFlag(String flag) {
-		this.flag = flag;
 	}
 
 	public String getTaskInfo() {

@@ -3,6 +3,8 @@ package domains;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,12 +13,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="requester_table")
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class RTable {
 
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name="requester_id")
@@ -77,6 +79,11 @@ public class RTable {
 		this.table_name = table_name;
 		this.available = available;
 		this.jsontable = jsontable;
+	}
+
+	public RTable() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 	

@@ -82,6 +82,11 @@ public class WorkerTestTask {
 	public void setIscorrect(Integer iscorrect) {
 		this.iscorrect = iscorrect;
 	}
+
+	public WorkerTestTask() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

@@ -74,6 +74,11 @@ public class WorkerRTask {
 		this.times = times;
 		this.taken_deadline = taken_deadline;
 	}
+
+	public WorkerRTask() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

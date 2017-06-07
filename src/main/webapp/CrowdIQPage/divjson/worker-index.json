@@ -1,0 +1,20 @@
+{
+  "personInfo": {
+    "worker_id": 23455,
+    "name": "Yi",
+    "password": "kkj333",
+    "account": 688.5,
+    "email": "xiyihai@bjtu.edu.cn",
+    "quality": 0.8,
+    "level": 2,
+    "average_costtime": 30,
+    "average_di": 0.6,
+    "average_reward": 0.08
+  },
+  "taskInfo": {
+    "state2": 10,
+    "state0": 12,
+    "state4": 4,
+    "rtask_number": 24
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "personInfo": {
+    "requester_id": 23455,
+    "name": "Yi",
+    "password": "kkj333",
+    "account": 688,
+    "email": "xiyihai@bjtu.edu.cn"
+  },
+  "taskInfo":{
+    "state0": 6,
+    "state1": 5,
+    "state2": 8,
+    "table_number": 13
+  },
+  "datasource":{
+    "algorithms":[
+      "23455.header_recover","23455.entity_find","23455.foreginKey_detect"
+    ],
+    "tablelists":[
+      "23455.countrys","23455.fruits", "23455.water","23455.computers"
+    ]
+  }
+
+}

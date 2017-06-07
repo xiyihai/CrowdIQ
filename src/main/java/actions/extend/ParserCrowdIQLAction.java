@@ -45,7 +45,7 @@ public class ParserCrowdIQLAction extends ParserCrowdIQLBaseAction {
 	}
 	
 	public String execute(){
-		//如果sql是insert语句，那么elements为null
+		//如果sql是insert语句，那么elements为null	
 		elements = parserService.parser(sql, userID, tablename);
 		return SUCCESS;
 	}

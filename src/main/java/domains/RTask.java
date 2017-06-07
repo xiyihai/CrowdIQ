@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,6 +22,7 @@ public class RTask {
 
 	@Id
 	@Column(name="task_id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer task_id;
 	
 	@Column(name="content")
@@ -52,8 +55,8 @@ public class RTask {
 	@Column(name="haspaid_cost")
 	private Double haspaid_cost;
 
-	@Column(name="table_id")
-	private Integer table_id;
+	@Column(name="table_name")
+	private String table_name;
 	
 	@Column(name="begin_time")
 	private Timestamp begin_time;
@@ -68,12 +71,12 @@ public class RTask {
 		this.begin_time = begin_time;
 	}
 
-	public Integer getTable_id() {
-		return table_id;
+	public String getTable_name() {
+		return table_name;
 	}
 
-	public void setTable_id(Integer table_id) {
-		this.table_id = table_id;
+	public void setTable_name(String table_name) {
+		this.table_name = table_name;
 	}
 
 	public Integer getTask_id() {
@@ -164,12 +167,12 @@ public class RTask {
 		this.haspaid_cost = haspaid_cost;
 	}
 
-	public RTask(String content, Integer table_id, Timestamp begin_time, Timestamp deadline, Double each_reward, Integer hastaken_number,
+	public RTask(String content, String table_id, Timestamp begin_time, Timestamp deadline, Double each_reward, Integer hastaken_number,
 			Integer hasanswer_number, Integer state, Double difficult_degree, Integer worker_number,
 			Double predict_cost, Double haspaid_cost) {
 		super();
 		this.content = content;
-		this.table_id = table_id;
+		this.table_name = table_name;
 		this.begin_time = begin_time;
 		this.deadline = deadline;
 		this.each_reward = each_reward;
@@ -180,6 +183,11 @@ public class RTask {
 		this.worker_number = worker_number;
 		this.predict_cost = predict_cost;
 		this.haspaid_cost = haspaid_cost;
+	}
+
+	public RTask() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	

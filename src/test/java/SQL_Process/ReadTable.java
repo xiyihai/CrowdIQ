@@ -53,7 +53,7 @@ public class ReadTable {
 		
 		if (readList.size()>0) {
 			//这里tableID是随机字符串
-			table.setID("table01");
+			table.setTablename("Country in world");
 			
 			//判断是否存在表头,全部内容都在readList中
 			if(hasHeader()){
@@ -119,7 +119,7 @@ public class ReadTable {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ReadTable table = new ReadTable();
-		table.tranfer("src/test/resources/Winners.csv");
+		table.tranfer("g:/Winners.csv");
 		table.showJSONTable();
 		//System.out.println(table.jsonTable_show.toString());
 		System.out.println(table.jsonTable.toString());

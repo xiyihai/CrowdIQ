@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 
 public class TableBean {
-	private String ID;
+	private String tablename;
 	private ArrayList<String> headers;
 	private ArrayList<ArrayList<String>> data; //data数据按照行值排列 [[第一行],[第二行],[第三行],[第四行]]
-	public String getID() {
-		return ID;
+	
+	public String getTablename() {
+		return tablename;
 	}
-	public void setID(String iD) {
-		ID = iD;
+	public void setTablename(String tablename) {
+		this.tablename = tablename;
 	}
 	public ArrayList<String> getHeaders() {
 		return headers;

@@ -27,7 +27,7 @@ public class ShowDBTableAction extends InspectionAndReadTableBaseAction {
 	}
 
 	public String execute(){
-		tableInfo = readservice.showAllTable(userID);
+		tableInfo = readService.showAllTable(userID);
 		return SUCCESS;
 	}
 }

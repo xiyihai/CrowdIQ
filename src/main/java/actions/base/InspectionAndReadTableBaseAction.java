@@ -8,17 +8,19 @@ import services.Interface.ReadTableService;
 public class InspectionAndReadTableBaseAction extends ActionSupport{
 	
 	//依赖注入InspectionService，方便子类调用
-	protected InspectionService inservice;
+	protected InspectionService inService;
 	//需要read给出的jsontable_show来质量检测
-	protected ReadTableService readservice;
+	protected ReadTableService readService;
 
-	public void setInservice(InspectionService inservice) {
-		this.inservice = inservice;
+	public void setInService(InspectionService inService) {
+		this.inService = inService;
+	}
+	
+	public void setReadService(ReadTableService readService) {
+		this.readService = readService;
 	}
 
-	public void setReadservice(ReadTableService readservice) {
-		this.readservice = readservice;
-	}
+
 	
 
 }

@@ -1,0 +1,9 @@
+{
+  "sqlTarget": [
+    "entity_column"
+  ],
+  "questionDescribe": "find the entity column and the 3rd header for this table",
+  "showing_contents": ["headers:[\"Year\",\"Author\",\"Title\",\"Genre(s)\",\"Country\"]",
+    "columns:[[\"1969\",\"1970\",\"1970\",\"2013\",\"2014\",\"2015\"],[\"P. H. Newby\",\"Bernice Rubens\",\"J. G. Farrell\",\"Eleanor Catton\",\"Richard Flanagan\",\"Marlon James\"],[\"Something to Answer For\",\"The Elected Member\",\"Troubles\",\"The Luminaries\",\"The Narrow Road to the Deep North\",\"A Brief History of Seven Killings\"],[\"Novel\",\"Novel\",\"Novel\",\"Historical novel\",\"Historical novel\",\"Historical/experimental novel\"],[\"United Kingdom\",\"United Kingdom\",\"United Kingdom\",\"New Zealand\",\"Australia\",\"Jamaica\"]]"],
+  "candidateItems": [["country","nation","china"]]
+}

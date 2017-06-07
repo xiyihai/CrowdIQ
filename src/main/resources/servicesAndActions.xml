@@ -52,13 +52,13 @@
    
    <!-- 制作模板Action,其实就是为基类准备的 -->
 	<bean id="InspectionAndReadTableAction" abstract="true" scope="prototype">
-		<property name="InspectionService" ref="InspectionService"></property>
-		<property name="ReadTableService" ref="ReadTableService"></property>
+		<property name="InService" ref="InspectionService"></property>
+		<property name="ReadService" ref="ReadTableService"></property>
 	</bean>
 	
 	<bean id="ParserCrowdIQLBaseAction" abstract="true" scope="prototype">
-		<property name="ParserCrowdIQLService" ref="ParserCrowdIQLService"></property>
-		<property name="ReadTableService" ref="ReadTableService"></property>
+		<property name="ParserService" ref="ParserCrowdIQLService"></property>
+		<property name="ReadService" ref="ReadTableService"></property>
 	</bean>
 	
 	<bean id="RegisterBaseAction" abstract="true" scope="prototype">

@@ -14,8 +14,10 @@ public interface RTaskDao extends BaseDao<RTask> {
 	List<RTask> showAllTaskByState(Integer state);
 	
 	//根据对应的表ID返回所有属于该表的任务
-	List<RTask> showTaskByTableID(String tableID);
+	List<RTask> showTaskByTablename(String tablename);
 	
 	//根据时间戳，找到超过过等于该时间的任务
 	List<RTask> findDeadlineTask(String deadline);
+	
+	List<RTask> getBytaskID(String ID);
 }

@@ -26,7 +26,7 @@ public class ReadUploadTableAction extends InspectionAndReadTableBaseAction {
 
 		
 	public String execute(){	
-		if (readservice.readUploadTable(userID, tablename)) {
+		if (readService.readUploadTable(userID, tablename)) {
 			return SUCCESS;	
 		}else {
 			return ERROR;

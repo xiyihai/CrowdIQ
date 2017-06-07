@@ -46,5 +46,10 @@ public class RequesterTask {
 		this.requester_id = requester_id;
 		this.task_id = task_id;
 	}
+
+	public RequesterTask() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }

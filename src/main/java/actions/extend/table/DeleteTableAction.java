@@ -24,7 +24,7 @@ public class DeleteTableAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){	
-		readservice.deleteTable(userID,tablename);
+		readService.deleteTable(userID,tablename);
 		return SUCCESS;
 	}
 }

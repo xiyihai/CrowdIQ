@@ -153,11 +153,13 @@ public class HeaderExist {
 //		}
 //		System.out.println(hasHeader.getValue(hasHeader.calculate(hasHeader.mergeConcept(Allresults))));
 //			
-		JSONObject jObject = new JSONObject();
-		jObject.put("d", 0);
-		jObject.put("e", "hhhh");
-		RTask rTask = new RTask(jObject.toString(), null, null, null, null, null, null, null, null, null, null, null);
-		System.out.println(JSONObject.fromObject(rTask).toString());
-		
+//		JSONObject jObject = new JSONObject();
+//		jObject.put("d", 0);
+//		jObject.put("e", "hhhh");
+//		RTask rTask = new RTask(jObject.toString(), null, null, null, null, null, null, null, null, null, null, null);
+//		System.out.println(JSONObject.fromObject(rTask).toString());
+	JSONObject dJsonObject =new JSONObject();
+	dJsonObject.put("cc", "s");
+		System.out.println((Double)dJsonObject.get("cc"));
 	}
 }

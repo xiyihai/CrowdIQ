@@ -21,7 +21,7 @@ public class DowloadTableAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){
-		if (readservice.downloadTable(tableID, userID)) {
+		if (readService.downloadTable(tableID, userID)) {
 			return SUCCESS;			
 		}else {
 			return ERROR;

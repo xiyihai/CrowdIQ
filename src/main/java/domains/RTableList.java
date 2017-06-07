@@ -3,6 +3,8 @@ package domains;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,6 +19,7 @@ public class RTableList {
 	
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name="requester_id")
@@ -53,6 +56,11 @@ public class RTableList {
 		super();
 		this.requester_id = requester_id;
 		this.tablelist = tablelist;
+	}
+
+	public RTableList() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 	

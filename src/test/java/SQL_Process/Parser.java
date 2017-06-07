@@ -181,7 +181,7 @@ public class Parser {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stubJ
 		Parser parser = new Parser();
-		String initsql = "   showing table01.rows[3],table01.columns[2]";
+		String initsql = "   select table.header[2],table.entity_column showing table.tablename,table.headers,table.rows[0],table.rows[2] using Algorithm(zlf.impl.entity_find) on table.rows";
 			
 		parser.test(initsql);
 	}

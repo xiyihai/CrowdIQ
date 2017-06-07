@@ -1,0 +1,7 @@
+{
+  "content": null,
+  "each_reward": 0.05,
+  "difficult_degree": 0.3,
+  "worker_number": 12,
+  "predict_cost": 0.6
+}

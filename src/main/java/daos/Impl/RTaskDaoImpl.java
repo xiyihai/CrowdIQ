@@ -21,14 +21,20 @@ public class RTaskDaoImpl extends BaseDaoImpl<RTask> implements RTaskDao {
 	}
 
 	@Override
-	public List<RTask> showTaskByTableID(String tableID) {
+	public List<RTask> showTaskByTablename(String tablename) {
 		// TODO Auto-generated method stub
-		return find("from RTask as t where t.table_id = ?0", tableID);
+		return find("from RTask as t where t.table_name = ?0", tablename);
 	}
 
 	@Override
 	public List<RTask> findDeadlineTask(String deadline) {
 		// TODO Auto-generated method stub
 		return findBySql("select * from rtask_info where date_format(deadline,'%Y-%m-%d %H:%i') <= '"+deadline+"'", RTask.class);
+	}
+
+	@Override
+	public List<RTask> getBytaskID(String taskID) {
+		// TODO Auto-generated method stub
+		return find("from RTask as t where t.task_id = ?0", Integer.valueOf(taskID));
 	}
 }

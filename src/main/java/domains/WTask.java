@@ -135,6 +135,11 @@ public class WTask {
 		this.each_reward = each_reward;
 		this.taken_time = taken_time;
 	}
+
+	public WTask() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

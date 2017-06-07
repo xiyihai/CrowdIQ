@@ -47,8 +47,8 @@ public class CaculateParameterImpl implements CaculateParameter{
 		}else{
 			level1=50;
 		}
-		dif_topk=10*(1-top_k);
-		dif=0.4*level0/23+0.4*level1/71+0.2*dif_topk;
+		dif_topk=1*(1-top_k);
+		dif=0.4*level0/23+0.4*level1/91+0.2*dif_topk;
 		return dif;
 	}
 
@@ -92,7 +92,6 @@ public class CaculateParameterImpl implements CaculateParameter{
 		 */
 		int n=0;
 		n=getOptimizeWokerNum(average,u);
-		System.out.println(n);
 		return n;
 	}
 	//优化工人个数

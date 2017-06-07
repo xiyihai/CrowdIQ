@@ -201,20 +201,26 @@ public class ReadTableServiceImpl implements ReadTableService {
 	@Override
 	public String showAllTable(String userID) {
 		// TODO Auto-generated method stub
+	
 		List<RTable> rTables = rtableDao.findAllByRid(userID);
 		ArrayList<String> tableInfo = new ArrayList<>();
 		for(int i=0;i<rTables.size();i++){
 			Integer state = 1;
 			RTable rTable = rTables.get(i);
 			String tablename = rTable.getTable_name();
-			List<RTask> rTasks = rtaskDao.showTaskByTableID(tablename);
-			for (int j = 0; j < rTasks.size(); j++) {
-				RTask rTask = rTasks.get(j);
-				//雇主任务只有为2 完成，4超期，才能让雇主下载对应表
-				if (!(rTask.getState()==2||rTask.getState()==4)) {
-					state = 0;
-					break;
-				}
+			List<RTask> rTasks = rtaskDao.showTaskByTablename(tablename);
+			//如果该表格没有对应的任务或者对应的表格都是完成，则是0
+			if (rTasks.size() == 0) {
+				state = 0;
+			}else {
+				for (int j = 0; j < rTasks.size(); j++) {
+					RTask rTask = rTasks.get(j);
+					//雇主任务只有为2 完成，4超期，才能让雇主下载对应表
+					if (!(rTask.getState()==2||rTask.getState()==4)) {
+						state = 0;
+						break;
+					}
+				}	
 			}
 			rTable.setAvailable(state);
 			rtableDao.update(rTable);
@@ -233,7 +239,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 		if (rTable.getAvailable()==1) {
 			//先要整合对应任务的答案，写入到表格，这里需要判断对应任务sqlTarget是否为 header，columns，rows.
 			//这三者需要写入原表，其余的只需要显示答案即可
-			List<RTask> rTasks = rtaskDao.showTaskByTableID(tableID);
+			List<RTask> rTasks = rtaskDao.showTaskByTablename(tableID);
 			for (int i = 0; i < rTasks.size(); i++) {
 				RTask rtask = rTasks.get(i);
 				String content = rtask.getContent();

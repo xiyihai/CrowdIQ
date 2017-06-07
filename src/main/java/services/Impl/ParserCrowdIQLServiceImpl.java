@@ -71,7 +71,6 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		// TODO Auto-generated method stub
 		//先要找对对应的jsontable数据
 		RTable rTable = rTableDao.findByIDName(userID, tablename).get(0);
-		
 		return process(sql, userID, tablename, JSONObject.fromObject(rTable.getJsontable()));
 	}
 
@@ -364,7 +363,6 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					}
 					results.add(result);
 				}
-				
 				map_result.put("showing_contents", results);
 				
 				//这里results需要解析出blanks个数
@@ -378,7 +376,10 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					while (matcher.find()) {
 						count++;
 					}
-					showingsBlank[j] = count;
+					if (count == 0) {
+						count = 2;
+					}
+					showingsBlank[j] = count/2;
 				}
 			}
 			
@@ -396,7 +397,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				RTable rTable = rTableDao.findByIDName(userID, tablename).get(0);
 				rTable.setJsontable(jsonTable.toString());
 				rTableDao.update(rTable);
-				//插入语句和其他语句不通，本质不需要返回值
+				//插入语句和其他语句不通，本质不需要返回值x
 				return null;
 			}
 			
@@ -488,7 +489,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						}
 					}
 				}
-				map_result.put("showing_contents", results);
+				map_result.put("candidateItems", results);
 				
 				//计算使用算法的比例
 				top_kPerc = results.size() / (double)targetsBlank.length;
@@ -551,9 +552,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	@Override
 	public Integer getAttributeNumber(String attribute, JSONObject jsonTable) {
 		// TODO Auto-generated method stub
-		String[] subattributes = regex(attribute);
+		String[] subattributes = regex(attribute.split("\\.")[1]);
 		String attribute_name = subattributes[0];
-
 		if (!subattributes[1].equals("")) {
 			if (!subattributes[2].equals("")) {
 				//这里value肯定是单纯字符串
@@ -565,6 +565,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				}else if (attribute_name.equals("columns")) {
 					//这里二维数组长度是columns[2]的长度
 					return jsonTable.getJSONArray("data").size();
+				}else if (attribute_name.equals("headers")) {
+					return 1;
 				}
 			}
 		}else {
@@ -588,7 +590,12 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	@Override
 	public Double getTop_kPerc() {
 		// TODO Auto-generated method stub
-		return top_kPerc;
+		if (top_kPerc!=null) {
+			return top_kPerc;	
+		}else{
+			return new Double(0);
+		}
+		
 	}
 	
 }

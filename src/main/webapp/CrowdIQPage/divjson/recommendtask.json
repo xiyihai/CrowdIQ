@@ -1,0 +1,114 @@
+[
+  {
+    "taskID": 434545,
+    "taken_deadline": "2017-05-26 14:00",
+    "wbase": 0.05,
+    "di": 0.7,
+    "final_deadline": "2017-05-30 24:00",
+    "work_state": "4/10"
+  },
+  {
+    "taskID": 434545,
+    "taken_deadline": "2017-01-26 14:00",
+    "wbase": 0.08,
+    "di": 0.9,
+    "final_deadline": "2017-02-20 24:00",
+    "work_state": "2/10"
+  },
+  {
+    "taskID": 437545,
+    "taken_deadline": "2017-01-26 14:00",
+    "wbase": 0.01,
+    "di": 0.2,
+    "final_deadline": "2017-02-30 24:00",
+    "work_state": "4/5"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 4345,
+    "taken_deadline": "2017-05-26 14:00",
+    "wbase": 0.1,
+    "di": 0.9,
+    "final_deadline": "2017-06-30 24:00",
+    "work_state": "7/9"
+  },
+  {
+    "taskID": 4345,
+    "taken_deadline": "2017-05-16 14:00",
+    "wbase": 0.04,
+    "di": 0.4,
+    "final_deadline": "2017-05-20 24:00",
+    "work_state": "13/20"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  },
+  {
+    "taskID": 43945,
+    "taken_deadline": "2017-06-26 14:00",
+    "wbase": 0.03,
+    "di": 0.3,
+    "final_deadline": "2017-08-30 24:00",
+    "work_state": "0/12"
+  }
+]

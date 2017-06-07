@@ -35,8 +35,8 @@ public class InspectionAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){	
-		readservice.readDBTable(userID,tablename);
-		problems = inservice.inspect(readservice.getJSONTable_show());
+		readService.readDBTable(userID,tablename);
+		problems = inService.inspect(readService.getJSONTable_show());
 		return SUCCESS;
 	}
 }

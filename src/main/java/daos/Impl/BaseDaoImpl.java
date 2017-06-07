@@ -54,7 +54,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	@Override
 	public List<T> findAll(Class<T> entityClazz) {
 		// TODO Auto-generated method stub
-		return this.find("select p from "+entityClazz.getSimpleName()+" p"); //p是别名，别忘记空格
+		return this.find("from "+entityClazz.getSimpleName()); //p是别名，别忘记空格
 	}
 
 	@Override

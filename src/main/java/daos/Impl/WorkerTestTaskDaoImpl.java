@@ -10,19 +10,19 @@ public class WorkerTestTaskDaoImpl extends BaseDaoImpl<WorkerTestTask> implement
 	@Override
 	public List<WorkerTestTask> findByWid(String userID) {
 		// TODO Auto-generated method stub
-		return find("from WorkerTestTask as w where w.worker_id = ?0", userID);
+		return find("from WorkerTestTask as w where w.worker_id = ?0", Integer.valueOf(userID));
 	}
 
 	@Override
 	public List<WorkerTestTask> findByWidTid(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		return find("from WorkerTestTask as w where w.worker_id = ?0 and w.testtask_id = ?1", userID, taskID);
+		return find("from WorkerTestTask as w where w.worker_id = ?0 and w.testtask_id = ?1", Integer.valueOf(userID), Integer.valueOf(taskID));
 	}
 
 	@Override
 	public List<WorkerTestTask> findTaskbyState(String userID, int state) {
 		// TODO Auto-generated method stub
-		return find("from WorkerTestTask as w where w.worker_id = ?0 and w.state = ?1", userID, state);
+		return find("from WorkerTestTask as w where w.worker_id = ?0 and w.state = ?1", Integer.valueOf(userID), state);
 	}
 
 }

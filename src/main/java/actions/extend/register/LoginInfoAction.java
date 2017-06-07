@@ -34,7 +34,7 @@ public class LoginInfoAction extends RegisterBaseAction {
 		this.showinformation = showinformation;
 	}
 	
-	public String execute(){
+	public String execute(){		
 		showinformation = registerService.getLoginInfo(userID, flag);
 		return SUCCESS;
 	}

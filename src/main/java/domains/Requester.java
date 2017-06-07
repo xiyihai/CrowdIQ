@@ -82,6 +82,11 @@ public class Requester {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Requester() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	
