@@ -11,6 +11,7 @@ import org.hibernate.loader.plan.exec.process.spi.ReturnReader;
 
 import FunctionsSupport.CaculateAccuracy;
 import FunctionsSupport.MailSender;
+import FunctionsSupport.TranferAnswer;
 import TestQuestion.CalculateTest;
 import TestQuestion.CalculateTestImp;
 import daos.Interface.RAlgorithmDao;
@@ -182,7 +183,6 @@ public class RegisterServiceImpl implements RegisterService {
 
 			//注册好了还需要写入对应工人的测试数据,这里加入所有测试数据，待用户自己选择做
 			List<TestTask> testtasks = testtaskDao.findAll(TestTask.class);
-			System.out.println(33);
 			for(int i=0;i<testtasks.size();i++){
 				WorkerTestTask workerTestTask = new WorkerTestTask(Integer.valueOf(id), testtasks.get(i).getTest_id(), new Integer(0), "", 0);
 				workertesttaskDao.save(workerTestTask);
@@ -194,7 +194,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public String getTestTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		TestTask testTask = testtaskDao.get(TestTask.class, Integer.valueOf(taskID));
+		TestTask testTask = testtaskDao.getByID(taskID).get(0);
 		String content = testTask.getContent();
 		return content;
 	}
@@ -207,7 +207,7 @@ public class RegisterServiceImpl implements RegisterService {
 		task.setWorker_answer(answer);
 		
 		//工人每做一题就要更新质量矩阵，若是做满10题更改工人level
-		TestTask testtask = testtaskDao.get(TestTask.class, taskID);
+		TestTask testtask = testtaskDao.getByID(taskID).get(0);
 		//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
 		JSONArray truthArray = JSONArray.fromObject(testtask.getAnswer());
 		String truth = truthArray.getString(0);
@@ -218,34 +218,33 @@ public class RegisterServiceImpl implements RegisterService {
 		JSONObject content = JSONObject.fromObject(testtask.getContent());
 		JSONArray candidateItems = content.getJSONArray("candidateItems");
 		JSONArray items = candidateItems.getJSONArray(0);
-		int length = items.size();
+		
+		//转换ABC, 输入  vvv，Cff, [vvv,Cff,ccc] ; 输出：A：B：3  
 		//以：分割
-		String result = wanswer+":"+truth+":"+length;
+		String result = TranferAnswer.tranfer(wanswer, truth, items);
+	
 		//需要计算工人初步质量举证
 		ArrayList<String> results = new ArrayList<>();
 		results.add(result);
-		
-		Worker worker = workerDao.get(Worker.class, userID);
+		Worker worker = workerDao.getByWid(userID).get(0);
 		//需要将正确答案和工人答案打包然后发给对应计算模块
-
 		calculateTest = new CalculateTestImp();
 		worker.setQuality(calculateTest.CaculateTestQuestion(results));
+	
 		workerDao.update(worker);
 		
 		//需要判断工人做题是否正确,并写入数据库
-		if (answer.equals(truth)) {
+		if (wanswer.equals(truth)) {
 			task.setIscorrect(1);
 		}else {
 			task.setIscorrect(0);
 		}
 		workertesttaskDao.update(task);
 		
-		
-		
 		//需要判断该用户的测试题完成的是否足够多,若完成且工人目前level为0，则修改工人level为1
 		if (worker.getLevel()==0) {
 			List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
-			if (tasks.size()>=10) {
+			if (tasks.size()>=2) {
 				//需要更改工人的level
 				worker.setLevel(1);
 				workerDao.update(worker);
@@ -395,7 +394,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public String showDoneTestTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		TestTask testTask = testtaskDao.get(TestTask.class, taskID);
+		TestTask testTask = testtaskDao.getByID(taskID).get(0);
 		//这个返回的数据中包含 content，answer两部分
 		return JSONObject.fromObject(testTask).toString();
 	}

@@ -11,6 +11,8 @@ public interface TaskProcessService {
 	//雇主确定修改task展示表之后，这里taskString和build部分可能不同，正式将用户ID，任务ID存入数据库，任务作为整个JSONObject字符串存入
 	boolean commitTask(String userID, String taskString);
 	
+	boolean commitEditTask(String userID, String taskID, String taskString);
+	
 	//雇主点击发布任务，根据任务ID，索引到对应任务发布，需要更改任务状态
 	boolean publishTask(String userID, String taskID);
 	

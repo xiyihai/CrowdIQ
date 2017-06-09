@@ -23,12 +23,12 @@ require([], function () {
         dataType:'json'
     }).then(function (data) {
         var testtasks = $.parseJSON(data);
-        testtasks.forEach(function (d) {
-            var testtask = new TestTask(d.testtask_id, d.state, d.worker_answer, d.iscorrect);
+        testtasks.forEach(function (d, i) {
+            var testtask = new TestTask(d.testtask_id, d.state, d.worker_answer, d.iscorrect, i);
 
-            var context = '<tr><td>' + testtask.testtask_id + '</td>' + '<td>' + testtask.state +
-                '</td>'+'<td>' + testtask.worker_answer + '</td>'+'<td>' + testtask.iscorrect + '</td>'
-                + lastsign + '</tr>';
+            var context = "<tr><td id='taskID"+i+"'>" + testtask.testtask_id + "</td>" + "<td>" + testtask.state +
+                "</td>"+"<td>" + testtask.worker_answer + "</td>"+"<td>" + testtask.iscorrect + "</td>"
+                + lastsign + "</tr>";
 
             $("#testtask-tbody").append(context);
         });
@@ -37,21 +37,35 @@ require([], function () {
         $('#dataTables-example').DataTable({
             responsive: true
         });
+    }).then(function () {
+
+        $("a[id^='do']").bind("click", function () {
+            var number = $(this).attr('id').substring(2);
+            var taskID = $("#" + "taskID" + number).html();
+            window.location.href = "workerTest.html?userID="+userID+"&taskID="+taskID;
+        });
+
+        $("a[id^='show']").bind("click", function () {
+            var number = $(this).attr('id').substring(4);
+            var taskID = $("#" + "taskID" + number).html();
+            window.location.href = "workerTestResult.html?userID="+userID+"&taskID="+taskID;
+        });
+
     });
 
 
     var lastsign;
 
     //这样处理的好处在于，针对json数据中不存在的属性，这里可以预处理，d.iscorrect不影响操作
-    function TestTask(testtask_id, state, worker_answer, iscorrect){
+    function TestTask(testtask_id, state, worker_answer, iscorrect, i){
         this.testtask_id = testtask_id;
         if(state === 0){
-            lastsign = '<td> <a href="forms.html"><i class="fa fa-pencil"></i>做题</a> </td>';
+            lastsign = "<td> <a href='#' id='do"+i+"'><i class='fa fa-pencil'></i>做题</a> </td>";
             this.state = "undo";
             this.worker_answer = null;
             this.iscorrect = null;
         }else {
-            lastsign = '<td> <a href="forms.html"><i class="fa fa-check"></i>查看</a> </td>';
+            lastsign = "<td> <a href='#' id='show"+i+"'><i class='fa fa-check'></i>查看</a> </td>";
             this.state = "finished";
             this.worker_answer = worker_answer;
             if (iscorrect === 0){
@@ -59,6 +73,9 @@ require([], function () {
             }else this.iscorrect = "true";
         }
     }
+
+
+
 });
 
 

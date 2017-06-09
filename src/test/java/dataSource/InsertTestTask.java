@@ -29,9 +29,12 @@ public class InsertTestTask {
 		
 		//构建测试任务
 		TestTaskVos taskVos = new TestTaskVos();
+		ArrayList<String> sqlTargets = new ArrayList<>();
+		sqlTargets.add("header[2]");
+		taskVos.setSqlTargets(sqlTargets);
 		taskVos.setQuestionDescribe("recover the missing header");
 		ArrayList<String> showing_content = new ArrayList<>();
-		showing_content.add("[\"China\",\"Japan\",\"America\",\"England\"]");
+		showing_content.add("columns-2:[\"China\",\"Japan\",\"America\",\"England\"]");
 		taskVos.setShowing_contents(showing_content);
 		
 		ArrayList<ArrayList<String>> candidateItems = new ArrayList<>();

@@ -230,7 +230,6 @@ require([], function () {
         taskfinal.deadline = $("#deadline").html();
         taskfinal.table_name = tablename;
 
-        console.log(taskfinal);
         $.ajax({
             type:'post',
             url:'commitTaskAction',

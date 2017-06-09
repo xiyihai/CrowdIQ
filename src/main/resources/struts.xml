@@ -145,6 +145,13 @@
       		<result name="error"></result>
       	</action>
       	
+      	<!-- 雇主确定完某任务所有元素提交确定, 无返回结果-->
+        <action name="commitEditTaskAction" class="CommitEditTaskAction">
+      		<result name="success"  type="json"></result>
+      		<result name="error"></result>
+      	</action>
+      	
+      	
       	<!-- 雇主根据ID号请求修改某任务，返回该任务所有参数值 -->
       	<action name="editTaskAction" class="EditTaskAction">
       		<result name="success"  type="json">

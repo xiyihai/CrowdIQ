@@ -25,4 +25,10 @@ public class WorkerRTaskDaoImpl extends BaseDaoImpl<WorkerRTask> implements Work
 		return find("from WorkerRTask as w where w.task_id = ?0", Integer.valueOf(taskID));
 	}
 
+	@Override
+	public List<WorkerRTask> findByTidWid(String userID, String taskID) {
+		// TODO Auto-generated method stub
+		return find("from WorkerRTask as w where w.task_id = ?0 and w.worker_id = ?1", Integer.valueOf(taskID), Integer.valueOf(userID));
+	}
+
 }

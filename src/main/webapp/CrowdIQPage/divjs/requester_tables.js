@@ -43,7 +43,7 @@ require([], function () {
     }).then(function () {
 
         $("a[id^='show']").bind("click", function () {
-            var number = $(this).attr('id').substring(4, 6);
+            var number = $(this).attr('id').substring(4);
             var tablename = $("#" + "tablename" + number).html();
             $.ajax({
                 type: 'post',
@@ -61,7 +61,7 @@ require([], function () {
 
 
         $("a[id^='quality']").bind("click", function () {
-            var number = $(this).attr('id').substring(7, 9);
+            var number = $(this).attr('id').substring(7);
             var tablename = $("#" + "tablename" + number).html();
             $.ajax({
                 type: 'post',
@@ -115,7 +115,7 @@ require([], function () {
         });
 
         $("a[id^='download']").bind("click", function () {
-            var number = $(this).attr('id').substring(8, 10);
+            var number = $(this).attr('id').substring(8);
             var tablename = $("#" + "tablename" + number).html();
             $.ajax({
                 type: 'post',
@@ -131,7 +131,7 @@ require([], function () {
         });
 
         $("a[id^='delete']").bind("click", function () {
-            var number = $(this).attr('id').substring(6, 8);
+            var number = $(this).attr('id').substring(6);
             var tablename = $("#" + "tablename" + number).html();
             $.ajax({
                 type: 'post',
@@ -147,7 +147,7 @@ require([], function () {
         });
 
         $("a[id^='design']").bind("click", function () {
-            var number = $(this).attr('id').substring(6, 8);
+            var number = $(this).attr('id').substring(6);
             var tablename = $("#" + "tablename" + number).html();
             window.location.href = "requesterHITDesign.html?userID="+userID+"&tablename="+tablename;
         });

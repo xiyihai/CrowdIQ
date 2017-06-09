@@ -15,7 +15,6 @@ import javassist.bytecode.annotation.DoubleMemberValue;
 
 @Entity
 @Table(name="worker_info")
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class Worker {
 

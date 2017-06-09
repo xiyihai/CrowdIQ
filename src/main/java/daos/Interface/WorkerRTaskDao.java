@@ -15,4 +15,7 @@ public interface WorkerRTaskDao extends BaseDao<WorkerRTask> {
 	//根据任务ID
 	List<WorkerRTask> findByTid(String taskID);
 	
+	//根据任务ID，工人ID
+	List<WorkerRTask> findByTidWid(String userID, String taskID);
+	
 }

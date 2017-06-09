@@ -16,7 +16,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="rtask_info")
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class RTask {
 
@@ -167,7 +166,7 @@ public class RTask {
 		this.haspaid_cost = haspaid_cost;
 	}
 
-	public RTask(String content, String table_id, Timestamp begin_time, Timestamp deadline, Double each_reward, Integer hastaken_number,
+	public RTask(String content, String table_name, Timestamp begin_time, Timestamp deadline, Double each_reward, Integer hastaken_number,
 			Integer hasanswer_number, Integer state, Double difficult_degree, Integer worker_number,
 			Double predict_cost, Double haspaid_cost) {
 		super();

@@ -84,7 +84,7 @@ public class RecommendTaskImpl implements RecommendTask {
                 	sortMessage[m][0]=sortMessage[m+1][0];
                 	sortMessage[m][1]=sortMessage[m+1][1];
                 }
-		    	System.out.println(worker[j]);
+//		    	System.out.println(worker[j]);
 		    	j++;//控制取出的工人id数目
 		    }
 		    return worker;

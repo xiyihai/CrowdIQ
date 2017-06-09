@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -158,8 +159,6 @@ public class HeaderExist {
 //		jObject.put("e", "hhhh");
 //		RTask rTask = new RTask(jObject.toString(), null, null, null, null, null, null, null, null, null, null, null);
 //		System.out.println(JSONObject.fromObject(rTask).toString());
-	JSONObject dJsonObject =new JSONObject();
-	dJsonObject.put("cc", "s");
-		System.out.println((Double)dJsonObject.get("cc"));
+		System.out.println(Timestamp.valueOf("2013-12-3 14:00"));
 	}
 }

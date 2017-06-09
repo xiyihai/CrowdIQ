@@ -180,43 +180,53 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		JSONObject UI = JSONObject.fromObject(taskString);
 		
 		//用来增加三天
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 			Date now=new Date();
 	
 		UI.put("begin_time", dateFormat.format(now));
-		
-		RTask rTask = new RTask(UI.get("content").toString(), (String)UI.get("table_name"), (Timestamp)UI.get("begin_time")
-				,(Timestamp)UI.get("deadline"),Double.valueOf(UI.get("each_reward").toString()),Integer.valueOf(UI.get("hastaken_number").toString()),
+		RTask rTask = new RTask(UI.get("content").toString(), UI.get("table_name").toString(), Timestamp.valueOf(UI.get("begin_time").toString())
+				,Timestamp.valueOf(UI.get("deadline").toString()+":00"),Double.valueOf(UI.get("each_reward").toString()),Integer.valueOf(UI.get("hastaken_number").toString()),
 				Integer.valueOf(UI.get("hasanswer_number").toString()),Integer.valueOf(UI.get("state").toString()),
 				Double.valueOf(UI.get("difficult_degree").toString()), Integer.valueOf(UI.get("worker_number").toString()),
 				Double.valueOf(UI.get("predict_cost").toString()), Double.valueOf(UI.get("haspaid_cost").toString()));		
 		
-		System.out.println(43);
-		
 		rtaskDao.save(rTask);
+		Integer task_id = rtaskDao.getIDbyContent(UI.get("content").toString()).get(0).getTask_id();
 		
-		System.out.println(33);
-		Integer task_id = rtaskDao.getIDbyContent((String)UI.get("content")).get(0).getTask_id();
-
-		System.out.println(354);
 		RequesterTask requestertask = new RequesterTask(Integer.valueOf(userID), task_id);
 		requestertaskDao.save(requestertask);
-
-		System.out.println(66);
 		return true;
 	}
 
 	@Override
+	public boolean commitEditTask(String userID, String taskID, String taskString) {
+		// TODO Auto-generated method stub
+		//将这个taskString解析出元素，直接存入RTask数据库生成任务ID，然后再存入R——T数据库
+		//为了利用数据库生成唯一ID，只能再将内容判断一遍来获取id值，只能假设content不可能重复
+		
+		JSONObject UI = JSONObject.fromObject(taskString);
+		RTask rTaskedit = rtaskDao.getBytaskID(taskID).get(0); 
+		rTaskedit.setContent(UI.get("content").toString());
+		rTaskedit.setDeadline(Timestamp.valueOf(UI.get("deadline").toString()));
+		rTaskedit.setWorker_number(Integer.valueOf(UI.get("worker_number").toString()));
+		rTaskedit.setEach_reward(Double.valueOf(UI.get("each_reward").toString()));
+		rTaskedit.setPredict_cost(rTaskedit.getEach_reward()*rTaskedit.getWorker_number());
+		rtaskDao.update(rTaskedit);
+		return true;
+	}
+
+	
+	@Override
 	public boolean publishTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
-		RTask rTask = rtaskDao.get(RTask.class, Integer.valueOf(taskID));
+		RTask rTask = rtaskDao.getBytaskID(taskID).get(0);
 		rTask.setState(1);
 		rtaskDao.update(rTask);
-		
 		//这里需要调用推荐模块
 		//输入工人数组： 工人id，工人质量矩阵， 工人等级(这里删选出从1开始)， 平均答题时间， 平均任务难度系数， 平均任务报酬
 		//输入任务： 任务ID， 截止时间， each_reward， 已收录工人数，需要工人数， 任务难度系数
 		List<Worker> workers = workerDao.getByLevel(1);
+
 		List<WorkerInfo> workerInfos = new ArrayList<>();
 		for (int i = 0; i < workers.size(); i++) {
 			Worker worker = workers.get(i);
@@ -228,7 +238,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		RequesterTaskInfo requesterTaskInfo = new RequesterTaskInfo(rTask.getTask_id(), 
 					rTask.getDeadline(), rTask.getEach_reward(), rTask.getHastaken_number(),
 					rTask.getWorker_number(), rTask.getDifficult_degree());
-	
+
 		//任务推荐接口： RecommendTask
 		//实现类： RecommendTaskImpl
 		//接口方法(返回工人ID组成的数组)： String[] getRecommendTask(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo)
@@ -237,11 +247,17 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		RecommendTask recommendTask = new RecommendTaskImpl();
 		String[] workerIDs = recommendTask.getRecommendTask(rTask.getWorker_number(), 1, workerInfos, requesterTaskInfo);
 		Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number(), 1, workerInfos, requesterTaskInfo);
-		
 		//要写入数据库
 		for(int i=0;i<workerIDs.length;i++){
-			WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[i]), Integer.valueOf(taskID), 1, taken_deadline);
-			workerRTaskDao.save(workerRTask);
+			if (workerRTaskDao.findByTidWid(workerIDs[i], taskID).size()>0) {
+				WorkerRTask workerRTask = workerRTaskDao.findByTidWid(workerIDs[i], taskID).get(0);
+				workerRTask.setTaken_deadline(taken_deadline);
+				workerRTask.setTimes(1);
+				workerRTaskDao.update(workerRTask);		
+			}else {
+				WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[i]), Integer.valueOf(taskID), 1, taken_deadline);
+				workerRTaskDao.save(workerRTask);		
+			}
 		}
 		return true;
 	}
@@ -257,7 +273,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			}
 		}
 		//找对对应雇主任务，修改状态为暂停，可能还有后续变化（任务暂停之后怎么处理）
-		RTask rTask = rtaskDao.get(RTask.class, taskID);
+		RTask rTask = rtaskDao.getBytaskID(taskID).get(0);
 		rTask.setState(3);
 		rtaskDao.update(rTask);
 		
@@ -280,10 +296,11 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			}
 			
 		}else if (flag.equals("requester")) {
-			RTask rTask = rtaskDao.get(RTask.class, taskID);
+			
+			RTask rTask = rtaskDao.getBytaskID(taskID).get(0);
 			Integer state = rTask.getState();
 			if (state==0||state==2||state==4) {
-				rtaskDao.delete(rtaskDao.get(RTask.class, taskID));
+				rtaskDao.delete(rtaskDao.getBytaskID(taskID).get(0));
 				requestertaskDao.delete(requestertaskDao.getBy2ID(userID, taskID).get(0));
 				return true;
 			}else {
@@ -304,8 +321,10 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			
 		}else if (flag.equals("requester")) {
 			//这里应该获取数据库中所有参数，最终作为一个JSONObject返回给用户，删选工作交给前端
-			RTask rTask = rtaskDao.get(RTask.class, taskID);
-			result = JSONObject.fromObject(rTask).toString();
+			RTask rTask = rtaskDao.getBytaskID(taskID).get(0);
+			JSONObject showtask = JSONObject.fromObject(rTask);
+			showtask.replace("deadline", rTask.getDeadline().toString());
+			result = showtask.toString();
 		}
 		return result;
 	}
@@ -505,7 +524,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	public String editTask(String userID, String taskID) {
 		// TODO Auto-generated method stub
 		String jsonTask = null;
-		RTask rTask = rtaskDao.get(RTask.class, taskID);
+		RTask rTask = rtaskDao.getBytaskID(taskID).get(0);
 		if (rTask.getState()!=1) {
 			jsonTask = showTask(userID, taskID, "requester");
 		}
@@ -529,7 +548,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			JSONObject task = new JSONObject();
 			task.put("task_id", taskID);
 			task.put("state", rTask.getState());
-			task.put("deadline", rTask.getDeadline());
+			task.put("deadline", rTask.getDeadline().toString());
 			task.put("hastaken_number", rTask.getHastaken_number());
 			task.put("hasanswer_number", rTask.getHasanswer_number());
 			task.put("worker_number", rTask.getWorker_number());

@@ -99,6 +99,7 @@
 	
 	<bean id="BuildTaskAction" class="actions.extend.task.requester.BuildTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="CommitTaskAction" class="actions.extend.task.requester.CommitTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="CommitEditTaskAction" class="actions.extend.task.requester.CommitEditTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="EditTaskAction" class="actions.extend.task.requester.EditTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PauseTaskAction" class="actions.extend.task.requester.PauseTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PublishTaskAction" class="actions.extend.task.requester.PublishTaskAction" parent="TaskProcessAction"></bean>

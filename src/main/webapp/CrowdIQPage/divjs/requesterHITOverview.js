@@ -11,9 +11,27 @@ require.config({
 
 require([], function () {
 
-    $.getJSON("../divjson/WorkerHITOverview.json").then(
-        function (data) {
-            var task = data;
+
+    var url = location.search;
+    var userID = url.split("?")[1].split("&")[0].split("=")[1];
+    var taskID = url.split("?")[1].split("&")[1].split("=")[1];
+    var flag = url.split("?")[1].split("&")[2].split("=")[1];
+
+    $.ajax({
+        type:'post',
+        url:'showTaskAction',
+        data:{
+            userID: userID,
+            taskID: taskID,
+            flag: flag
+        },
+        dataType:'json'
+    }).then(function (data) {
+
+            var t = $.parseJSON(data);
+
+            var task = $.parseJSON(t.content);
+
             var sqlTarget = task.sqlTarget;
             var questionD = task.questionDescribe;
             var showing_contents = task.showing_contents;
