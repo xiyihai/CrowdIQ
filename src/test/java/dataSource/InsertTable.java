@@ -24,10 +24,10 @@ public class InsertTable {
 			Transaction tx=session.beginTransaction();
 			
 			ReadTable readTable = new ReadTable();
-			readTable.tranfer("g:\\Winners.csv");
+			readTable.tranfer("g:\\person.csv");
 			
 			System.out.println(readTable.jsonTable.toString());
-			RTable rTable = new RTable(2, "2.Winners", 0, readTable.jsonTable.toString());
+			RTable rTable = new RTable(200000, "200000.person", 0, readTable.jsonTable.toString());
 			
 			session.save(rTable);
 			

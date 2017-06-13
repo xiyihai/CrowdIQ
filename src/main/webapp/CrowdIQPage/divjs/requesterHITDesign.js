@@ -226,7 +226,7 @@ require([], function () {
         taskfinal.difficult_degree = $("#difficult-degree").html();
         taskfinal.each_reward = $("#each-reward").html().substring(1);
         taskfinal.worker_number = $("#worker-number").html();
-        taskfinal.predict_cost = $("#predict-cost").html().substring(1);
+        taskfinal.predict_cost = taskfinal.each_reward*taskfinal.worker_number;
         taskfinal.deadline = $("#deadline").html();
         taskfinal.table_name = tablename;
 

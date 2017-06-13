@@ -78,37 +78,36 @@ require([], function () {
                 var redundancyRow = data.redundancyRow;
                 var headersmiss = data.headersmiss;
 
+                $("#dataformat").children().each(function (d, i) {
+                    if (d !== 0){
+                        $(i).remove();
+                    }
+                });
                 dataformat.forEach(function (d) {
-                    $("#dataformat").children().each(function (d, i) {
-                        if (d !== 0){
-                            $(i).remove();
-                        }
-                    });
                     $("#dataformat").append('<td>'+d+'</td>');
                 });
+                $("#datamiss").children().each(function (d, i) {
+                    if (d !== 0){
+                        $(i).remove();
+                    }
+                });
                 datamiss.forEach(function (d) {
-                    $("#datamiss").children().each(function (d, i) {
-                        if (d !== 0){
-                            $(i).remove();
-                        }
-                    });
                     $("#datamiss").append('<td>'+d+'</td>');
                 });
+                $("#redundancyRow").children().each(function (d, i) {
+                    if (d !== 0){
+                        $(i).remove();
+                    }
+                });
                 redundancyRow.forEach(function (d) {
-                    $("#redundancyRow").children().each(function (d, i) {
-                        if (d !== 0){
-                            $(i).remove();
-                        }
-                    });
                     $("#redundancyRow").append('<td>'+d+'</td>');
                 });
+                $("#headersmiss").children().each(function (d, i) {
+                    if (d !== 0){
+                        $(i).remove();
+                    }
+                });
                 headersmiss.forEach(function (d) {
-                    $("#headersmiss").children().each(function (d, i) {
-                        if (d !== 0){
-                            $(i).remove();
-                        }
-                    });
-
                     $("#headersmiss").append('<td>'+d+'</td>');
                 });
             });
@@ -169,6 +168,7 @@ require([], function () {
             this.state = "processing";
         }else {
             lastsign = "<td class='option-button'> " +
+                "<a href='#' id='design"+ i +"'><i class='fa fa-pencil'></i>design</a>" +
                 "<a href='#' id='download"+ i +"'><i class='fa fa-cloud-download'></i>download</a>" +
                 "<a href='#' id='delete"+ i +"'><i class='fa fa-trash-o'></i>delete</a> " +
                 "<a href='#' id='show" +i+ "'><i class='fa fa-search-plus'></i>show</a></td>";

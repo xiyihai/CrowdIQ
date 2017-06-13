@@ -17,7 +17,6 @@ import domains.key.WTaskKey;
 @Entity
 @Table(name="worker_task")
 @IdClass(WTaskKey.class)
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class WTask {
 

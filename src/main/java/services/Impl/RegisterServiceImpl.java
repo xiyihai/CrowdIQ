@@ -202,54 +202,67 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public boolean finishTestTask(String userID, String taskID, String answer) {
 		// TODO Auto-generated method stub
-		WorkerTestTask task = workertesttaskDao.findByWidTid(userID, taskID).get(0);
-		task.setState(1);
-		task.setWorker_answer(answer);
+		WorkerTestTask workertestTask = workertesttaskDao.findByWidTid(userID, taskID).get(0);
+		workertestTask.setState(1);
+		workertestTask.setWorker_answer(answer);
 		
-		//工人每做一题就要更新质量矩阵，若是做满10题更改工人level
 		TestTask testtask = testtaskDao.getByID(taskID).get(0);
 		//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
 		JSONArray truthArray = JSONArray.fromObject(testtask.getAnswer());
 		String truth = truthArray.getString(0);
 		//这个由JSONArray变换来的， 目前假设长度为1
-		JSONArray wanswerArray = JSONArray.fromObject(task.getWorker_answer());
+		JSONArray wanswerArray = JSONArray.fromObject(workertestTask.getWorker_answer());
 		String wanswer = wanswerArray.getString(0);
-		//还得获取候选答案长度，这里假定都是选择题
-		JSONObject content = JSONObject.fromObject(testtask.getContent());
-		JSONArray candidateItems = content.getJSONArray("candidateItems");
-		JSONArray items = candidateItems.getJSONArray(0);
-		
-		//转换ABC, 输入  vvv，Cff, [vvv,Cff,ccc] ; 输出：A：B：3  
-		//以：分割
-		String result = TranferAnswer.tranfer(wanswer, truth, items);
-	
-		//需要计算工人初步质量举证
-		ArrayList<String> results = new ArrayList<>();
-		results.add(result);
-		Worker worker = workerDao.getByWid(userID).get(0);
-		//需要将正确答案和工人答案打包然后发给对应计算模块
-		calculateTest = new CalculateTestImp();
-		worker.setQuality(calculateTest.CaculateTestQuestion(results));
-	
-		workerDao.update(worker);
-		
 		//需要判断工人做题是否正确,并写入数据库
 		if (wanswer.equals(truth)) {
-			task.setIscorrect(1);
+			workertestTask.setIscorrect(1);
 		}else {
-			task.setIscorrect(0);
+			workertestTask.setIscorrect(0);
 		}
-		workertesttaskDao.update(task);
+		workertesttaskDao.update(workertestTask);
 		
-		//需要判断该用户的测试题完成的是否足够多,若完成且工人目前level为0，则修改工人level为1
-		if (worker.getLevel()==0) {
-			List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
-			if (tasks.size()>=2) {
-				//需要更改工人的level
-				worker.setLevel(1);
-				workerDao.update(worker);
+		
+		//工人做满10题统一更新质量矩阵，做满10题还要更新工人等级
+		List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
+		//这里2还要变成10		
+		if (tasks.size()>=2) {
+			//需要计算工人初步质量举证
+			ArrayList<String> results = new ArrayList<>();
+			
+			for (int i = 0; i < tasks.size(); i++) {
+				WorkerTestTask workerTestTask2 = tasks.get(i);
+				String taskid = String.valueOf(workerTestTask2.getTesttask_id());
+				
+				TestTask testtask2 = testtaskDao.getByID(taskID).get(0);
+				//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
+				JSONArray truthArray2 = JSONArray.fromObject(testtask2.getAnswer());
+				String truth2 = truthArray2.getString(0);
+				//这个由JSONArray变换来的， 目前假设长度为1
+				JSONArray wanswerArray2 = JSONArray.fromObject(workerTestTask2.getWorker_answer());
+				String wanswer2 = wanswerArray2.getString(0);
+				//还得获取候选答案长度，这里假定都是选择题
+				JSONObject content = JSONObject.fromObject(testtask2.getContent());
+				JSONArray candidateItems = content.getJSONArray("candidateItems");
+				JSONArray items = candidateItems.getJSONArray(0);
+				
+				//转换ABC, 输入  vvv，Cff, [vvv,Cff,ccc] ; 输出：A：B：3  
+				//以：分割
+				String result = TranferAnswer.tranfer(wanswer2, truth2, items);
+				results.add(result);	
 			}
-		}	
+			Worker worker = workerDao.getByWid(userID).get(0);
+			//需要将正确答案和工人答案打包然后发给对应计算模块
+			calculateTest = new CalculateTestImp();
+			worker.setQuality(calculateTest.CaculateTestQuestion(results));
+		
+			workerDao.update(worker);
+			
+			//需要判断该用户的测试题完成的是否足够多,若完成且工人目前level为0，则修改工人level为1
+			if (worker.getLevel()==0) {
+					worker.setLevel(1);
+					workerDao.update(worker);
+			}	
+		}
 		return true;
 	}
 
@@ -314,14 +327,16 @@ public class RegisterServiceImpl implements RegisterService {
 				String deadline=dateFormat.format(now); 
 				
 				List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline);
-				rtask_number = workerRTasks.size();
-		
+				for (int i = 0; i < workerRTasks.size(); i++) {
+					if (wtaskDao.getByWidTid(userID, String.valueOf(workerRTasks.get(i).getTask_id())).isEmpty()) {
+						rtask_number++;
+					}
+				}
 				JSONObject taskInfo = new JSONObject();
 				taskInfo.put("state0", state0);
 				taskInfo.put("state2", state2);
 				taskInfo.put("testtask_number", testtask_number);
 				taskInfo.put("rtask_number", rtask_number);
-				
 				showinformation.put("taskInfo", taskInfo);
 				
 			}

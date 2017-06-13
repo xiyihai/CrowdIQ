@@ -11,14 +11,32 @@ require.config({
 
 require([], function () {
 
-    $.getJSON("../divjson/WorkerHITOverview.json").then(
-        function (data) {
-            var task = data;
+
+
+    var url = location.search;
+    var userID = url.split("?")[1].split("&")[0].split("=")[1];
+    var taskID = url.split("?")[1].split("&")[1].split("=")[1];
+
+    var answerLength;
+
+    $.ajax({
+        type:'post',
+        url:'showTaskAction',
+        data:{
+            userID: userID,
+            taskID: taskID,
+            flag: "worker"
+        },
+        dataType:'json'
+    }).then(function (data) {
+
+            var task = $.parseJSON($.parseJSON(data).content);
             var sqlTarget = task.sqlTarget;
             var questionD = task.questionDescribe;
             var showing_contents = task.showing_contents;
             var candidateItems = task.candidateItems;
 
+            answerLength = sqlTarget.length;
             sqlTarget.forEach(function (d) {
                 $("#sqlTarget").append('<td>'+ d +'</td>>');
             });
@@ -127,33 +145,77 @@ require([], function () {
                     }
                 }
 
-
             });
 
-            candidateItems.forEach(function (d,j) {
-                var options = "<td> <div class='form-group'>";
-                var count=0;
-                d.forEach(function (di,i) {
-                    options = options+"<div class='radio'> <label> <input type='radio' name='optionsRadios"+ j + "' id='option"+i+"' value='"+di+"'>"+
-                        di+"</label> </div>";
-                    count = i;
+            var candidateLength = 0;
+            if (candidateItems!=null) {
+                var count = 0;
+                candidateLength = candidateItems.length;
+                candidateItems.forEach(function (d, j) {
+                    var options = "<td> <div class='form-group'>";
+                    d.forEach(function (di, i) {
+                        options = options + "<div class='radio'> <label> <input type='radio' name='optionsRadios" + j + "' id='option" + i + "' value='" + di + "'>" +
+                            di + "</label> </div>";
+                        count = i;
+                    });
+                    count = count + 1;
+                    options = options + "<div class='radio'> <label> " +
+                        "<input type='radio' name='optionsRadios" + j + "' id='option" + count + "' value='' checked>" + "" +
+                        "<input type='text' id='customfill"+j+"' placeholder='fill in the blanks'></label> </div>";
+                    options = options + "</div> </td>";
+
+                    $("#candidateItems").append(options);
                 });
-                count = count +1;
-                options = options+"<div class='radio'> <label> " +
-                    "<input type='radio' name='optionsRadios"+j+"' id='option" + count +"' value='' checked>"+"" +
-                    "<input type='text' id='customfill' value='fill in the blanks'></label> </div>";
-                options = options+"</div> </td>";
+            }
 
+            for (var i=0;i<sqlTarget.length-candidateLength;i++){
+                var options = "<td> <div class='form-group'> <div class='radio'> <label> " +
+                    "<input type='radio' name='optionsRadios"+(candidateLength+i)+"' id='option"+(candidateLength+i)+"' value='' checked>"+
+                    "<input type='text' id='customfill"+(candidateLength+i)+"' placeholder='fill in the blanks'></label> </div> </div> </td>";
                 $("#candidateItems").append(options);
-            });
-
+            }
 
             //这个是用来统计个数的函数，需要先加载，再调用
-            $('#dataTables-example').DataTable({
-                responsive: true
-            });
-        }
-    );
+            //$('#dataTables-example').DataTable({
+            //    responsive: true
+            //});
+    }).then(function () {
+        //用来绑定提交答案按钮
+
+        $("#submitanswer").bind("click", function () {
+
+            var answerArray = new Array();
+
+            for (var j=0;j<answerLength;j++){
+                var radios = document.getElementsByName("optionsRadios"+j);
+                var answer;
+                for (var i=0;i<radios.length;i++){
+                    if (radios[i].checked){
+                        if (radios[i].value == ""){
+                            answer = $("#"+"customfill"+j).val();
+                        }else {
+                            answer = radios[i].value;
+                        }
+                        answerArray[j] = answer;
+                    }
+                }
+            }
+            $.ajax({
+                type:'post',
+                url:'finishTaskAction',
+                data:{
+                    userID: userID,
+                    taskID: taskID,
+                    answers: JSON.stringify(answerArray)
+                },
+                dataType:'json'
+            }).then(function () {
+                alert("success");
+            })
+        })
+
+    });
+
 
 });
 

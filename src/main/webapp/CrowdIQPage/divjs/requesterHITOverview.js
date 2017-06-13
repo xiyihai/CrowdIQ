@@ -36,6 +36,8 @@ require([], function () {
             var questionD = task.questionDescribe;
             var showing_contents = task.showing_contents;
             var candidateItems = task.candidateItems;
+            var receiveAnswers = task.receiveAnswers;
+            var finalAnswers = task.finalAnswers;
 
             sqlTarget.forEach(function (d) {
                 $("#sqlTarget").append('<td>'+ d +'</td>>');
@@ -148,6 +150,7 @@ require([], function () {
 
             });
 
+        if (candidateItems!=null){
             candidateItems.forEach(function (d) {
                 var options = "";
                 d.forEach(function (di) {
@@ -155,7 +158,24 @@ require([], function () {
                 });
                 $("#candidateItems").append("<td>"+options+"</td>");
             });
+        }
 
+        if (finalAnswers!=null){
+            finalAnswers.forEach(function (d) {
+                var options = "<p>"+d;
+                $("#finalAnswers").append("<td>"+options+"</td>");
+            });
+        }
+
+        if (receiveAnswers!=null){
+            receiveAnswers.forEach(function (d) {
+                var options = "";
+                d.forEach(function (di) {
+                    options = options+"<p>"+di;
+                });
+                $("#receivedAnswers").append("<td>"+options+"</td>");
+            });
+        }
 
             //这个是用来统计个数的函数，需要先加载，再调用
             $('#dataTables-example').DataTable({

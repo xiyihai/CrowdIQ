@@ -24,7 +24,6 @@ public class ReadUploadTableAction extends InspectionAndReadTableBaseAction {
 		this.userID = userID;
 	}
 
-		
 	public String execute(){	
 		if (readService.readUploadTable(userID, tablename)) {
 			return SUCCESS;	

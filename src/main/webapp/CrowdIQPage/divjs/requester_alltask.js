@@ -137,7 +137,7 @@ require([], function () {
             this.state = "暂停中";
         }
         if (state === 4){
-            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> <a href='#' id='edit"+i+"'><i class='fa fa-pencil'></i>修改</a> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a></td>";
+            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a><a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a></td>";
             this.state = "已过期";
         }
         if (state === 5){

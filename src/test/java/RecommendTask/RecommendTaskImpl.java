@@ -208,7 +208,7 @@ public Timestamp getTakenDeadline(Integer worker_number, Integer times, List<Wor
 		RequesterTaskInfo requesterInfos) {
 	// TODO Auto-generated method stub
 	Date date =new Date();
-	Timestamp time=new Timestamp(date.getTime()+1000*60*20);
+	Timestamp time=new Timestamp(date.getTime()+1000*60*60);
 	return time;
 }
 }

@@ -478,14 +478,21 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							algorithm_top = "0";
 						}
 						
-						//判断数据库中，该用户是否存在这个算法
-						if (!rAlgorithmDao.findByIDAlgorithm(userID, algorithm_name).isEmpty()) {
+						if (algorithm.split(":")[0].startsWith("outer")) {
+							//判断数据库中，该用户是否存在这个算法
+							if (!rAlgorithmDao.findByIDAlgorithm(userID, algorithm_name).isEmpty()) {
+								AlgorithmIn algorithmIn = new AlgorithmIn();
+								ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top));
+								//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
+								results.add(items);
+							}else {
+								results.add(null);
+							}	
+						}else {
 							AlgorithmIn algorithmIn = new AlgorithmIn();
-							ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top) );
+							ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top));
 							//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
 							results.add(items);
-						}else {
-							results.add(null);
 						}
 					}
 				}

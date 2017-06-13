@@ -14,7 +14,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name="requester_algorithm")
 
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class RAlgorithm {
 

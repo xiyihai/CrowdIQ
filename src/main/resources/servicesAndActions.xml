@@ -91,6 +91,7 @@
 	<bean id="ReadDBTableAction" class="actions.extend.table.ReadDBTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadUploadTableAction" class="actions.extend.table.ReadUploadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ShowDBTableAction" class="actions.extend.table.ShowDBTableAction" parent="InspectionAndReadTableAction"></bean>
+	<bean id="UploadTableAction" class="actions.extend.table.UploadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="UploadTableListAction" class="actions.extend.table.UploadTableListAction" parent="InspectionAndReadTableAction"></bean>
 	
 	
@@ -105,8 +106,7 @@
 	<bean id="PublishTaskAction" class="actions.extend.task.requester.PublishTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
 	
-	<bean id="FinishTaskAction" class="actions.extend.task.worker.PublishTaskAction" parent="TaskProcessAction"></bean>
-	<bean id="PreviewTaskAction" class="actions.extend.task.worker.PreviewTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="FinishTaskAction" class="actions.extend.task.worker.FinishTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="TakeTaskAction" class="actions.extend.task.worker.TakeTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowRecommendTaskAction" class="actions.extend.task.worker.ShowRecommendTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowTakenTaskAction" class="actions.extend.task.worker.ShowTakenTaskAction" parent="TaskProcessAction"></bean>

@@ -1,5 +1,7 @@
 package actions.extend.task.worker;
 
+import javax.swing.plaf.synth.SynthStyle;
+
 import actions.base.TaskProcessBaseAction;
 
 public class FinishTaskAction extends TaskProcessBaseAction {

@@ -3,6 +3,10 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.hibernate.loader.custom.Return;
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import net.sf.json.JSONArray;
 
 public class CaculateParameterImpl implements CaculateParameter{
@@ -82,7 +86,7 @@ public class CaculateParameterImpl implements CaculateParameter{
 		 */
         for(int i=0;i<quality.length;i++){
         	quality[i]=ReadWm(wm[i]);
-        	System.out.println(quality[i]);
+//        	System.out.println(quality[i]);
         	c=c+quality[i];
         }
         average=c/quality.length;//工人的平均质量
@@ -97,40 +101,23 @@ public class CaculateParameterImpl implements CaculateParameter{
 	//优化工人个数
 		@SuppressWarnings("unused")
 		private int getOptimizeWokerNum(double c,double u){
-			int s=1;
-			int e=(int) (2*((0-Math.log(1-c))/(4*(u-0.5)*(u-0.5)))+1);
-			while(s<e){
-				int m=(int)((2*((s+e)/4+0.5))-1);
-				double E=computeExpectedProb(m,u);
-				if(E>=c){
-					e=m;
-					break;
-				}
-				else{
-					s=m+2;
-				}
-				
+			int e=0;
+			if(c==1){
+				 e=1;
+			}else if(c==0){
+				e=0;
+			}else{
+			 e=(int) (2*((0-Math.log(1-c))/(4*(u-0.5)*(u-0.5)))+1);
 			}
-			return e;	
+			return e;
 		}
-		private double computeExpectedProb(int m,double u){
-			double E=0,dit=Math.pow(u,m);
-			double u1=0;
-			for(int i=0;i<(m/2+1);i++){
-				E=E+dit;
-				u1=((1-u)*i)/(u*(m-i+1));
-				dit=dit*u1;
-				
-			}
-			return E;
-			
-		}
+		
 		 /**
 	    *
 	    * 工人的准确性计算
 	    * 
 	    */
-	   
+	
 		private double WokerAccuracy(double[][] wm){
 	   	
 	   	double s=0;//记录工人选择的答案与真实答案相同的累积贡献值

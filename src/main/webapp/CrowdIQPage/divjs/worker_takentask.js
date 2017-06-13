@@ -23,16 +23,16 @@ require([], function () {
         dataType:'json'
     }).then(function (data) {
             var takentasks = $.parseJSON(data);
-            takentasks.forEach(function (d) {
+            takentasks.forEach(function (d, i) {
 
                 var takentask = new TakenTask(d.task_id, d.state, d.deadline, d.each_reward, d.di, d.taken_time
-                , d.finish_time, d.get_reward);
+                , d.finish_time, d.get_reward, i);
 
-                var context = '<tr><td>' + takentask.task_id + '</td>' + '<td>' + takentask.state +
-                    '</td>'+'<td>' + takentask.deadline + '</td>'+'<td>' + takentask.each_reward + '</td>'
-                    +'<td>' + takentask.di + '</td>'+'<td>' + takentask.taken_time + '</td>'
-                    +'<td>' + takentask.finish_time + '</td>'+'<td>' + takentask.get_reward + '</td>'
-                    + lastsign + '</tr>';
+                var context = "<tr><td id='taskID"+i+"'>" + takentask.task_id + "</td>" + "<td>" + takentask.state +
+                    "</td>"+"<td>" + takentask.deadline + "</td>"+"<td>" + takentask.each_reward + "</td>"
+                    +"<td>" + takentask.di + "</td>"+"<td>" + takentask.taken_time + "</td>"
+                    +"<td>" + takentask.finish_time + "</td>"+"<td>" + takentask.get_reward + "</td>"
+                    + lastsign + "</tr>";
 
                 $("#takentask-tbody").append(context);
             });
@@ -42,32 +42,62 @@ require([], function () {
                 responsive: true
             });
         }
-    );
+    ).then(function () {
+
+        $("a[id^='delete']").bind("click", function () {
+            var number = $(this).attr('id').substring(6);
+            var taskID = $("#" + "taskID" + number).html();
+            $.ajax({
+                type:'post',
+                url:'deleteTaskAction',
+                data:{
+                    userID: userID,
+                    taskID: taskID,
+                    flag: "worker"
+                },
+                dataType:'json'
+            }).then(function () {
+                alert("success");
+            });
+        });
+
+        $("a[id^='do']").bind("click", function () {
+            var number = $(this).attr('id').substring(2);
+            var taskID = $("#" + "taskID" + number).html();
+            window.location.href = "workerHIT.html?userID="+userID+"&taskID="+taskID;
+        });
+
+        $("a[id^='preview']").bind("click", function () {
+            var number = $(this).attr('id').substring(7);
+            var taskID = $("#" + "taskID" + number).html();
+            window.location.href = "workerHITOverview.html?userID="+userID+"&taskID="+taskID+"&done=1";
+        });
+    });
 
 
     var lastsign;
 
     //这样处理的好处在于，针对json数据中不存在的属性，这里可以预处理，d.iscorrect不影响操作
-    function TakenTask(task_id, state, deadline, each_reward, di, taken_time, finish_time, get_reward){
+    function TakenTask(task_id, state, deadline, each_reward, di, taken_time, finish_time, get_reward, i){
         this.task_id = task_id;
         this.deadline = deadline;
         this.each_reward = each_reward;
         this.di = di;
         this.taken_time = taken_time;
         if(state === 0){
-            lastsign = '<td> <a href="forms.html"><i class="fa fa-pencil"></i>做题</a> </td>';
+            lastsign = "<td> <a href='#' id='do"+i+"'><i class='fa fa-pencil'></i>做题</a> </td>";
             this.state = "undo";
             this.finish_time = null;
             this.get_reward = null;
         }
         if (state === 2){
-            lastsign = '<td> <a href="forms.html"><i class="fa fa-ban"></i>删除</a> </td>';
+            lastsign = "<td> <a href='#' id='preview"+i+"'><i class='fa fa-check'></i>查看</a> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> </td>";
             this.state = "finished";
             this.finish_time = finish_time;
             this.get_reward = get_reward;
         }
         if(state === 4){
-            lastsign = '<td> <a href="forms.html"><i class="fa fa-ban"></i>删除</a> </td>';
+            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> </td>";
             this.state = "expired";
             this.finish_time = null;
             this.get_reward = null;

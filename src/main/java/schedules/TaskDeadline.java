@@ -19,7 +19,6 @@ public class TaskDeadline {
 
 	protected void execute() {
 		if (!isRunning) {
-			
 			isRunning=true;
 			taskProcessService.findDeadlineTask();
 			taskProcessService.findTakenDeadlineTask();

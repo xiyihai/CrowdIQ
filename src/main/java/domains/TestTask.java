@@ -13,7 +13,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="testtask_info")
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
 public class TestTask {
 
