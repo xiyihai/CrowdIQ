@@ -151,6 +151,34 @@ require([], function () {
             window.location.href = "requesterHITDesign.html?userID="+userID+"&tablename="+tablename;
         });
 
+        $("a[id^='show']").bind("click", function () {
+            var number = $(this).attr('id').substring(4);
+            var tablename = $("#" + "tablename" + number).html();
+            $.ajax({
+                type: 'post',
+                url: 'readDBTableAction',
+                data: {
+                    userID: userID,
+                    tablename: tablename
+                },
+                dataType: 'json'
+            }).then(function (data) {
+                //展示json树
+                try {
+                    var input = $.parseJSON(data);
+                }
+                catch (error) {
+                    return alert("Cannot eval JSON: " + error);
+                }
+                var options = {
+                    collapsed: $('#collapsed').is(':checked'),
+                    withQuotes: $('#with-quotes').is(':checked')
+                };
+                $('#json-renderer').jsonViewer(input, options);
+            });
+        });
+
+
     });
 
 

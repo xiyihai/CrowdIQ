@@ -32,19 +32,19 @@ require([], function () {
         taskFinal = t;
         var task = $.parseJSON(t.content);
         taskContent = task;
-        var sqlTarget = task.sqlTarget;
+        var sqlTargets = task.sqlTargets;
         var questionD = task.questionDescribe;
         var showing_contents = task.showing_contents;
         var candidateItems = task.candidateItems;
 
 
-        if (sqlTarget != null) {
-            sqlTarget.forEach(function (d) {
-                $("#sqlTarget").append('<td>' + d + '</td>>');
+        if (sqlTargets != null){
+            sqlTargets.forEach(function (d) {
+                $("#sqlTargets").append('<span>'+d+'</span>');
             });
         }
 
-        $("#questionDescribe").append('<td id="questionDes" contenteditable="true" colspan="'+ sqlTarget.length +'">'+ questionD +'</td>>');
+        $("#questionDescribe").html(questionD);
 
         if (showing_contents != null) {
 
@@ -145,30 +145,29 @@ require([], function () {
                             }
                         } else {
                             //除了上面三种情况的
-                            $("#showing-others").append('<td>' + d + '</td>');
+                            $("#showing-others").append('<span>' + d + '</span>');
                         }
                     }
                 }
 
             });
         }
-        if (candidateItems != null) {
+        if (candidateItems != null){
             candidateItems.forEach(function (d) {
-                var options = "";
+                var options = "<ul class='top-k'>";
                 d.forEach(function (di) {
-                    options = options + "<p>" + di;
+                    options = options+"<li>"+di+"</li>";
                 });
-                $("#candidateItems").append("<td>" + options + "</td>");
+                $("#candidateItems").append(options+"</ul>");
             });
         }
-
         var worker_number = t.worker_number;
         var each_reward = t.each_reward;
         var deadline = t.deadline;
 
-        $("#worker-number").append("<td><p contenteditable='true' id='workerNumber'>"+worker_number+"</td>");
-        $("#each-reward").append("<td><p contenteditable='true' id='eachReward'>"+"$"+each_reward+"</td>");
-        $("#deadline").append("<td><p contenteditable='true' id='deadLine'>"+deadline+"</td>");
+        $("#worker-number").html(worker_number);
+        $("#each-reward").html("$"+each_reward);
+        $("#deadline").html(deadline);
 
         //这个是用来统计个数的函数，需要先加载，再调用
         $('#dataTables-example').DataTable({
@@ -178,12 +177,12 @@ require([], function () {
 
 
     $("#submittask").bind("click", function () {
-        taskContent.questionDescribe =  $("#questionDes").html();
+        taskContent.questionDescribe =  $("#questionDescribe").val();
         taskFinal.content = JSON.stringify(taskContent);
 
-        taskFinal.each_reward = $("#eachReward").html().substring(1);
-        taskFinal.worker_number = $("#workerNumber").html();
-        taskFinal.deadline = $("#deadLine").html();
+        taskFinal.each_reward = $("#each-reward").html().substring(1);
+        taskFinal.worker_number = $("#worker-number").html();
+        taskFinal.deadline = $("#deadline").html();
 
         $.ajax({
             type:'post',

@@ -20,7 +20,7 @@
 	<!--定义触发器  -->
 	<bean id="cronTriggertaskDeadline" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<!-- Seconds Minutes Hours DayofMonth Month DayofWeek Year -->
-		<property name="cronExpression" value="0 0 * * * ? *"></property>
+		<property name="cronExpression" value="0 * * * * ? *"></property>
 		<property name="jobDetail" ref="findDeadlineTaskQuartzDetail"></property>
 	</bean>
 	

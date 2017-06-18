@@ -32,18 +32,20 @@ require([], function () {
 
             var task = $.parseJSON(t.content);
 
-            var sqlTarget = task.sqlTarget;
+            var sqlTargets = task.sqlTargets;
             var questionD = task.questionDescribe;
             var showing_contents = task.showing_contents;
             var candidateItems = task.candidateItems;
             var receiveAnswers = task.receiveAnswers;
             var finalAnswers = task.finalAnswers;
 
-            sqlTarget.forEach(function (d) {
-                $("#sqlTarget").append('<td>'+ d +'</td>>');
-            });
+            if (sqlTargets != null){
+                sqlTargets.forEach(function (d) {
+                    $("#sqlTargets").append('<span>'+d+'</span>');
+                });
+            }
 
-            $("#questionDescribe").append('<td colspan="'+ sqlTarget.length +'">'+ questionD +'</td>>');
+            $("#questionDescribe").html(questionD);
 
             showing_contents.forEach(function (d) {
                 //需要判断开头是什么，再决定放在表格的哪里,顺便还能知道展示内容是什么，这里解析和后台java是一样的
@@ -142,7 +144,7 @@ require([], function () {
                             }
                         }else {
                             //除了上面三种情况的
-                            $("#showing-others").append('<td>'+ d +'</td>');
+                            $("#showing-others").append('<span>' + d + '</span>');
                         }
                     }
                 }
@@ -150,30 +152,29 @@ require([], function () {
 
             });
 
-        if (candidateItems!=null){
+        if (candidateItems != null){
             candidateItems.forEach(function (d) {
-                var options = "";
+                var options = "<ul class='top-k'>";
                 d.forEach(function (di) {
-                    options = options+"<p>"+di;
+                    options = options+"<li>"+di+"</li>";
                 });
-                $("#candidateItems").append("<td>"+options+"</td>");
+                $("#candidateItems").append(options+"</ul>");
             });
         }
 
         if (finalAnswers!=null){
             finalAnswers.forEach(function (d) {
-                var options = "<p>"+d;
-                $("#finalAnswers").append("<td>"+options+"</td>");
+                $("#finalAnswers").append("<span>"+d+"</span>");
             });
         }
 
         if (receiveAnswers!=null){
             receiveAnswers.forEach(function (d) {
-                var options = "";
+                var options = "<ul class='top-k'>";
                 d.forEach(function (di) {
-                    options = options+"<p>"+di;
+                    options = options+"<li>"+di+"</li>";
                 });
-                $("#receivedAnswers").append("<td>"+options+"</td>");
+                $("#receivedAnswers").append(options+"</ul>");
             });
         }
 

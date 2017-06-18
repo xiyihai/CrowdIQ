@@ -247,7 +247,7 @@ public class RegisterServiceImpl implements RegisterService {
 				
 				//转换ABC, 输入  vvv，Cff, [vvv,Cff,ccc] ; 输出：A：B：3  
 				//以：分割
-				String result = TranferAnswer.tranfer(wanswer2, truth2, items);
+				String result = TranferAnswer.testtranfer(wanswer2, truth2, items);
 				results.add(result);	
 			}
 			Worker worker = workerDao.getByWid(userID).get(0);

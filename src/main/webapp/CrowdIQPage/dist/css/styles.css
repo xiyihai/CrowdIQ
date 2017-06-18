@@ -46,10 +46,8 @@
     margin-left:20px;
 }
 #jsontree{
-    font-size:25px;
-    height:200px;
-    border:1px solid #d9534f;
-    background-color: #85c5e5;
+    font-size:14px;
+    border:1px solid #82878c;
 }
 /*RequesterHITDEsign*/
 .aim-table span{
@@ -59,6 +57,7 @@
 .table-title{
     font-weight:bold;
 }
+
 /*RequesterHITDEsign结束*/
 
 /*index_requester*/

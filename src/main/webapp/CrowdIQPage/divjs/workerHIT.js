@@ -31,17 +31,19 @@ require([], function () {
     }).then(function (data) {
 
             var task = $.parseJSON($.parseJSON(data).content);
-            var sqlTarget = task.sqlTarget;
+            var sqlTargets = task.sqlTargets;
             var questionD = task.questionDescribe;
             var showing_contents = task.showing_contents;
             var candidateItems = task.candidateItems;
 
-            answerLength = sqlTarget.length;
-            sqlTarget.forEach(function (d) {
-                $("#sqlTarget").append('<td>'+ d +'</td>>');
-            });
+            answerLength = sqlTargets.length;
+            if (sqlTargets != null){
+                sqlTargets.forEach(function (d) {
+                    $("#sqlTargets").append('<span>'+d+'</span>');
+                });
+            }
 
-            $("#questionDescribe").append('<td colspan="'+ sqlTarget.length +'">'+ questionD +'</td>>');
+            $("#questionDescribe").html(questionD);
 
             showing_contents.forEach(function (d) {
                 //需要判断开头是什么，再决定放在表格的哪里,顺便还能知道展示内容是什么，这里解析和后台java是一样的
@@ -140,7 +142,7 @@ require([], function () {
                             }
                         }else {
                             //除了上面三种情况的
-                            $("#showing-others").append('<td>'+ d +'</td>');
+                            $("#showing-others").append('<span>' + d + '</span>');
                         }
                     }
                 }
@@ -152,8 +154,11 @@ require([], function () {
                 var count = 0;
                 candidateLength = candidateItems.length;
                 candidateItems.forEach(function (d, j) {
-                    var options = "<td> <div class='form-group'>";
+                    var options = "<div class='form-group'>";
                     d.forEach(function (di, i) {
+                        if (di.indexOf(":") !== -1) {
+                            di = di.split(":")[0];
+                        }
                         options = options + "<div class='radio'> <label> <input type='radio' name='optionsRadios" + j + "' id='option" + i + "' value='" + di + "'>" +
                             di + "</label> </div>";
                         count = i;
@@ -162,23 +167,23 @@ require([], function () {
                     options = options + "<div class='radio'> <label> " +
                         "<input type='radio' name='optionsRadios" + j + "' id='option" + count + "' value='' checked>" + "" +
                         "<input type='text' id='customfill"+j+"' placeholder='fill in the blanks'></label> </div>";
-                    options = options + "</div> </td>";
+                    options = options + "</div>";
 
                     $("#candidateItems").append(options);
                 });
             }
 
-            for (var i=0;i<sqlTarget.length-candidateLength;i++){
-                var options = "<td> <div class='form-group'> <div class='radio'> <label> " +
+            for (var i=0;i<sqlTargets.length-candidateLength;i++){
+                var options = "<div class='form-group'> <div class='radio'> <label> " +
                     "<input type='radio' name='optionsRadios"+(candidateLength+i)+"' id='option"+(candidateLength+i)+"' value='' checked>"+
-                    "<input type='text' id='customfill"+(candidateLength+i)+"' placeholder='fill in the blanks'></label> </div> </div> </td>";
+                    "<input type='text' id='customfill"+(candidateLength+i)+"' placeholder='fill in the blanks'></label> </div> </div>";
                 $("#candidateItems").append(options);
             }
 
             //这个是用来统计个数的函数，需要先加载，再调用
-            //$('#dataTables-example').DataTable({
-            //    responsive: true
-            //});
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
     }).then(function () {
         //用来绑定提交答案按钮
 

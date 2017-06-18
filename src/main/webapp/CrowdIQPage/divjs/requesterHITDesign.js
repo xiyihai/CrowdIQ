@@ -57,13 +57,13 @@ require([], function () {
             var task = $.parseJSON(data);
             taskContent = task;
 
-            var sqlTarget = task.sqlTarget;
+            var sqlTargets = task.sqlTargets;
             var showing_contents = task.showing_contents;
             var candidateItems = task.candidateItems;
 
-            if (sqlTarget != null){
-                sqlTarget.forEach(function (d) {
-                    $("#sqlTarget").append('<span>'+d+'</span>');
+            if (sqlTargets != null){
+                sqlTargets.forEach(function (d) {
+                    $("#sqlTargets").append('<span>'+d+'</span>');
                 });
             }
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -154,6 +155,38 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 			return result;
 		}
 		
+	//delete table.rows[2],table.columns[3],table.entity_name,不用考虑两层的属性 rows[2][2]没有意义
+	private JSONObject deleteAttribute(String[] subattributes, JSONObject jsonTable){
+		String attribute_name = subattributes[0];
+		int first_number;
+		
+		if (!subattributes[1].equals("")) {
+			first_number = Integer.valueOf(subattributes[1]);
+			
+			int row_length = jsonTable.getJSONArray("data").size();
+			int column_length = jsonTable.getJSONArray("data").getJSONArray(0).size();
+			
+			//这里需要区分行列对应	
+			//这里需要获取对应属性 行列的 数值，这里假定不是空表，则其行列值根据已有的数组来判断
+			if (attribute_name.equals("rows")) {
+				//循环放入初始化的元素
+				jsonTable.getJSONArray("data").remove(first_number);		
+			}else if (attribute_name.equals("columns")) {
+				for (int j = 0; j < row_length; j++) {
+					jsonTable.getJSONArray("data").getJSONArray(j).remove(first_number);
+				}			
+			}else if (attribute_name.equals("headers")){
+				jsonTable.getJSONArray("headers").remove(first_number);
+			}else {
+				System.out.println("这个属性不能删除[]");	
+			}
+		}else {
+			//这个直接放一个属性名即可
+			jsonTable.remove(attribute_name);
+		}
+		return jsonTable;
+	}
+	
 	//插入对应的内容，用于insert rows[2] columns[3](对应表头个数也要变化) 新增2行 3列
 	private JSONObject insertAttribute(String[] subattributes, JSONObject jsonTable) {
 			String attribute_name = subattributes[0];
@@ -301,8 +334,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					if (showing[i].startsWith("cluster(")) {
 						String cluster_target = showing[i].substring(8, showing[i].length()-1).split(";")[0];
 						String cluster_top = showing[i].substring(8, showing[i].length()-1).split(";")[1];
-						if (showing[i].startsWith("tablelist[")) {
-							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+						if (cluster_target.startsWith("tablelist[")) {
+							result = getTableList(userID, cluster_target.substring(10, cluster_target.length()-1));
 							//这个result是一个三维数组，里面包含表头，先要解析出每一个二维数组，分离表头和数据
 							//数据聚类之后，再和表头合并，然后组成三维数组
 							JSONArray tables = JSONArray.fromObject(result); //三维
@@ -323,7 +356,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							result = "tablelist:"+result;
 							
 						}else {
-							String[] attribute = showing[i].split("\\.");
+							String[] attribute = cluster_target.split("\\.");
 							
 							//通过id号对应表格，这里table直接定义为readTable，所以这里element[0]没啥用
 							//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
@@ -331,6 +364,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							//得到showing具体元素值,result只能是二维，ArrayList.fromObject可以直接转换
 							result = findAttribute(subattributes, jsonTable);
 							result = ClusterImpl.process(result, Double.valueOf(cluster_top));
+							
 							//这里需要加入标志符：
 							String ahead = subattributes[0];
 							for (int j = 1; j < subattributes.length; j++) {
@@ -401,6 +435,24 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				return null;
 			}
 			
+			//delete不需要返回值
+			if (map_element.get("delete")!=null) {
+				String[] delete = (String[]) map_element.get("delete");
+				for(int i=0;i<delete.length;i++){
+					String[] attribute = delete[i].split("\\.");
+					String[] subattributes = regex(attribute[1]);
+					
+					//插入新的一行，一列，新的属性， 这里jsonTable需要迭代计算
+					jsonTable = deleteAttribute(subattributes, jsonTable);
+				}
+				//最后把最新的jsontable插入数据库
+				RTable rTable = rTableDao.findByIDName(userID, tablename).get(0);
+				rTable.setJsontable(jsonTable.toString());
+				rTableDao.update(rTable);
+				//插入语句和其他语句不通，本质不需要返回值x
+				return null;
+			}
+			
 			//select需要返回前端值,但返回的还是之前map里的东西
 			if (map_element.get("select")!=null){
 				String[] select = (String[]) map_element.get("select");
@@ -409,7 +461,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 				for (int i = 0; i < select.length; i++) {
 					targetsBlank[i] = getAttributeNumber(select[i], jsonTable);
 				}
-				map_result.put("sqlTarget", select);
+				map_result.put("sqlTargets", select);
 			}
 			if (map_element.get("update")!=null){
 				String[] update = (String[]) map_element.get("update");
@@ -491,8 +543,18 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						}else {
 							AlgorithmIn algorithmIn = new AlgorithmIn();
 							ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top));
-							//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
-							results.add(items);
+							//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧						
+							ArrayList<String> ritems = new ArrayList<>();
+							DecimalFormat dFormat = new DecimalFormat("#######0.00");
+							
+							for (int k = 0; k < items.size(); k++) {
+								String item = items.get(k);
+								if (item.contains(":")) {
+									item = item.split(":")[0]+":"+dFormat.format((Double.valueOf(item.split(":")[1])));
+									ritems.add(item);
+								}
+							}
+							results.add(ritems);
 						}
 					}
 				}

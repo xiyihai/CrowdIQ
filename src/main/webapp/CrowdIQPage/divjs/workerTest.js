@@ -36,16 +36,15 @@ require([], function () {
         answerLength = candidateItems.length;
 
         var length;
-        if (sqlTargets != null) {
+
+        if (sqlTargets != null){
             sqlTargets.forEach(function (d, i) {
-                $("#sqlTarget").append('<td>' + d + '</td>>');
+                $("#sqlTargets").append('<span>'+d+'</span>');
                 length = i;
             });
         }
 
-        if (questionD != null) {
-            $("#questionDescribe").append('<td colspan="' + (sqlTarget+1) + '">' + questionD + '</td>>');
-        }
+        $("#questionDescribe").html(questionD);
 
         if (showing_contents != null) {
 
@@ -146,7 +145,7 @@ require([], function () {
                         }
                     } else {
                         //除了上面三种情况的
-                        $("#showing-others").append('<td>' + d + '</td>');
+                        $("#showing-others").append('<span>' + d + '</span>');
                     }
                 }
             }
@@ -156,19 +155,19 @@ require([], function () {
 
         if (candidateItems!=null){
             candidateItems.forEach(function (d, j) {
-                var options = "<td> <div class='form-group'>";
+                var options = "<div class='form-group'>";
                 d.forEach(function (di, i) {
                     options = options + "<div class='radio'> <label> <input type='radio' name='optionsRadios" + j + "' id='option" + i + "' value='" + di + "'>" +
                         di + "</label> </div>";
                 });
 
-                $("#candidateItems").append(options);
+                $("#candidateItems").append(options+"</div>");
             });
         }
         //这个是用来统计个数的函数，需要先加载，再调用
-        //$('#dataTables-example').DataTable({
-        //    responsive: true
-        //});
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
     }).then(function () {
 
         $("#submitanswer").bind("click", function () {
