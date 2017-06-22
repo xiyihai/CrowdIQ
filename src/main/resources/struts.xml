@@ -23,8 +23,8 @@
       		</result>
       	</action>
       	
-      	<!-- 上传算法，无返回结果 -->
-      	<action name="uploadAlgorithmAction" class="UploadAlgorithmAction">
+      	<!-- 上传文件，无返回结果 -->
+      	<action name="uploadFileAction" class="UploadFileAction">
       		<result name="success"  type="json"></result>
       		<result name="error"></result>
       	</action>
@@ -112,23 +112,6 @@
             </result>  
         </action>     
         
-        <!-- 上传csv表格 -->
-        <action name="uploadTableAction" class="UploadTableAction">
-            <result type="json" name="success">
-                <param name="contentType">text/html</param>
-            </result>
-            <result type="json" name="error">
-            	<param name="contentType">text/html</param>
-            </result>
-        </action>
-        
-        <!-- 雇主上传对应的某表格库，将对应数据写入数据库 -->
-        <action name="UploadTableListAction" class="UploadTableListAction">
-        	<result name="success"  type="json"></result>
-      		<result name="error"></result>  
-        </action>  
-        
-        
       	<!-- 雇主\工人请求删除某任务, 无返回结果-->
         <action name="deleteTaskAction" class="DeleteTaskAction">
       		<result name="success"  type="json"></result>
@@ -188,7 +171,14 @@
                 <param name="root">tasksInfo</param>
             </result>  
         </action>  	
-      	
+        
+       <!--  雇主查看最新的消息  -->
+        <action name="showLastestMAction" class="ShowLastestMAction">
+        	<result type="json">
+                <param name="root">messages</param>
+            </result>  
+        </action>  	
+        
       	<!-- 工人根据ID号完成某任务提交自己的答案，无返回值 -->
       	<action name="finishTaskAction" class="FinishTaskAction">
       		<result name="success"  type="json"></result>

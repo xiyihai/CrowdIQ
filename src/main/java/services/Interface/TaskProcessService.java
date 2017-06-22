@@ -49,5 +49,7 @@ public interface TaskProcessService {
 	
 	//用于找到收录时间到的情况
 	void findTakenDeadlineTask();
+	
+	String getLastestMessage(String userID);
 }
 

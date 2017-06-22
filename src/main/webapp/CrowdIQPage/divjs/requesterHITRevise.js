@@ -4,12 +4,11 @@
 
 require.config({
     paths:{
-
-
+        'rh':'requester-header'
     }
 });
 
-require([], function () {
+require(['rh'], function (rh) {
 
 
     var url = location.search;
@@ -198,6 +197,7 @@ require([], function () {
         })
     });
 
+    rh.initHeader(userID);
 
 });
 

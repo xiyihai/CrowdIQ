@@ -1,5 +1,7 @@
 package actions.extend;
 
+import org.apache.struts2.ServletActionContext;
+
 import actions.base.ParserCrowdIQLBaseAction;
 
 public class ParserCrowdIQLAction extends ParserCrowdIQLBaseAction {
@@ -45,8 +47,10 @@ public class ParserCrowdIQLAction extends ParserCrowdIQLBaseAction {
 	}
 	
 	public String execute(){
+		String path = ServletActionContext.getRequest().getRealPath("/WEB-INF/tablelists");
+		
 		//如果sql是insert语句，那么elements为null	
-		elements = parserService.parser(sql, userID, tablename);
+		elements = parserService.parser(sql, userID, tablename, path);
 		return SUCCESS;
 	}
 	

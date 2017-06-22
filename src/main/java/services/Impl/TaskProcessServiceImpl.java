@@ -5,9 +5,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import CaculateParams.CaculateParameter;
 import CaculateParams.CaculateParameterImpl;
@@ -34,6 +38,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import services.Interface.ParserCrowdIQLService;
 import services.Interface.TaskProcessService;
+import vos.LastestM;
 import vos.RequesterTaskInfo;
 import vos.RequesterTaskVos;
 import vos.WorkerInfo;
@@ -766,6 +771,50 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			// TODO: handle exception
 			System.out.println(e);
 		}
+	}
+
+	@Override
+	public String getLastestMessage(String userID) {
+		// TODO Auto-generated method stub
+		List<RequesterTask> requesterTasks = requestertaskDao.getByRID(userID);
+		
+		JSONArray messages = new JSONArray();
+		List<LastestM> lastestMs = new ArrayList<>();
+		
+		for (int i = 0; i < requesterTasks.size(); i++) {
+			List<WTask> wTasks = wtaskDao.getByTid(String.valueOf(requesterTasks.get(i).getTask_id()));
+			for (int j = 0; j < wTasks.size(); j++) {
+				WTask wTask = wTasks.get(j);
+				Timestamp nowtime = new Timestamp(new Date().getTime());
+			
+				Timestamp taken_time = wTask.getTaken_time();		
+				LastestM lastestM = new LastestM(wTask.getTask_id(), wTask.getWorker_id(), "taken", (nowtime.getTime()-taken_time.getTime())/(1000));	
+				lastestMs.add(lastestM);
+				
+				Timestamp finish_time = wTask.getFinish_time();
+				if (finish_time!=null) {
+					LastestM lastestM2 = new LastestM(wTask.getTask_id(), wTask.getWorker_id(), "finished", (nowtime.getTime()-finish_time.getTime())/(1000));	
+					lastestMs.add(lastestM2);
+				}
+			}
+		}
+		//然后需要排序,取出前5名
+		Collections.sort(lastestMs);
+		int count = 0;
+		for (int i = 0; i < lastestMs.size(); i++) {
+			if (count<5) {
+				JSONObject mJsonObject = new JSONObject();
+				LastestM lastestM = lastestMs.get(i);
+				mJsonObject.put("taskID", lastestM.getTaskID());
+				mJsonObject.put("flag", lastestM.getFlag());
+				mJsonObject.put("workerLevel", workerDao.getByWid(String.valueOf(lastestM.getWorkerID())).get(0).getLevel());
+				mJsonObject.put("time", lastestM.getTime());
+				messages.add(mJsonObject);
+				count++;	
+			}
+		}
+
+		return messages.toString();
 	}
 
 }

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>task design</title>
+    <title>Requester-Task-design</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -31,210 +31,170 @@
 
 </head>
 <body>
-    <div id="wrapper">
+<div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index_worker.html">CrowdIQ</a>
-            </div>
-            <!-- /.navbar-header -->
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">CrowdIQ</a>
+        </div>
+        <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>
-                        <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">40% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-tasks fa-fw"></i>
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-tasks">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <p>
+                                    <strong id="0task"></strong>
+                                    <span class="pull-right text-muted" id="0taskState"></span>
+                                </p>
+                                <div class="progress progress-striped active">
+                                    <div id="0taskValue" class="" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="">
+                                        <span id="0taskValue2" class="sr-only"></span>
                                     </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">20% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <p>
+                                    <strong id="1task"></strong>
+                                    <span class="pull-right text-muted" id="1taskState"></span>
+                                </p>
+                                <div class="progress progress-striped active">
+                                    <div id="1taskValue" class="" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="">
+                                        <span id="1taskValue2" class="sr-only"></span>
                                     </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <p>
+                                    <strong id="2task"></strong>
+                                    <span class="pull-right text-muted" id="2taskState"></span>
+                                </p>
+                                <div class="progress progress-striped active">
+                                    <div id="2taskValue" class="" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="">
+                                        <span id="2taskValue2" class="sr-only"></span>
                                     </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <p>
+                                    <strong id="3task"></strong>
+                                    <span class="pull-right text-muted" id="3taskState"></span>
+                                </p>
+                                <div class="progress progress-striped active">
+                                    <div id="3taskValue" class="" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="">
+                                        <span id="3taskValue2" class="sr-only"></span>
                                     </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i>
-                                    <span >ID89757 </span>public completed
-                                    <span class="pull-right text-muted small">2 finished</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i>
-                                    <span >ID89757 </span>new workers
-                                    <span class="pull-right text-muted small">5 received</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i>
-                                    <span >ID89757 </span>new finished
-                                    <span class="pull-right text-muted small">3 workers</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Task Information Published</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i> ID:89757</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="text-center" href="javascript:void(0)" name="alltask">
+                            <strong>See All Tasks</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-tasks -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-alerts" id="messages">
 
-            </ul>
-            <!-- /.navbar-top-links -->
+                </ul>
+                <!-- /.dropdown-alerts -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#" name="showID"><i class="fa fa-user fa-fw"></i></a></li>
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                    <li class="divider"></li>
+
+                    <li><a href="index.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        <li>
-                            <a href="index_worker.html"><i class="fa fa-dashboard fa-fw"></i> 主页面</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> buttons<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">design tasks</a>
-                                </li>
-                                <li>
-                                    <a href="RequesterHITRevise.html">tasks information</a>
-                                </li>
-                                <li>
-                                    <a href="#">completed task</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
+                        </div>
+                        <!-- /input-group -->
+                    </li>
+                    <li>
+                        <a href="#" id="homepage"><i class="fa fa-dashboard fa-fw"></i>Home Page</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Functions<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0)" name="tables">design tasks</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" name="alltask">tasks information</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                </ul>
             </div>
-            <!-- /.navbar-static-side -->
-        </nav>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
 
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Forms</h1>
+                    <h1 class="page-header">Task Design</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -243,32 +203,32 @@
                 <!--<div class="col-lg-12">-->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            任务设计
+                            Following the steps.
                         </div>
                         <div class="panel-body">
                             <div class="col-md-10">
                                 <div class="row">
-                                    <label>CrowdIQ Input</label>
+                                    <label>CrowdIQL Input:</label>
                                     <textarea id="crowdiql" class="form-control" rows="3"></textarea>
-                                    <button class="btn btn-default" id="submitiql" style="float: right">submit</button>
+                                    <button class="btn btn-default" id="submitiql" style="float: right">Parser</button>
                                 </div>
                                  <div class="row">
                                      <div class="aim-table" id="sqlTargets">
-                                         <span class="table-title">目标:</span>
+                                         <span class="table-title">Target:</span>
                                      </div>
                                      <form role="form">
                                         <div class="form-row">
-                                            <label>具体描述：</label>
+                                            <label>Description：</label>
                                             <textarea class="form-control" rows="3" id="questionDescribe"></textarea>
                                         </div>
                                      </form>
                                      <div class="aim-table" id="showing-others">
-                                         <span class="table-title">非表格展示内容:</span>
+                                         <span class="table-title">Showing Content:</span>
 
                                      </div>
 
 
-                                    <p class="showing-test">表格展示内容：</p>
+                                    <p class="showing-test">Showing Table：</p>
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr id="showing-headers">
@@ -280,7 +240,7 @@
                                         </tbody>
                                     </table>
                                     <div class="probably-answer">
-                                         <p class="showing-test">probably answer：</p>
+                                         <p class="showing-test">Machine Pretreatment：</p>
                                         <div class="col-md-12" id="candidateItems">
 
 
@@ -288,28 +248,28 @@
                                     </div>
 
                                     <div class="requester-submit">
-                                        <button class="btn btn-default" id="submittask">submit</button>
+                                        <button class="btn btn-default" id="submittask">Cost-Control</button>
                                     </div>
                                     <div>
                                         <hr style="height:1px;border:none;border-top:1px solid #888888;" />
                                     </div>
                                     <div class="info-predict">
-                                        <p class="showing-test">问题难度：
+                                        <p class="showing-test">Task Difficult Degree：
                                             <span id="difficult-degree" contenteditable="false"></span>
                                         </p>
-                                        <p class="showing-test">需要的工人数：
+                                        <p class="showing-test">Recommend Worker Number：
                                             <span id="worker-number" contenteditable="true"></span>
                                         </p>
-                                        <p class="showing-test">每个问题报酬：
+                                        <p class="showing-test">Best Each Reward：
                                             <span id="each-reward" contenteditable="true"></span>
                                         </p>
-                                        <p class="showing-test">预计总花费：
+                                        <p class="showing-test">Predict Total Cost：
                                             <span id="predict-cost" contenteditable="false"></span>
                                         </p>
-                                        <p class="showing-test">截止时间：
+                                        <p class="showing-test">Task Deadline：
                                             <span id="deadline" contenteditable="true"></span>
                                         </p>
-                                        <button class="btn btn-default" id="submitparams">submit</button>
+                                        <button class="btn btn-default" id="submitparams">Submit</button>
                                     </div>
                                 </div>
                             </div>

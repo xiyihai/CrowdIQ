@@ -1,15 +1,13 @@
 /**
  * Created by xiyihai on 05/21/2017.
  */
-
 require.config({
     paths:{
-
-
+        'rh':'requester-header'
     }
 });
 
-require([], function () {
+require(['rh'], function (rh) {
 
     var url = location.search;
     var userID = url.split("?")[1].split("&")[0].split("=")[1];
@@ -243,6 +241,7 @@ require([], function () {
         })
     });
 
+    rh.initHeader(userID);
 });
 
 

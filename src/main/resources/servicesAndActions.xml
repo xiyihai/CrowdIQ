@@ -73,10 +73,8 @@
 	
 	<bean id="InspectionAction" class="actions.extend.InspectionAction" parent="InspectionAndReadTableAction"></bean>
 	
-	
 	<bean id="ParserCrowdIQLAction" class="actions.extend.ParserCrowdIQLAction" parent="ParserCrowdIQLBaseAction"></bean>
-	<bean id="UploadAlgorithmAction" class="actions.extend.UploadAlgorithmAction" parent="ParserCrowdIQLBaseAction"></bean>
-	
+	<bean id="UploadFileAction" class="actions.extend.UploadFileAction" parent="ParserCrowdIQLBaseAction"></bean>
 	
 	<bean id="FinishTestTaskAction" class="actions.extend.register.FinishTestTaskAction" parent="RegisterBaseAction"></bean>
 	<bean id="LoginAction" class="actions.extend.register.LoginAction" parent="RegisterBaseAction"></bean>
@@ -91,9 +89,6 @@
 	<bean id="ReadDBTableAction" class="actions.extend.table.ReadDBTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadUploadTableAction" class="actions.extend.table.ReadUploadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ShowDBTableAction" class="actions.extend.table.ShowDBTableAction" parent="InspectionAndReadTableAction"></bean>
-	<bean id="UploadTableAction" class="actions.extend.table.UploadTableAction" parent="InspectionAndReadTableAction"></bean>
-	<bean id="UploadTableListAction" class="actions.extend.table.UploadTableListAction" parent="InspectionAndReadTableAction"></bean>
-	
 	
 	<bean id="DeleteTaskAction" class="actions.extend.task.DeleteTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowTaskAction" class="actions.extend.task.ShowTaskAction" parent="TaskProcessAction"></bean>
@@ -105,6 +100,7 @@
 	<bean id="PauseTaskAction" class="actions.extend.task.requester.PauseTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="PublishTaskAction" class="actions.extend.task.requester.PublishTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="ShowAllRTaskAction" class="actions.extend.task.requester.ShowAllRTaskAction" parent="TaskProcessAction"></bean>
+	<bean id="ShowLastestMAction" class="actions.extend.task.requester.ShowLastestMAction" parent="TaskProcessAction"></bean>
 	
 	<bean id="FinishTaskAction" class="actions.extend.task.worker.FinishTaskAction" parent="TaskProcessAction"></bean>
 	<bean id="TakeTaskAction" class="actions.extend.task.worker.TakeTaskAction" parent="TaskProcessAction"></bean>

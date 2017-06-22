@@ -156,16 +156,16 @@ public class ReadTableServiceImpl implements ReadTableService {
 
 	
 	@Override
-	public boolean readUploadTable(String userID, String tablename) {
+	public boolean readUploadTable(String userID, String tablename, String path) {
 		// TODO Auto-generated method stub
 		//先判断一下是否存在这么一张表
-		File file = new File("WEB-INF/uploadTables/"+tablename);
+		File file = new File(path);
 		
 		if (file.exists()) {
 			//将用户上传的表写入数据库,还有转换好的jsontable
 			readList = new ArrayList<>();
 			try {
-				CsvReader reader = new CsvReader("WEB-INF/uploadTables/"+tablename,',',Charset.forName("utf-8"));
+				CsvReader reader = new CsvReader(path,',',Charset.forName("utf-8"));
 			    while(reader.readRecord()){ //逐行读入数据      
 			        readList.add(reader.getValues());  
 			    }              
@@ -179,8 +179,9 @@ public class ReadTableServiceImpl implements ReadTableService {
 			tranferJSONTable(tablename.substring(0, tablename.length()-4));
 			rtableDao.save(new RTable(Integer.valueOf(userID), tablename, 0, jsonTable.toString()));
 			return true;
+		}else{
+			return false;
 		}
-		return false;	   
 	}
 
 	@Override
@@ -230,7 +231,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 	}
 
 	@Override
-	public boolean downloadTable(String tableID, String userID) {
+	public boolean downloadTable(String tableID, String userID, String path) {
 		// TODO Auto-generated method stub
 		//先要判断数据库中对应表格的状态，理论上没有问题都是1
 		RTable rTable = rtableDao.findByIDName(userID, tableID).get(0);
@@ -257,7 +258,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 				}
 			}
 			//全部完成之后需要将jsontable写入到二维表中
-			parserCrowdIQLService.returnTable(jsontable, tableID);
+			parserCrowdIQLService.returnTable(jsontable, tableID, path);
 			
 			//将对应表格下载?????????????
 			return true;
@@ -266,10 +267,10 @@ public class ReadTableServiceImpl implements ReadTableService {
 	}
 
 	@Override
-	public boolean uploadTableList(String userID, String tablelist) {
+	public boolean uploadTableList(String userID, String tablelist, String path) {
 		// TODO Auto-generated method stub
 		//先判断一下是否存在这么文件
-		File file = new File("WEB-INF/tablelists/"+tablelist);
+		File file = new File(path);
 					
 			if (file.exists()) {
 				rtableListDao.save(new RTableList(Integer.valueOf(userID), tablelist));
@@ -280,14 +281,18 @@ public class ReadTableServiceImpl implements ReadTableService {
 	}
 
 	@Override
-	public boolean deleteTable(String userID, String tablename) {
+	public boolean deleteTable(String userID, String tablename, String path) {
 		// TODO Auto-generated method stub
-
 		RTable rTable = rtableDao.findByIDName(userID, tablename).get(0);
 		rtableDao.delete(rTable);
-		//这里缺少本地删除机制
-		
-		return true;
+		//这里缺少本地删除机制;
+		File file = new File(path+"/"+tablename);
+		if (file.exists()) {
+			file.delete();	
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

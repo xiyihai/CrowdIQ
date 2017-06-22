@@ -2,14 +2,14 @@
  * Created by xiyihai on 05/21/2017.
  */
 
+
 require.config({
     paths:{
-
-
+        'wh':'worker-header'
     }
 });
 
-require([], function () {
+require(['wh'], function (wh) {
 
     var url = location.search;
     var userID = url.split("?")[1].split("=")[1];
@@ -103,6 +103,9 @@ require([], function () {
             this.get_reward = null;
         }
     }
+
+
+    wh.initHeader(userID);
 });
 
 

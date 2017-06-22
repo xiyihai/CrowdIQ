@@ -98,11 +98,7 @@
     border-color: #ccc;
     text-decoration: none
 }
-/*index_requester结束*/
-/*.requester-submit a{*/
-    /*align:center;*/
-/*}*/
-/*#title-design{*/
-    /*width: 80%;*/
-    /*display: inline-block;*/
-/*}*/
+
+.a-upload{
+    margin-top: 5px;
+}

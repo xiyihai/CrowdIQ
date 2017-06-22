@@ -1,5 +1,7 @@
 package actions.extend.table;
 
+import org.apache.struts2.ServletActionContext;
+
 import actions.base.InspectionAndReadTableBaseAction;
 
 public class DowloadTableAction extends InspectionAndReadTableBaseAction {
@@ -21,7 +23,9 @@ public class DowloadTableAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){
-		if (readService.downloadTable(tableID, userID)) {
+		String path = ServletActionContext.getRequest().getRealPath("/WEB-INF/uploadTables");
+		
+		if (readService.downloadTable(tableID, userID, path)) {
 			return SUCCESS;			
 		}else {
 			return ERROR;

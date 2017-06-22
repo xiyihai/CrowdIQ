@@ -1,5 +1,7 @@
 package actions.extend.table;
 
+import org.apache.struts2.ServletActionContext;
+
 import actions.base.InspectionAndReadTableBaseAction;
 
 public class DeleteTableAction extends InspectionAndReadTableBaseAction {
@@ -24,7 +26,9 @@ public class DeleteTableAction extends InspectionAndReadTableBaseAction {
 	}
 	
 	public String execute(){	
-		readService.deleteTable(userID,tablename);
+		String path = ServletActionContext.getRequest().getRealPath("/WEB-INF/uploadTables");
+		
+		readService.deleteTable(userID,tablename,path);
 		return SUCCESS;
 	}
 }

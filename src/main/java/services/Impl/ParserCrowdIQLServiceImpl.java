@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.sun.prism.Material;
@@ -68,11 +70,11 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	private Parser parser;
 
 	@Override
-	public String parser(String sql, String userID, String tablename) {
+	public String parser(String sql, String userID, String tablename, String path) {
 		// TODO Auto-generated method stub
 		//先要找对对应的jsontable数据
 		RTable rTable = rTableDao.findByIDName(userID, tablename).get(0);
-		return process(sql, userID, tablename, JSONObject.fromObject(rTable.getJsontable()));
+		return process(sql, userID, tablename, JSONObject.fromObject(rTable.getJsontable()), path);
 	}
 
 	//找出元素的正则表达式
@@ -284,18 +286,18 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	//然后把包里面的表格全部转换成二维数组
 	//这样总的就是一个三维数组,但返回值是String，不过这个String本质是三维数组
 	//ArrayList<String>和String的互相转换关系没有，所以用JSONArray更加方便
-	private String getTableList(String userID, String tablelist){
+	private String getTableList(String userID, String tablelist, String path){
 		
 		if (!rTableListDao.findByIDName(userID, tablelist).isEmpty()) {
 			//在tablelists目录下找到对应文件夹（里面文件csv格式），然后然后将里面每一张表格转成二维数组
-			File file = new File("WEB-INF/tablelists/"+tablelist);
+			File file = new File(path+"/"+tablelist);
 			File[] tables = file.listFiles();
 			JSONArray tablesJSON = new JSONArray();
 			for (int i = 0; i < tables.length; i++) {
 				String tablename = tables[i].getName();
 				ArrayList<String[]> readList = new ArrayList<>();
 				try {
-					CsvReader reader = new CsvReader("WEB-INF/tablelists/"+tablelist+"/"+tablename,',',Charset.forName("utf-8"));
+					CsvReader reader = new CsvReader(path+"/"+tablelist+"/"+tablename,',',Charset.forName("utf-8"));
 				    while(reader.readRecord()){ //逐行读入数据      
 				        readList.add(reader.getValues());  
 				    }              
@@ -311,7 +313,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		return null;
 	}
 	
-	private String process(String sql, String userID, String tablename, JSONObject jsonTable){
+	private String process(String sql, String userID, String tablename, JSONObject jsonTable , String path){
 			
 			//得到每个元素，且操作对应的table
 			parser=new Parser();
@@ -335,7 +337,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						String cluster_target = showing[i].substring(8, showing[i].length()-1).split(";")[0];
 						String cluster_top = showing[i].substring(8, showing[i].length()-1).split(";")[1];
 						if (cluster_target.startsWith("tablelist[")) {
-							result = getTableList(userID, cluster_target.substring(10, cluster_target.length()-1));
+							result = getTableList(userID, cluster_target.substring(10, cluster_target.length()-1), path);
 							//这个result是一个三维数组，里面包含表头，先要解析出每一个二维数组，分离表头和数据
 							//数据聚类之后，再和表头合并，然后组成三维数组
 							JSONArray tables = JSONArray.fromObject(result); //三维
@@ -376,7 +378,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						}	
 					}else {
 						if (showing[i].startsWith("tablelist[")) {
-							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1));
+							result = getTableList(userID, showing[i].substring(10, showing[i].length()-1), path);
 							result = "tablelist:"+result;
 						}else {
 							String[] attribute = showing[i].split("\\.");
@@ -497,7 +499,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							if (element.startsWith("tablelist[")) {
 								String tablelistName = element.substring(10, element.length()-1);
 								if (!rTableListDao.findByIDName(userID, tablelistName).isEmpty()) {
-									findresult = "WEB-INF/tablelists/"+tablelistName;
+									findresult = path+"/"+tablelistName;
 								}else{
 									findresult = null;
 								}
@@ -532,7 +534,7 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						
 						if (algorithm.split(":")[0].startsWith("outer")) {
 							//判断数据库中，该用户是否存在这个算法
-							if (!rAlgorithmDao.findByIDAlgorithm(userID, algorithm_name).isEmpty()) {
+							if (!rAlgorithmDao.findByIDAlgorithm(userID, algorithm_name+".jar").isEmpty()) {
 								AlgorithmIn algorithmIn = new AlgorithmIn();
 								ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top));
 								//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
@@ -567,10 +569,10 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		}
 
 	@Override
-	public boolean uploadAlgorithm(String userID, String algorithmname) {
+	public boolean uploadAlgorithm(String userID, String algorithmname, String path) {
 		// TODO Auto-generated method stub
 		//先要判断是否存在这个算法
-		File file = new File("WEB-INF/lib/"+algorithmname);
+		File file = new File(path);
 		
 		if (file.exists()) {
 			rAlgorithmDao.save(new RAlgorithm(Integer.valueOf(userID), algorithmname));	
@@ -580,10 +582,10 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	}
 
 	@Override
-	public boolean returnTable(JSONObject jsonTable, String tableID) {
+	public boolean returnTable(JSONObject jsonTable, String tableID, String path) {
 		// TODO Auto-generated method stub
-		String path = "WEB-INF/uploadTables/"+tableID;
-		String csvWriteFile = path;
+		
+		String csvWriteFile = path+"/"+tableID;
 	     CsvWriter writer = new CsvWriter(csvWriteFile, ',', Charset.forName("utf-8"));  
 	     
 	     ArrayList<String[]> writelist = new ArrayList<>();

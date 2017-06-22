@@ -4,12 +4,11 @@
 
 require.config({
     paths:{
-
-
+        'wh':'worker-header'
     }
 });
 
-require([], function () {
+require(['wh'], function (wh) {
 
     var url = location.search;
     var userID = url.split("?")[1].split("=")[1];
@@ -31,6 +30,8 @@ require([], function () {
         $("#name").html(personInfo.name);
         $("#account").html('$'+personInfo.account);
         $("#email").html(personInfo.email);
+        $("#password").html(personInfo.password);
+
         $("#quality").html(personInfo.quality+' (0~1)');
         $("#level").html(personInfo.level+'/10');
         $("#costtime").html(personInfo.average_costtime+'min');
@@ -44,18 +45,7 @@ require([], function () {
         $("#rtask_number").html(taskInfo.rtask_number);
     });
 
-    $("a[name='takentask']").bind("click", function () {
-        window.location.href = "worker_takentask.html?userID="+userID;
-    });
-
-    $("a[name='recommendtask']").bind("click", function () {
-        window.location.href = "worker_recommendtask.html?userID="+userID;
-    });
-
-    $("a[name='testtask']").bind("click", function () {
-        window.location.href = "worker_testtask.html?userID="+userID;
-    });
-
+    wh.initHeader(userID);
 });
 
 

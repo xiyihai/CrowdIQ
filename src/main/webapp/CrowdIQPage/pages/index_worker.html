@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>工人主界面</title>
+    <title>Worker-Index</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -53,143 +53,17 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>
-                        <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">40% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">20% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i>
-                                    <span >ID89757 </span>public completed
-                                    <span class="pull-right text-muted small">2 finished</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i>
-                                    <span >ID89757 </span>new workers
-                                    <span class="pull-right text-muted small">5 received</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i>
-                                    <span >ID89757 </span>new finished
-                                    <span class="pull-right text-muted small">3 workers</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Task Information Published</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i> ID:89757</a>
-                        </li>
+                        <li><a href="#" name="showID"><i class="fa fa-user fa-fw"></i></a></li>
+
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
+
+                        <li><a href="index.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
@@ -213,19 +87,19 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index_worker.html"><i class="fa fa-dashboard fa-fw"></i> 主页面</a>
+                            <a href="#" id="homepage"><i class="fa fa-dashboard fa-fw"></i>Home Page</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> buttons<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Functions<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="RequesterHITPreDesign.html">design tasks</a>
+                                    <a href="javascript:void(0)" name="testtask">test tasks</a>
                                 </li>
                                 <li>
-                                    <a href="RequesterHITRevise.html">tasks information</a>
+                                    <a href="javascript:void(0)" name="recommendtask">recommend tasks</a>
                                 </li>
                                 <li>
-                                    <a href="#">completed task</a>
+                                    <a href="javascript:void(0)" name="takentask">taken tasks</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -240,7 +114,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Worker Information</h1>
+                    <h1 class="page-header">Notifications Panel</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -255,7 +129,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div id="state2" class="huge"></div>
-                                    <div>已完成任务个数</div>
+                                    <div>Finished Task</div>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +151,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div id="state0" class="huge"></div>
-                                    <div>待完成任务个数</div>
+                                    <div>Undo Task</div>
                                 </div>
                             </div>
                         </div>
@@ -299,7 +173,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div id="rtask_number" class="huge"></div>
-                                    <div>收到的推荐任务个数</div>
+                                    <div>Recommend Task</div>
                                 </div>
                             </div>
                         </div>
@@ -321,7 +195,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div id="testtask_number" class="huge"></div>
-                                    <div>未完成测试任务个数</div>
+                                    <div>Test Task</div>
                                 </div>
                             </div>
                         </div>
@@ -340,7 +214,7 @@
                 <div class="col-lg-6 col-lg-offset-0" >
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                            <i class="fa fa-bell fa-fw"></i> Worker Information
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -361,8 +235,9 @@
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="item_name"></i> Change Password
-                                    <button class="pull-right text-muted small" href="#">Change Password</button>
+                                    <i class="item_name"></i> Password
+                                    <span id="password" class="pull-right text-muted small">
+                                    </span>
                                 </a>
                                 <a href="#" class="list-group-item">
                                     <i class="item_name"></i> Account
@@ -370,27 +245,27 @@
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="item_name"></i> level
+                                    <i class="item_name"></i> Level
                                     <span id="level" class="pull-right text-muted small">
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="item_name"></i> average completed time
+                                    <i class="item_name"></i> Completed Time(/task)
                                     <span id="costtime" class="pull-right text-muted small">
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="item_name"></i> average difficulty
+                                    <i class="item_name"></i> Difficulty Degree(/task)
                                     <span id="di" class="pull-right text-muted small">
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="item_name"></i> average wage
+                                    <i class="item_name"></i> Reward(/task)
                                     <span id="reward" class="pull-right text-muted small">
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="item_name"></i> average 正答率
+                                    <i class="item_name"></i> Accuracy
                                     <span id="quality" class="pull-right text-muted small">
                                     </span>
                                 </a>
