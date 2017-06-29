@@ -133,16 +133,13 @@ require([], function () {
             dataType:'json'
         }).then(function (data) {
             userID = $.parseJSON(data);
-            alert("登录成功！");
-
             if (person.flag === "requester"){
                 window.location.href = "index_requester.html?userID="+userID;
             }else{
                 window.location.href = "index_worker.html?userID="+userID;
             }
-
         }, function () {
-            alert("登录失败，这里是sign-process.js");
+            alert("failed!");
         })
     }
 
@@ -157,9 +154,9 @@ require([], function () {
             },
             dataType:'json'
         }).then(function () {
-            alert("注册成功！");
+            alert("success！");
         }, function () {
-            alert("注册失败，这里是sign-process.js");
+            alert("failed");
         })
     }
 

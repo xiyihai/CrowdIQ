@@ -46,6 +46,7 @@ require(['rh'], function (rh) {
        //用于绑定按钮作用
 
         $("a[id^='show']").bind("click", function () {
+            console.log(33);
             var number = $(this).attr('id').substring(4);
             var taskID = $("#" + "taskID" + number).html();
             window.location.href = "requesterHITOverview.html?userID="+userID+"&taskID="+taskID+"&flag=requester";
@@ -85,7 +86,7 @@ require(['rh'], function (rh) {
                 alert("success");
                 window.location.reload();
             }, function () {
-                alert("无法暂停");
+                alert("failed");
             })
         });
 
@@ -104,7 +105,7 @@ require(['rh'], function (rh) {
                 alert("success");
                 window.location.reload();
             }, function () {
-                alert("无法发布");
+                alert("failed");
             })
         });
 
@@ -120,28 +121,36 @@ require(['rh'], function (rh) {
     function RequesterTask(task_id, state, deadline, hastaken_number, hasanswer_number, worker_number, each_reward, predict_cost, haspaid_cost, difficult_degree, i){
         this.task_id = task_id;
         if (state === 0){
-            lastsign = "<td> <a href='#' id='publish"+i+"'><i class='fa fa-check'></i>发布</a> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> <a href='#' id='edit"+i+"'><i class='fa fa-pencil'></i>修改</a> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a> </td>";
-            this.state = "待发布";
+            lastsign = "<td> <a href='#' id='publish"+i+"'><i class='fa fa-check'></i>publish</a>" +
+                " <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>delete</a> " +
+                "<a href='#' id='edit"+i+"'><i class='fa fa-pencil'></i>edit</a> " +
+                "<a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>check</a> </td>";
+            this.state = "unreleased";
         }
         if (state === 1){
-            lastsign = "<td> <a href='#' id='pause"+i+"'><i class='fa fa-power-off'></i>暂停</a> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a></td>";
-            this.state = "发布中";
+            lastsign = "<td> <a href='#' id='pause"+i+"'><i class='fa fa-power-off'></i>pause</a> " +
+                "<a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>check</a></td>";
+            this.state = "processing";
         }
         if (state === 2){
-            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a> </td>";
-            this.state = "已完成";
+            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>delete</a> " +
+                "<a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>check</a> </td>";
+            this.state = "finished";
         }
         if (state === 3){
-            lastsign = "<td> <a href='#' id='publish"+i+"'><i class='fa fa-check'></i>发布</a> <a href='#' id='edit"+i+"'><i class='fa fa-pencil'></i>修改</a> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a> </td>";
-            this.state = "暂停中";
+            lastsign = "<td> <a href='#' id='publish"+i+"'><i class='fa fa-check'></i>publish</a> " +
+                "<a href='#' id='edit"+i+"'><i class='fa fa-pencil'></i>edit</a> " +
+                "<a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>check</a> </td>";
+            this.state = "paused";
         }
         if (state === 4){
-            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a><a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a></td>";
-            this.state = "已过期";
+            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>delete</a>" +
+                "<a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>check</a></td>";
+            this.state = "expired";
         }
         if (state === 5){
-            lastsign = "<td> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>查看</a></td>";
-            this.state = "等待中";
+            lastsign = "<td> <a href='#' id='show"+i+"'><i class='fa fa-hand-o-up'></i>check</a></td>";
+            this.state = "waiting";
         }
         this.deadline = deadline;
         this.hastaken_number = hastaken_number;

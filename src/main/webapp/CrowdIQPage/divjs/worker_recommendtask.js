@@ -29,8 +29,8 @@ require(['wh'], function (wh) {
             var context = "<tr><td id='taskID"+i+"'>" + rtask.taskID + "</td>" + "<td>" + rtask.taken_deadline +
                 "</td>"+"<td>" + rtask.final_deadline + "</td>"+"<td>" + rtask.wbase + "</td>"+
                 "<td>" + rtask.di + "</td>" + "<td>" + rtask.work_state + "</td>"+
-                "<td> <a href='#' id='taken"+i+"'><i class='fa fa-check'></i>收录</a> " +
-                "<a href='#' id='preview"+i+"'><i class='fa fa-hand-o-up'></i>预览</a> </td> </tr>";
+                "<td> <a href='#' id='taken"+i+"'><i class='fa fa-check'></i>take</a> " +
+                "<a href='#' id='preview"+i+"'><i class='fa fa-hand-o-up'></i>preview</a> </td> </tr>";
 
             $("#recommendtask-tbody").append(context);
         });

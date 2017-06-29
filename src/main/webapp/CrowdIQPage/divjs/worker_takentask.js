@@ -85,19 +85,20 @@ require(['wh'], function (wh) {
         this.di = di;
         this.taken_time = taken_time;
         if(state === 0){
-            lastsign = "<td> <a href='#' id='do"+i+"'><i class='fa fa-pencil'></i>做题</a> </td>";
+            lastsign = "<td> <a href='#' id='do"+i+"'><i class='fa fa-pencil'></i>work</a> </td>";
             this.state = "undo";
             this.finish_time = null;
             this.get_reward = null;
         }
         if (state === 2){
-            lastsign = "<td> <a href='#' id='preview"+i+"'><i class='fa fa-check'></i>查看</a> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> </td>";
+            lastsign = "<td> <a href='#' id='preview"+i+"'><i class='fa fa-check'></i>check</a>" +
+                " <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>delete</a> </td>";
             this.state = "finished";
             this.finish_time = finish_time;
             this.get_reward = get_reward;
         }
         if(state === 4){
-            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>删除</a> </td>";
+            lastsign = "<td> <a href='#' id='delete"+i+"'><i class='fa fa-ban'></i>delete</a> </td>";
             this.state = "expired";
             this.finish_time = null;
             this.get_reward = null;

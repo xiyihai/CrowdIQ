@@ -41,24 +41,6 @@ require(['rh'], function (rh) {
         });
     }).then(function () {
 
-        $("a[id^='show']").bind("click", function () {
-            var number = $(this).attr('id').substring(4);
-            var tablename = $("#" + "tablename" + number).html();
-            $.ajax({
-                type: 'post',
-                url: 'readDBTableAction',
-                data: {
-                    userID: userID,
-                    tablename: tablename
-                },
-                dataType: 'json'
-            }).then(function (data) {
-                //这里展示JSONTree树
-                console.log($.parseJSON(data));
-            });
-        });
-
-
         $("a[id^='quality']").bind("click", function () {
             var number = $(this).attr('id').substring(7);
             var tablename = $("#" + "tablename" + number).html();
@@ -115,17 +97,7 @@ require(['rh'], function (rh) {
         $("a[id^='download']").bind("click", function () {
             var number = $(this).attr('id').substring(8);
             var tablename = $("#" + "tablename" + number).html();
-            $.ajax({
-                type: 'post',
-                url: 'downloadTableAction',
-                data: {
-                    userID: userID,
-                    tablename: tablename
-                },
-                dataType: 'json'
-            }).then(function () {
-                //下载表格
-            });
+            window.location.href = "downloadTableAction?userID="+userID+"&tablename="+tablename;
         });
 
         $("a[id^='delete']").bind("click", function () {

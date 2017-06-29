@@ -87,7 +87,6 @@
 	<bean id="DeleteTableAction" class="actions.extend.table.DeleteTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="DownloadTableAction" class="actions.extend.table.DownloadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ReadDBTableAction" class="actions.extend.table.ReadDBTableAction" parent="InspectionAndReadTableAction"></bean>
-	<bean id="ReadUploadTableAction" class="actions.extend.table.ReadUploadTableAction" parent="InspectionAndReadTableAction"></bean>
 	<bean id="ShowDBTableAction" class="actions.extend.table.ShowDBTableAction" parent="InspectionAndReadTableAction"></bean>
 	
 	<bean id="DeleteTaskAction" class="actions.extend.task.DeleteTaskAction" parent="TaskProcessAction"></bean>

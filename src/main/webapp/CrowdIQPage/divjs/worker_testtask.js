@@ -60,12 +60,12 @@ require(['wh'], function (wh) {
     function TestTask(testtask_id, state, worker_answer, iscorrect, i){
         this.testtask_id = testtask_id;
         if(state === 0){
-            lastsign = "<td> <a href='#' id='do"+i+"'><i class='fa fa-pencil'></i>做题</a> </td>";
+            lastsign = "<td> <a href='#' id='do"+i+"'><i class='fa fa-pencil'></i>work</a> </td>";
             this.state = "undo";
             this.worker_answer = null;
             this.iscorrect = null;
         }else {
-            lastsign = "<td> <a href='#' id='show"+i+"'><i class='fa fa-check'></i>查看</a> </td>";
+            lastsign = "<td> <a href='#' id='show"+i+"'><i class='fa fa-check'></i>check</a> </td>";
             this.state = "finished";
             this.worker_answer = worker_answer;
             if (iscorrect === 0){

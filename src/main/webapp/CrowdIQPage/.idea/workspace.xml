@@ -15,10 +15,16 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/divjs/workerTest.js" afterPath="$PROJECT_DIR$/divjs/workerTest.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/divjs/workerTestResult.js" afterPath="$PROJECT_DIR$/divjs/workerTestResult.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/RequesterHITDesign.html" afterPath="$PROJECT_DIR$/pages/RequesterHITDesign.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/RequesterHITOverview.html" afterPath="$PROJECT_DIR$/pages/RequesterHITOverview.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/RequesterHITRevise.html" afterPath="$PROJECT_DIR$/pages/RequesterHITRevise.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/WorkerHITOverview.html" afterPath="$PROJECT_DIR$/pages/WorkerHITOverview.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/index_requester.html" afterPath="$PROJECT_DIR$/pages/index_requester.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/index_worker.html" afterPath="$PROJECT_DIR$/pages/index_worker.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/requester_alltask.html" afterPath="$PROJECT_DIR$/pages/requester_alltask.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/requester_tables.html" afterPath="$PROJECT_DIR$/pages/requester_tables.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/sign-in.html" afterPath="$PROJECT_DIR$/pages/sign-in.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/sign-up.html" afterPath="$PROJECT_DIR$/pages/sign-up.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/workerHIT.html" afterPath="$PROJECT_DIR$/pages/workerHIT.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/workerTest.html" afterPath="$PROJECT_DIR$/pages/workerTest.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/workerTestResult.html" afterPath="$PROJECT_DIR$/pages/workerTestResult.html" />
@@ -50,63 +56,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="worker-index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/divjs/worker-index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index_worker.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/index_worker.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.538462">
-              <caret line="127" column="72" selection-start-line="127" selection-start-column="72" selection-end-line="127" selection-end-column="72" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="requester_alltask.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/requester_alltask.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="114.15385">
-              <caret line="11" column="40" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="238" column="26" selection-start-line="238" selection-start-column="26" selection-end-line="238" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workerHIT.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/workerHIT.html">
+      <file leaf-file-name="requester_tables.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/requester_tables.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-42.346153">
-              <caret line="150" column="82" selection-start-line="150" selection-start-column="82" selection-end-line="150" selection-end-column="82" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="199" column="26" selection-start-line="199" selection-start-column="26" selection-end-line="199" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workerTest.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/workerTest.html">
+      <file leaf-file-name="workerTestResult.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/divjs/workerTestResult.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.961538">
-              <caret line="152" column="79" selection-start-line="152" selection-start-column="79" selection-end-line="152" selection-end-column="79" />
-              <folding>
-                <element signature="n#style#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="workerTestResult.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pages/workerTestResult.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81220096">
-              <caret line="154" column="38" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="166" column="19" selection-start-line="166" selection-start-column="19" selection-end-line="166" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -115,18 +89,28 @@
       <file leaf-file-name="worker_testtask.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/worker_testtask.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.423077">
-              <caret line="127" column="125" selection-start-line="127" selection-start-column="125" selection-end-line="127" selection-end-column="125" />
+            <state vertical-scroll-proportion="-9.807693">
+              <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="requesterHITRevise.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/requesterHITRevise.html">
+      <file leaf-file-name="requester_tables.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/divjs/requester_tables.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-27.653847">
-              <caret line="253" column="85" selection-start-line="253" selection-start-column="85" selection-end-line="253" selection-end-column="85" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="109" column="35" selection-start-line="109" selection-start-column="35" selection-end-line="109" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="worker-header.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/divjs/worker-header.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4338747">
+              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -135,8 +119,18 @@
       <file leaf-file-name="worker_recommendtask.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/worker_recommendtask.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.769231">
-              <caret line="119" column="59" selection-start-line="119" selection-start-column="59" selection-end-line="119" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="140" column="55" selection-start-line="140" selection-start-column="55" selection-end-line="140" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="requester_alltask.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/divjs/requester_alltask.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -145,9 +139,21 @@
       <file leaf-file-name="worker_takentask.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/worker_takentask.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.461538">
-              <caret line="128" column="84" selection-start-line="128" selection-start-column="84" selection-end-line="128" selection-end-column="84" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="145" column="40" selection-start-line="145" selection-start-column="40" selection-end-line="145" selection-end-column="40" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index_requester.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/index_requester.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="332" column="68" selection-start-line="332" selection-start-column="68" selection-end-line="332" selection-end-column="68" />
+              <folding>
+                <element signature="n#style#0;n#a#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#2;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -186,17 +192,11 @@
         <option value="$PROJECT_DIR$/divjson/crwodiql.json" />
         <option value="$PROJECT_DIR$/divjson/workerTest.json" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/divjs/sign-process.js" />
-        <option value="$PROJECT_DIR$/divjs/requester_alltask.js" />
-        <option value="$PROJECT_DIR$/divjs/requester_tables.js" />
         <option value="$PROJECT_DIR$/divjs/requesterHITDesign.js" />
         <option value="$PROJECT_DIR$/divjs/requesterHITOverview.js" />
         <option value="$PROJECT_DIR$/divjs/requesterHITRevise.js" />
         <option value="$PROJECT_DIR$/divjs/requester-header.js" />
         <option value="$PROJECT_DIR$/divjs/worker-header.js" />
-        <option value="$PROJECT_DIR$/divjs/worker_recommendtask.js" />
-        <option value="$PROJECT_DIR$/divjs/worker_takentask.js" />
-        <option value="$PROJECT_DIR$/divjs/worker_testtask.js" />
         <option value="$PROJECT_DIR$/divjs/workerHIT.js" />
         <option value="$PROJECT_DIR$/divjs/workerHITOverview.js" />
         <option value="$PROJECT_DIR$/divjs/workerTest.js" />
@@ -207,18 +207,24 @@
         <option value="$PROJECT_DIR$/divjs/requester-index.js" />
         <option value="$PROJECT_DIR$/divjs/worker-index.js" />
         <option value="$PROJECT_DIR$/pages/index_worker.html" />
-        <option value="$PROJECT_DIR$/pages/requester_alltask.html" />
         <option value="$PROJECT_DIR$/pages/requester_tables.html" />
         <option value="$PROJECT_DIR$/pages/requesterHITDesign.html" />
         <option value="$PROJECT_DIR$/pages/requesterHITOverview.html" />
         <option value="$PROJECT_DIR$/pages/requesterHITRevise.html" />
-        <option value="$PROJECT_DIR$/pages/worker_recommendtask.html" />
-        <option value="$PROJECT_DIR$/pages/worker_takentask.html" />
         <option value="$PROJECT_DIR$/pages/worker_testtask.html" />
         <option value="$PROJECT_DIR$/pages/workerHIT.html" />
         <option value="$PROJECT_DIR$/pages/workerHITOverview.html" />
         <option value="$PROJECT_DIR$/pages/workerTest.html" />
         <option value="$PROJECT_DIR$/pages/workerTestResult.html" />
+        <option value="$PROJECT_DIR$/divjs/sign-process.js" />
+        <option value="$PROJECT_DIR$/divjs/worker_recommendtask.js" />
+        <option value="$PROJECT_DIR$/divjs/worker_takentask.js" />
+        <option value="$PROJECT_DIR$/divjs/worker_testtask.js" />
+        <option value="$PROJECT_DIR$/divjs/requester_alltask.js" />
+        <option value="$PROJECT_DIR$/pages/requester_alltask.html" />
+        <option value="$PROJECT_DIR$/pages/worker_recommendtask.html" />
+        <option value="$PROJECT_DIR$/pages/worker_takentask.html" />
+        <option value="$PROJECT_DIR$/divjs/requester_tables.js" />
       </list>
     </option>
   </component>
@@ -258,6 +264,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -268,7 +275,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -284,6 +290,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="CrowdIQPage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CrowdIQPage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CrowdIQPage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -387,7 +407,7 @@
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1640625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18046875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -541,10 +561,101 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/requester_alltask.js">
+    <entry file="file://$PROJECT_DIR$/divlib/jquery.json-viewer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="157" column="26" selection-start-line="157" selection-start-column="26" selection-end-line="157" selection-end-column="26" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divlib/ajaxfileupload.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="226" column="24" selection-start-line="226" selection-start-column="24" selection-end-line="226" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63501483">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/requesterHITRevise.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="253" column="85" selection-start-line="253" selection-start-column="85" selection-end-line="253" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/requesterHITDesign.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.73421925">
+          <caret line="268" column="77" selection-start-line="268" selection-start-column="64" selection-end-line="268" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/index_worker.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="127" column="72" selection-start-line="127" selection-start-column="72" selection-end-line="127" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/requesterHITOverview.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6495017">
+          <caret line="239" column="80" selection-start-line="239" selection-start-column="60" selection-end-line="239" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/workerHIT.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="150" column="82" selection-start-line="150" selection-start-column="82" selection-end-line="150" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/workerTest.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="152" column="79" selection-start-line="152" selection-start-column="79" selection-end-line="152" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/workerHITOverview.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5652819">
+          <caret line="150" column="80" selection-start-line="150" selection-start-column="60" selection-end-line="150" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/workerTestResult.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-26.115385">
+          <caret line="154" column="38" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/requester-header.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="60" selection-start-line="15" selection-start-column="60" selection-end-line="15" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/requester-index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="0" selection-start-line="35" selection-start-column="8" selection-end-line="36" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/requesterHITDesign.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="227" column="51" selection-start-line="227" selection-start-column="51" selection-end-line="227" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -562,13 +673,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/sign-process.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="158" column="28" selection-start-line="158" selection-start-column="28" selection-end-line="158" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/worker-index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/worker_recommendtask.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/divjs/worker_takentask.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="26" selection-start-line="107" selection-start-column="26" selection-end-line="107" selection-end-column="26" />
-          <folding>
-            <marker date="1498054184417" expanded="true" signature="703:1126" placeholder="..." />
-          </folding>
+          <caret line="100" column="89" selection-start-line="100" selection-start-column="89" selection-end-line="100" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/worker_testtask.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="88" selection-start-line="67" selection-start-column="88" selection-end-line="67" selection-end-column="88" />
         </state>
       </provider>
     </entry>
@@ -576,6 +712,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="224" column="26" selection-start-line="224" selection-start-column="26" selection-end-line="224" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/divjs/workerHITOverview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="164" column="61" selection-start-line="164" selection-start-column="61" selection-end-line="164" selection-end-column="61" />
           <folding />
         </state>
       </provider>
@@ -596,91 +739,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/divlib/jquery.json-viewer.js">
+    <entry file="file://$PROJECT_DIR$/divjs/requester_alltask.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/worker_recommendtask.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="76" column="26" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divlib/ajaxfileupload.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="226" column="24" selection-start-line="226" selection-start-column="24" selection-end-line="226" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/workerHITOverview.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="162" column="23" selection-start-line="162" selection-start-column="23" selection-end-line="162" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/requester_tables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="205" column="26" selection-start-line="205" selection-start-column="26" selection-end-line="205" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/requesterHITDesign.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="243" column="26" selection-start-line="243" selection-start-column="26" selection-end-line="243" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/worker_testtask.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="49" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
-          <folding>
-            <marker date="1498054184455" expanded="true" signature="625:848" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/sign-process.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/worker-header.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/css/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63501483">
-          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/index_requester.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-23.961538">
+        <state vertical-scroll-proportion="0.0">
           <caret line="332" column="68" selection-start-line="332" selection-start-column="68" selection-end-line="332" selection-end-column="68" />
           <folding>
             <element signature="n#style#0;n#a#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#2;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -688,132 +757,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/requester-header.js">
+    <entry file="file://$PROJECT_DIR$/pages/requester_alltask.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="60" selection-start-line="15" selection-start-column="60" selection-end-line="15" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/requester-index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="0" selection-start-line="35" selection-start-column="8" selection-end-line="36" selection-end-column="0" />
+          <caret line="238" column="26" selection-start-line="238" selection-start-column="26" selection-end-line="238" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/requester_tables.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.346153">
+        <state vertical-scroll-proportion="0.0">
           <caret line="199" column="26" selection-start-line="199" selection-start-column="26" selection-end-line="199" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/requesterHITRevise.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-27.653847">
-          <caret line="253" column="85" selection-start-line="253" selection-start-column="85" selection-end-line="253" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/requesterHITDesign.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73421925">
-          <caret line="268" column="77" selection-start-line="268" selection-start-column="64" selection-end-line="268" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/index_worker.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.538462">
-          <caret line="127" column="72" selection-start-line="127" selection-start-column="72" selection-end-line="127" selection-end-column="72" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/worker_recommendtask.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.769231">
-          <caret line="119" column="59" selection-start-line="119" selection-start-column="59" selection-end-line="119" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/requester_alltask.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="114.15385">
-          <caret line="11" column="40" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/requesterHITOverview.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6495017">
-          <caret line="239" column="80" selection-start-line="239" selection-start-column="60" selection-end-line="239" selection-end-column="80" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="140" column="55" selection-start-line="140" selection-start-column="55" selection-end-line="140" selection-end-column="55" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/worker_takentask.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.461538">
-          <caret line="128" column="84" selection-start-line="128" selection-start-column="84" selection-end-line="128" selection-end-column="84" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="145" column="40" selection-start-line="145" selection-start-column="40" selection-end-line="145" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/worker_testtask.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.423077">
-          <caret line="127" column="125" selection-start-line="127" selection-start-column="125" selection-end-line="127" selection-end-column="125" />
+        <state vertical-scroll-proportion="-9.807693">
+          <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/workerHIT.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-42.346153">
-          <caret line="150" column="82" selection-start-line="150" selection-start-column="82" selection-end-line="150" selection-end-column="82" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/divjs/worker-index.js">
+    <entry file="file://$PROJECT_DIR$/divjs/requester_tables.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <caret line="109" column="35" selection-start-line="109" selection-start-column="35" selection-end-line="109" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/workerTest.html">
+    <entry file="file://$PROJECT_DIR$/divjs/worker-header.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.961538">
-          <caret line="152" column="79" selection-start-line="152" selection-start-column="79" selection-end-line="152" selection-end-column="79" />
-          <folding>
-            <element signature="n#style#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/workerHITOverview.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5652819">
-          <caret line="150" column="80" selection-start-line="150" selection-start-column="60" selection-end-line="150" selection-end-column="80" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/workerTestResult.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81220096">
-          <caret line="154" column="38" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.4338747">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
           <folding />
         </state>
       </provider>

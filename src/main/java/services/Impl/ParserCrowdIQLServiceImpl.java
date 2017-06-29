@@ -2,7 +2,6 @@ package services.Impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -12,11 +11,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.sun.prism.Material;
 
 import Cluster.ClusterImpl;
 import FunctionsSupport.AlgorithmIn;
@@ -364,9 +361,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 							//这里获取三要素 attribute[3][4],里面有可能为""，注意不是null
 							String[] subattributes = regex(attribute[1]);
 							//得到showing具体元素值,result只能是二维，ArrayList.fromObject可以直接转换
-							result = findAttribute(subattributes, jsonTable);
+							result = findAttribute(subattributes, jsonTable);	
 							result = ClusterImpl.process(result, Double.valueOf(cluster_top));
-							
 							//这里需要加入标志符：
 							String ahead = subattributes[0];
 							for (int j = 1; j < subattributes.length; j++) {
@@ -538,7 +534,17 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 								AlgorithmIn algorithmIn = new AlgorithmIn();
 								ArrayList<String> items = algorithmIn.find(algorithm_name, attributes, Integer.valueOf(algorithm_top));
 								//这里还需要对items处理一下，提取前端需要的数据，数据是一个数组。处理交给前端吧
-								results.add(items);
+								ArrayList<String> ritems = new ArrayList<>();
+								DecimalFormat dFormat = new DecimalFormat("#######0.00");
+								
+								for (int k = 0; k < items.size(); k++) {
+									String item = items.get(k);
+									if (item.contains(":")) {
+										item = item.split(":")[0]+":"+dFormat.format((Double.valueOf(item.split(":")[1])));
+										ritems.add(item);
+									}
+								}
+								results.add(ritems);
 							}else {
 								results.add(null);
 							}	

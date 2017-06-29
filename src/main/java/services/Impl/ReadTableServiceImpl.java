@@ -35,8 +35,6 @@ public class ReadTableServiceImpl implements ReadTableService {
 	private RTableDao rtableDao;
 	private RTaskDao rtaskDao;
 	
-	
-	
 	public RTableListDao getRtableListDao() {
 		return rtableListDao;
 	}
@@ -259,13 +257,10 @@ public class ReadTableServiceImpl implements ReadTableService {
 			}
 			//全部完成之后需要将jsontable写入到二维表中
 			parserCrowdIQLService.returnTable(jsontable, tableID, path);
-			
-			//将对应表格下载?????????????
 			return true;
 		}
 		return false;
 	}
-
 	@Override
 	public boolean uploadTableList(String userID, String tablelist, String path) {
 		// TODO Auto-generated method stub
