@@ -30,8 +30,10 @@ require(['rh'], function (rh) {
             },
             dataType:'json'
         }).then(function (data) {
+
+            alert("success");
             //先要清除之前的数据
-            $("#sqlTarget").children().each(function (i,d) {
+            $("#sqlTargets").children().each(function (i,d) {
                 if (i !== 0){
                     $(d).remove();
                 }

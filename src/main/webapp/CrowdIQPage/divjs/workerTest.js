@@ -18,6 +18,8 @@ require(['wh'], function (wh) {
 
     var answerLength;
 
+    var headerflag = false;
+
     $.ajax({
         type:'post',
         url:'testTaskAction',
@@ -55,6 +57,7 @@ require(['wh'], function (wh) {
             var content = d.split(':')[1];
             var subattribures = ahead.split('-');
             if (subattribures[0] === "headers") {
+                headerflag = true;
                 if (typeof (subattribures[1]) == "undefined") {
                     //这样就是整个headers
                     var array = JSON.parse(content);
@@ -67,7 +70,6 @@ require(['wh'], function (wh) {
                         $("#showing-headers").append('<th></th>');
                     }
                     $("#showing-headers").append('<th>' + content + '</th>');
-
                 }
             } else {
                 if (subattribures[0] === "rows") {
@@ -165,9 +167,11 @@ require(['wh'], function (wh) {
             });
         }
         //这个是用来统计个数的函数，需要先加载，再调用
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
+        if (headerflag){
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+        }
     }).then(function () {
 
         $("#submitanswer").bind("click", function () {

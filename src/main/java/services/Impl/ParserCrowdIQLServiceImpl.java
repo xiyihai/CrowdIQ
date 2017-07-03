@@ -230,11 +230,12 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 	//根据众包用户获取值之后，填充select,update的值.
 	//value 具体形态需要更具subattribute来定，可能是一维，或者字符串。理论上不可能是二维数组，没有这样的任务
 	public JSONObject fillContent(String attributes,String value, JSONObject jsonTable){
-		
+
 		String[] subattributes = regex(attributes);
 		String attribute_name = subattributes[0];
 		int first_number;
 		int second_number;
+
 		if (!subattributes[1].equals("")) {
 			first_number = Integer.valueOf(subattributes[1]);
 			if (!subattributes[2].equals("")) {
@@ -252,23 +253,31 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 					((JSONArray)((JSONArray)jsonTable.get(attribute_name)).get(first_number)).add(second_number,value);
 				}
 			}else {
-				//这里value肯定是一个一维数组
-				JSONArray jsonArray = JSONArray.fromObject(value);					
 				
-				if (attribute_name.equals("rows")) {
-					//这里value应该是一个数组，
-					((JSONArray)jsonTable.get("data")).remove(first_number);
-					((JSONArray)jsonTable.get("data")).add(first_number, jsonArray);
-				}else if (attribute_name.equals("columns")) {
-					//需要把第2列数据全部替换掉，替换的数一定是个数组
-					int row_length =jsonTable.getJSONArray("data").size();
-					for (int i = 0; i < row_length; i++) {
-						jsonTable.getJSONArray("data").getJSONArray(i).remove(first_number);
-						jsonTable.getJSONArray("data").getJSONArray(i).add(first_number, jsonArray.get(i));
+				if (attribute_name.equals("headers")) {
+					//这里value是个字符串
+					jsonTable.getJSONArray("headers").remove(first_number);
+					jsonTable.getJSONArray("headers").add(first_number, value);
+
+				}else{	
+					//这里value肯定是一个一维数组
+					JSONArray jsonArray = JSONArray.fromObject(value);					
+					
+					if (attribute_name.equals("rows")) {
+						//这里value应该是一个数组，
+						((JSONArray)jsonTable.get("data")).remove(first_number);
+						((JSONArray)jsonTable.get("data")).add(first_number, jsonArray);
+					}else if (attribute_name.equals("columns")) {
+						//需要把第2列数据全部替换掉，替换的数一定是个数组
+						int row_length =jsonTable.getJSONArray("data").size();
+						for (int i = 0; i < row_length; i++) {
+							jsonTable.getJSONArray("data").getJSONArray(i).remove(first_number);
+							jsonTable.getJSONArray("data").getJSONArray(i).add(first_number, jsonArray.get(i));
+						}
+					}else {
+						((JSONArray)jsonTable.get(attribute_name)).remove(first_number);
+						((JSONArray)jsonTable.get(attribute_name)).add(first_number, value);	
 					}
-				}else {
-					((JSONArray)jsonTable.get(attribute_name)).remove(first_number);
-					((JSONArray)jsonTable.get(attribute_name)).add(first_number, value);	
 				}
 			}
 		}else {
@@ -541,8 +550,8 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 									String item = items.get(k);
 									if (item.contains(":")) {
 										item = item.split(":")[0]+":"+dFormat.format((Double.valueOf(item.split(":")[1])));
-										ritems.add(item);
 									}
+									ritems.add(item);
 								}
 								results.add(ritems);
 							}else {
@@ -559,15 +568,15 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 								String item = items.get(k);
 								if (item.contains(":")) {
 									item = item.split(":")[0]+":"+dFormat.format((Double.valueOf(item.split(":")[1])));
-									ritems.add(item);
 								}
+								ritems.add(item);
 							}
 							results.add(ritems);
 						}
 					}
 				}
 				map_result.put("candidateItems", results);
-				
+				System.out.println(results);
 				//计算使用算法的比例
 				top_kPerc = results.size() / (double)targetsBlank.length;
 			}

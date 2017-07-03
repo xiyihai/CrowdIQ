@@ -66,6 +66,14 @@ public class ReadTableServiceImpl implements ReadTableService {
 	public void setInspectionService(InspectionService inspectionService) {
 		this.inspectionService = inspectionService;
 	}
+	
+	public ParserCrowdIQLService getParserCrowdIQLService() {
+		return parserCrowdIQLService;
+	}
+
+	public void setParserCrowdIQLService(ParserCrowdIQLService parserCrowdIQLService) {
+		this.parserCrowdIQLService = parserCrowdIQLService;
+	}
 
 	@Override
 	public JSONObject getJsonTable() {
@@ -76,7 +84,7 @@ public class ReadTableServiceImpl implements ReadTableService {
 	public ArrayList<String[]> getReadList() {
 		return readList;
 	}
-
+	
 	@Override
 	public boolean tranferJSONTable(String tablename) {
 		
@@ -234,7 +242,6 @@ public class ReadTableServiceImpl implements ReadTableService {
 		//先要判断数据库中对应表格的状态，理论上没有问题都是1
 		RTable rTable = rtableDao.findByIDName(userID, tableID).get(0);
 		JSONObject jsontable = JSONObject.fromObject(rTable.getJsontable());
-		
 		if (rTable.getAvailable()==1) {
 			//先要整合对应任务的答案，写入到表格，这里需要判断对应任务sqlTarget是否为 header，columns，rows.
 			//这三者需要写入原表，其余的只需要显示答案即可
@@ -245,16 +252,21 @@ public class ReadTableServiceImpl implements ReadTableService {
 				//判断是否为 header，columns，rows
 				//不是则不用管，若是则需要获取finalAnswer，注意顺序对应
 				JSONArray sqlTargets = JSONObject.fromObject(content).getJSONArray("sqlTargets");
-				JSONArray finalAnswers = JSONObject.fromObject(content).getJSONArray("finalAnswer");
+				JSONArray finalAnswers = JSONObject.fromObject(content).getJSONArray("finalAnswers");
+				
 				for (int j = 0; j < sqlTargets.size(); j++) {
 					String target = sqlTargets.getString(j);
-					if (target.startsWith("headers")||target.startsWith("columns")||target.startsWith("rows")) {
-						//对于这些需要解析然后写入表格，利用parser中的fillcontent
-						String answer = finalAnswers.getString(j);
-						jsontable = parserCrowdIQLService.fillContent(target, answer, jsontable);
+					String answer;
+					if (finalAnswers.size()>j) {
+						answer = finalAnswers.getString(j);	
+					}else{
+						answer = "";
 					}
+					jsontable = parserCrowdIQLService.fillContent(target.split("\\.")[1], answer, jsontable);
+					rTable.setJsontable(jsontable.toString());
 				}
 			}
+			rtableDao.update(rTable);
 			//全部完成之后需要将jsontable写入到二维表中
 			parserCrowdIQLService.returnTable(jsontable, tableID, path);
 			return true;

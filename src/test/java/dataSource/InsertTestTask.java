@@ -30,26 +30,28 @@ public class InsertTestTask {
 		//构建测试任务
 		TestTaskVos taskVos = new TestTaskVos();
 		ArrayList<String> sqlTargets = new ArrayList<>();
-		sqlTargets.add("table.headers[2]");
+		sqlTargets.add("table.quality");
 		taskVos.setSqlTargets(sqlTargets);
-		taskVos.setQuestionDescribe("recover the missing header");
+		taskVos.setQuestionDescribe("good or bad");
 		ArrayList<String> showing_content = new ArrayList<>();
-		String showheader = "headers:[\"Year\",\"Author\",\"\",\"Genre(s)\",\"Country\"]";
-		String showcolumns = "columns-2:[\"Something to Answer For\",\"The Elected Member\",\"Troubles\",\"The Luminaries\",\"The Narrow Road to the Deep North\",\"A Brief History of Seven Killings\"]";
-//		showing_content.add(showheader);
+		String showheader = "headers:[\"Year\",\"Laureates\",\"Nationality\",\"Achievement\"]";
+		String showcolumns = "rows:[[\"\",\"George McGovern\",\"\",\"\"],[\"1994\",\"Dr Muhammad Yunus\",\"Bangladesh\",\"Founder of the Grameen Bank in Bangladesh, developed innovative small loan programs for the poor, providing millions of people access to more food and better nutrition.\"],[\"2006\",\"Edson Lobato,\",\"Brazil\",\"Pioneering work in soil science and policy implementation that opened the vast Cerrado region of Brazil to agricultural and food production.\"],[\"2009\",\"Gebisa Ejeta\",\"Ethiopia\",\"Developing Africa's first sorghum hybrids resistant to drought and the parasitic witchweed.\"],[\"2015\",\"Sir Fazle Hasan Abed\",\"BangladeshBangladesh\",\"Founder of BRAC, the world's largest NGO, which is recognized for substantial work on reducing poverty in Bangladesh and 10 other countries[4]\"],[\"2005\",\"Dr Modadugu Vijay Gupta\",\"India\",\"Development and dissemination of low-cost techniques for freshwater fish farming (using tilapia species) by the rural poor.\"],[\"\",\"Luiz In��cio Lula da Silva\",\"Brazil\",\"\"],[\"\",\"\",\"United Nations\",\"\"]]";
+		
+		showing_content.add(showheader);
 		showing_content.add(showcolumns);
+		
 		taskVos.setShowing_contents(showing_content);
 		
 		ArrayList<ArrayList<String>> candidateItems = new ArrayList<>();
 		ArrayList<String> itmes = new ArrayList<>();
-		itmes.add("Country");
-		itmes.add("Language");
-		itmes.add("Nation");
+		itmes.add("good");
+		itmes.add("bad");
+		
 		candidateItems.add(itmes);
 		taskVos.setCandidateItems(candidateItems);	
 
 		JSONArray answer = new JSONArray();
-		answer.add("Country");
+		answer.add("bad");
 		
 		session.save(new TestTask(JSONObject.fromObject(taskVos).toString(), answer.toString()));
 		

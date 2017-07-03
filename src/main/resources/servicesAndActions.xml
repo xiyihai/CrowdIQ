@@ -11,6 +11,7 @@
 	
 	<bean id="ReadTableService" class="services.Impl.ReadTableServiceImpl">
 		<property name="InspectionService" ref="InspectionService"></property>
+		<property name="parserCrowdIQLService" ref="ParserCrowdIQLService"></property>
 		<property name="rtableDao" ref="RTableDao"></property>
 		<property name="rtaskDao" ref="RTaskDao"></property>
 		<property name="rtableListDao" ref="RTableListDao"></property>

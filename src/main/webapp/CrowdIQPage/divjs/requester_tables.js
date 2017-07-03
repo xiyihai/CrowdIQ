@@ -168,6 +168,7 @@ require(['rh'], function (rh) {
         }else {
             lastsign = "<td class='option-button'> " +
                 "<a href='#' id='design"+ i +"'><i class='fa fa-pencil'></i>design</a>" +
+                "<a href='#' id='quality"+ i +"'><i class='fa fa-check-square'></i>quality test</a> " +
                 "<a href='#' id='download"+ i +"'><i class='fa fa-cloud-download'></i>download</a>" +
                 "<a href='#' id='delete"+ i +"'><i class='fa fa-trash-o'></i>delete</a> " +
                 "<a href='#' id='show" +i+ "'><i class='fa fa-search-plus'></i>show</a></td>";

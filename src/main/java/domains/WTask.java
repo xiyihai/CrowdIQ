@@ -48,9 +48,18 @@ public class WTask {
 	
 	@Column(name="finish_time")
 	private Timestamp finish_time;
+
+	@Column(name="difficult_degree")
+	private Double difficult_degree;
 	
-	
-	
+	public Double getDifficult_degree() {
+		return difficult_degree;
+	}
+
+	public void setDifficult_degree(Double difficult_degree) {
+		this.difficult_degree = difficult_degree;
+	}
+
 	public Timestamp getTaken_time() {
 		return taken_time;
 	}
@@ -124,7 +133,7 @@ public class WTask {
 	}
 
 	public WTask(Integer worker_id, Integer task_id, String content, Timestamp deadline, Integer state,
-			Double each_reward, Timestamp taken_time) {
+			Double each_reward, Timestamp taken_time, Double difficult_degree) {
 		super();
 		this.worker_id = worker_id;
 		this.task_id = task_id;
@@ -133,6 +142,7 @@ public class WTask {
 		this.state = state;
 		this.each_reward = each_reward;
 		this.taken_time = taken_time;
+		this.difficult_degree = difficult_degree;
 	}
 
 	public WTask() {

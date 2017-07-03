@@ -1,13 +1,295 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>SB Admin 2</title>
-
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <title>CrowdIQ</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="CrowdIQPage/images/favicon-32x32.png">
+    <!----------------Global css------------------->
+    <link rel="stylesheet" href="CrowdIQPage/css/bootstrap.css">
+    <link rel="stylesheet" href="CrowdIQPage/css/font-awesome.min.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/revolution-slider/css/layers.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/revolution-slider/css/navigation.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/revolution-slider/css/settings.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/imagehover/css/imagehover.min.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/animate/animate.min.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/iCheck/css/all.css">
+    <link rel="stylesheet" href="CrowdIQPage/vendors/sweetalert2/css/sweetalert2.min.css">
+    <!----------------custo css----------------->
+    <link rel="stylesheet" href="CrowdIQPage/css/custom.css">
 </head>
 <body>
-<a href="CrowdIQPage/pages/sign-in.html">登录</a>
+<!-------------------Preloader---------------->
+<div class="preloader" style="position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:100000;
+    backface-visibility: hidden;
+    background: #ffffff;">
+    <div style=" width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-position: center;
+    margin:-25px 0 0 -25px;">
+        <img src="CrowdIQPage/images/loader.gif" alt="loading...">
+    </div>
+</div>
+<!----------------Preloader end----------------->
+<!-------------Header--------->
+<div class="tp-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-7 col-md-6">
+               <span>CrowdIQ</span>
+            </div>
+            <div class="col-xs-5 col-md-6 text-right">
+                <span class="signin" data-toggle="modal" data-target="#myModal"><span class="hidden-xs"><a href="CrowdIQPage/pages/sign-in.html"> Sign In</a></span><i
+                        class="fa fa-sign-in visible-xs-block" aria-hidden="true"></i> </span>
+                <span class="register" data-toggle="modal" data-target="#myModal"><span
+                        class="hidden-xs"><a href="CrowdIQPage/pages/sign-up.html"> Sign up</a></span><i class="fa fa-user-plus visible-xs-block"
+                                                            aria-hidden="true"></i></span>
 
-<a href="CrowdIQPage/pages/sign-up.html">注册</a>
+            </div>
+        </div>
+    </div>
+</div>
+<header>
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myMegamenu"><span
+                        class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+
+                </button>
+                <!--<a class="navbar-brand" href="index.html">-->
+                    <!--<img src="images/3.png" class="img-responsive" alt="company-logo">-->
+                <!--</a>-->
+            </div>
+            <div class="collapse navbar-collapse navbar-right" id="myMegamenu">
+                <ul class="nav navbar-nav">
+                    <li class="list2"><a href="index.html" class="hvr-underline-from-center">HOME</a></li>
+                    <li class="list2"><a href="#" class="hvr-underline-from-center">ABOUT US</a></li>
+					<li class="list2"><a href="#" class="hvr-underline-from-center">DOCUMENT</a></li>
+                    <li class="list2"><a href="#" class="hvr-underline-from-center">CONTACT US</a></li>
+                </ul>
+            </div>
+
+        </nav>
+    </div>
+</header>
+<!-------------------------slider----------------------->
+<div class="tp-banner-container rev_slider_wrapper fullwidthbanner-container" data-alias="news-hero72">
+    <div class="home_slider">
+        <ul>
+            <li data-index="rs-10" data-transition="fade" data-slotamount="7" class="bg-light"
+                data-easein="Power4.easeInOut" data-delay="5000" data-easeout="Power4.easeInOut" data-masterspeed="2000"
+                data-rotate="0" data-saveperformance="off" data-title="Love it?" data-description="">
+                <img src="CrowdIQPage/images/new_slider1.jpg" alt="systemimg" data-kenburns="off" data-bgposition="center center"
+                     data-duration="10000" data-ease="Linear.easeNone" data-scalestart="100" data-scaleend="120"
+                     data-rotatestart="0" da ta-rotateend="0" data-offsetstart="0 -500" data-bgfit="cover"
+                     data-offsetend="0 500" data-bgparallax="10" class="rev-slidebg" data-no-retina>
+                <div class="tp-caption  sfb tp-resizeme" data-x="center"
+                     data-y="120" data-speed="700" data-start="1000" data-easing="Power0.easeInOut"
+                     data-splitin="words"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit; white-space: nowrap;color: #fff;font-size:60px;font-family: lato">
+                    CrowdIQL for your requirements
+                </div>
+                <div class="tp-caption sft tp-resizeme" data-x="center"
+                     data-y="180" data-speed="700" data-start="1000" data-easing="Power0.easeInOut"
+                     data-splitin="words"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit; margin-top:60px; white-space: nowrap;color: #fff;font-size:25px;font-family: lato">
+                    SELECT | INSERT | DELETE | UPDATE &lt;table&gt;.&lt;attribute&gt;
+                </div>
+                <div class="tp-caption sft tp-resizeme" data-x="center"
+                     data-y="300" data-speed="500" data-start="1000" data-easing="Power0.easeInOut"
+                     data-splitin="words"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit; margin-top:60px; white-space: nowrap;color: #fff;font-size:25px;font-family: lato">
+                    Flexible and Accurate
+                </div>
+            </li>
+            <li data-transition="Curtain from Middle" data-slotamount="7" data-delay="5000" data-masterspeed="600"
+                class="bg-light">
+
+                <img src="CrowdIQPage/images/new_slider4.png" alt="girlimg" data-bgposition="right bottom"
+                     data-duration="11000" data-ease="Linear.easeNone" data-bgfit="cover"
+                     data-bgpositionend="left top">
+                <div class="tp-caption grey_heavy_72 sfb tp-resizeme" data-x="center"
+                     data-y="150" data-speed="700" data-start="700" data-easing="Power0.easeInOut"
+                     data-splitin="lines"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; margin-top: -10px; max-width: inherit; max-height: inherit; white-space: nowrap;color: #fff;font-size:55px;font-family: lato">
+                    Understanding your table
+                </div>
+                <div class="tp-caption grey_heavy_72 sft tp-resizeme" data-x="center"
+                     data-y="250" data-speed="700" data-start="1000" data-easing="Power0.easeInOut"
+                     data-splitin="lines"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit;
+                     white-space: nowrap;color: #fff;font-size:25px;font-family: lato">
+                    CrowdIQ will help you understand your tables by detecting and reporting potential problems
+                </div>
+                <div class="tp-caption grey_heavy_72 sft tp-resizeme" data-x="center"
+                     data-y="300" data-speed="700" data-start="1000" data-easing="Power0.easeInOut"
+                     data-splitin="lines"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit;
+                     white-space: nowrap;color: #fff;font-size:25px;font-family: lato">
+                    like “whether the table has headers or entity column”
+                </div>
+            </li>
+            <!---->
+            <li data-index="rs-82" data-transition="fade" data-slotamount="7" data-masterspeed="500" data-delay="5000"
+                data-saveperformance="on"
+                data-title="Intro Slide" data-bgfit="cover">
+                <img src="CrowdIQPage/images/new_slider3.png" alt="girlimg" data-bgposition="right bottom"
+                     data-duration="11000" data-ease="Linear.easeNone" data-bgfit="cover"
+                     data-bgpositionend="left top">
+
+                <div class="tp-caption grey_heavy_72 sfl tp-resizeme" data-x="center"
+                     data-y="150" data-speed="700" data-start="700" data-easing="Power0.easeInOut"
+                     data-splitin="words"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5;margin-top: -30px; max-width: inherit; max-height: inherit; white-space: nowrap;color: #fff;font-size:70px;font-family: lato">
+                    Machine for your business
+                </div>
+                <div class="tp-caption grey_heavy_72 sfr tp-resizeme" data-x="center"
+                     data-y="250" data-speed="700" data-start="1500" data-easing="Power0.easeInOut"
+                     data-splitin="words"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit; white-space: nowrap;color: #fff;font-size:25px;font-family: lato">
+                    CrowdIQ combines machine algorithms and humans in a single platform for improving work efficiency.<br/>
+                </div>
+                <div class="tp-caption grey_heavy_72 sfr tp-resizeme" data-x="center"
+                     data-y="300" data-speed="700" data-start="1500" data-easing="Power0.easeInOut"
+                     data-splitin="words"
+                     data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1"
+                     style="z-index: 5; max-width: inherit; max-height: inherit; white-space: nowrap;color: #fff;font-size:25px;font-family: lato">
+                    It also supports DIV algorithms to pretreat your crowd tasks.
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-------------------Slider end----------------->
+
+<!----------------Body Section Start--------------->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 m-t-50">
+            <p class="text-center"
+               style="margin-top: 80px; font-size: 40px; ">
+                What you can do with CrowdIQ</p>
+            <p class="text-center"
+               style="margin-top: 70px; margin-bottom: 150px;">
+                CrowdIQ is a declarative crowdsourcing platform for improving the quality of web tables.
+                It supports both data cleaning and semantic recovery for web tables.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 section-top-40">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="about_col_space">
+                        <div class="row profile1">
+                            <div class="col-md-3 col-sm-3 col-xs-3 section-top-20">
+                                <img src="CrowdIQPage/images/responsible-energy-use.png" class="img-responsive"
+                                     alt="about_icons">
+                            </div>
+
+                            <div class="profile_data col-md-9 col-sm-9 col-xs-9 section-top-20">
+                                <a href="#"><h5 class="profile_data">Algorithm</h5></a>
+                                <p class="profile_data">CrowdIQ supports DIV algorithms for crowd tasks.
+                                    <br/><a href="#" class="text-success">
+                                        Read more</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about_col_space">
+                        <div class="row profile1">
+                            <div class="col-md-3  col-xs-3 section-top-20">
+                                <img src="CrowdIQPage/images/global.png" class="img-responsive" alt="about_icons">
+                            </div>
+                            <div class="profile_data col-md-9  col-xs-9 section-top-20">
+                                <a href="#"><h5 class="profile_data">Tables</h5></a>
+                                <p class="profile_data">All pending tables should be in .csv format.
+                                    <br/><a href="#" class="text-success">
+                                        Read more</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="about_col_space">
+                        <div class="row profile1">
+                            <div class="col-md-3  col-xs-3 section-top-20">
+                                <img src="CrowdIQPage/images/diversity.png" class="img-responsive" alt="about_icons">
+                            </div>
+                            <div class="profile_data col-md-9  col-xs-9 section-top-20">
+                                <a href="#"><h5 class="profile_data">Workflow</h5></a>
+                                <p class="profile_data">CrowdIQ consists of requesters and workers.
+                                    <br/><a href="#" class="text-success">
+                                        Read more</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about_col_space">
+                        <div class="row profile1">
+                            <div class="col-md-3 col-sm-3 col-xs-3 section-top-20">
+                                <img src="CrowdIQPage/images/leadrship.png" class="img-responsive" alt="about_icons">
+                            </div>
+                            <div class="profile_data col-md-9 col-sm-9 col-xs-9 section-top-20">
+                                <a href="#"><h5 class="profile_data">CrowdIQL</h5></a>
+                                <p class="profile_data">CrowdIQL will help you design crowd tasks.
+                                    <br/><a href="#" class="text-success">
+                                        Read more</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!------------------Copy rights------------------->
+<section class="copy-rights">
+    <div class="container ">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 text-center section-top-15">
+                <p class="footer_text_color ">Copyright &copy; 2017.Beijing JiaoTong Unversity , Database laboratory</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!------------------Copy rights End------------------>
+
+<script src="CrowdIQPage/js/jquery.min.js"></script>
+<script src="CrowdIQPage/js/bootstrap.min.js"></script>
+<script src="CrowdIQPage/vendors/revolution-slider/js/jquery.themepunch.revolution.min.js"></script>
+<script src="CrowdIQPage/vendors/revolution-slider/js/jquery.themepunch.tools.min.js"></script>
+<script src="CrowdIQPage/vendors/iCheck/js/icheck.js"></script>
+<script src="CrowdIQPage/vendors/countup/js/countUp.min.js"></script>
+<script src="CrowdIQPage/vendors/sweetalert2/js/sweetalert2.min.js"></script>
+<script src="CrowdIQPage/vendors/jribbble/js/jribbble.min.js"></script>
+<!----------------------page Level Js-------------------------->
+<script src="CrowdIQPage/js/custom.js"></script>
+
+
 </body>
 </html>

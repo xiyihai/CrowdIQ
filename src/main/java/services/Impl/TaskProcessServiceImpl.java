@@ -257,6 +257,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				Worker worker = workers.get(i);
 				WorkerInfo workerInfo = new WorkerInfo(worker.getWorker_id(), worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
 						worker.getAverage_di(), worker.getAverage_reward());
+				System.out.println(worker.getWorker_id());
+				System.out.println(worker.getLevel());
 				workerInfos.add(workerInfo);
 			}
 			//找到对应发布的任务，取出其中有用的信息，包装发给接口类
@@ -274,11 +276,12 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number()-rTask.getHastaken_number(), 1, workerInfos, requesterTaskInfo);
 			//要写入数据库
 			for(int i=0;i<workerIDs.length;i++){
+				System.out.println(workerIDs[i]);
 				if (workerRTaskDao.findByTidWid(workerIDs[i], taskID).size()>0) {
 					WorkerRTask workerRTask = workerRTaskDao.findByTidWid(workerIDs[i], taskID).get(0);
 					workerRTask.setTaken_deadline(taken_deadline);
 					workerRTask.setTimes(1);
-					workerRTaskDao.update(workerRTask);		
+					workerRTaskDao.update(workerRTask);
 				}else {
 					WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[i]), Integer.valueOf(taskID), 1, taken_deadline);
 					workerRTaskDao.save(workerRTask);		
@@ -321,7 +324,6 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			}
 			
 		}else if (flag.equals("requester")) {
-			
 			RTask rTask = rtaskDao.getBytaskID(taskID).get(0);
 			Integer state = rTask.getState();
 			if (state==0||state==2||state==4) {
@@ -382,9 +384,10 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				Double each_reward =rtaskObject.getEach_reward();
 				//获取当前时间
 				Timestamp taken_time = new Timestamp(new Date().getTime());
+				Double difficult_degree = rtaskObject.getDifficult_degree();
 				
 				wtaskDao.save(new WTask(Integer.valueOf(userID), Integer.valueOf(taskID), jsonObject.toString(), 
-						deadline, state , each_reward, taken_time));
+						deadline, state , each_reward, taken_time, difficult_degree));
 				//有工人收录，则对应雇主任务中已收录工人数参数也要变化
 				rtaskObject.setHastaken_number(rtaskObject.getHastaken_number()+1);
 				
@@ -456,7 +459,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			level = worker.getTotal_tasks()%100;	
 		}
 		worker.setLevel(level);
-		worker.setAccount(worker.getAccount()+get_reward);
+		worker.setAccount(Double.valueOf(dFormat.format(worker.getAccount()+get_reward)));
 		
 		workerDao.update(worker);
 		
@@ -478,7 +481,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		//需要将雇主账户扣钱
 		Integer requester_id = requestertaskDao.getByTID(taskID).get(0).getRequester_id();
 		Requester requester = requesterDao.getByRID(String.valueOf(requester_id)).get(0);
-		requester.setAccount(requester.getAccount()-get_reward);
+		requester.setAccount(Double.valueOf(dFormat.format(requester.getAccount()-get_reward)));
 		requesterDao.update(requester);
 		if (rTask.getHasanswer_number()==rTask.getWorker_number()) {
 
@@ -491,7 +494,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			//输出： quality(ArrayString), finalAnswer(String)
 			
 			//获取这个task的空数
-			int length = rtask.getJSONArray("sqlTarget").size();
+			int length = rtask.getJSONArray("sqlTargets").size();
 			JSONArray finalAnswers = rtask.getJSONArray("finalAnswers");
 			for (int i = 0; i < length; i++) {
 				//制作参数 top_k
@@ -499,9 +502,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				if (rtask.containsKey("candidateItems")) {
 					if ((rtask.getJSONArray("candidateItems").size()-1) >= i) {
 						JSONArray candidateItems = rtask.getJSONArray("candidateItems").getJSONArray(i);
-						for (int j = 0; j < candidateItems.size(); j++) {
-							top_k.add(candidateItems.getString(j));
-						}
+						top_k = TranferAnswer.top_ktranfer(candidateItems);
 					}
 				}
 				//制作参数answers
@@ -509,7 +510,6 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				for (int j = 0; j < rTask.getWorker_number(); j++) {
 					worker_answer.add(TranferAnswer.answertranfer(hasReceivedAnswers.getJSONArray(j).getString(i), top_k));
 				}
-
 				//制作工人质量矩阵
 				ArrayList<String> worker_quality = new ArrayList<>();
 				for (int j = 0; j < rTask.getWorker_number(); j++) {
@@ -520,11 +520,16 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				}
 				//这里都只是决策出的一个答案
 //				for (int j = 0; j < worker_answer.size(); j++) {
-//					System.out.print(worker_answer.get(j)+"----");
+//					System.out.println(worker_answer.get(j)+"----");
 //				}
-				aggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
 				
+				aggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
 				String finalAnswer = aggregateAnswer.AggFinalAnswer().get(0);
+				//还需要转一下
+				if (finalAnswer.startsWith("!")) {
+					finalAnswer = TranferAnswer.resulttranfer(finalAnswer.substring(1, 2), rtask.getJSONArray("candidateItems").getJSONArray(i));
+				}
+				
 				ArrayList<String> update_qualitys = aggregateAnswer.WriteWm();
 				//更新工人质量矩阵
 				for (int j = 0; j < update_qualitys.size(); j++) {
@@ -630,9 +635,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	@Override
 	public String getTakenTask(String userID) {
 		// TODO Auto-generated method stub
-	
 		JSONArray tasks = new JSONArray();
-		List<WTask> wTasks = wtaskDao.getByWid(userID);
+		List<WTask> wTasks = wtaskDao.getByWid(userID);	
 		for (int i = 0; i < wTasks.size(); i++) {
 			WTask wTask = wTasks.get(i);
 			
@@ -642,8 +646,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			task.put("state", wTask.getState());
 			task.put("deadline", wTask.getDeadline().toString());
 			task.put("each_reward", wTask.getEach_reward());
-			RTask rTask = rtaskDao.getBytaskID(String.valueOf(wTask.getTask_id())).get(0);
-			task.put("di", rTask.getDifficult_degree());
+			task.put("di", wTask.getDifficult_degree());
 			task.put("taken_time", wTask.getTaken_time().toString());
 			
 			if (wTask.getState()==2) {
@@ -652,6 +655,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			}	
 			tasks.add(task);
 		}
+		
 		return tasks.toString();
 	}
 
@@ -682,6 +686,12 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 						wTask.setState(4);
 						wtaskDao.update(wTask);	
 					}
+				}
+				
+				//找到对应任务推荐表
+				List<WorkerRTask> wRTasks = workerRTaskDao.findByTid(taskID);
+				for (int j = 0; j < wRTasks.size(); j++) {
+					workerRTaskDao.delete(wRTasks.get(j));
 				}
 			}
 		}

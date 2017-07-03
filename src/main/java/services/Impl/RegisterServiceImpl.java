@@ -225,7 +225,8 @@ public class RegisterServiceImpl implements RegisterService {
 		//工人做满10题统一更新质量矩阵，做满10题还要更新工人等级
 		List<WorkerTestTask> tasks = workertesttaskDao.findTaskbyState(userID, 1);
 		//这里2还要变成10		
-		if (tasks.size()>=2) {
+		if (tasks.size()>=3) {
+				
 			//需要计算工人初步质量举证
 			ArrayList<String> results = new ArrayList<>();
 			
@@ -233,7 +234,7 @@ public class RegisterServiceImpl implements RegisterService {
 				WorkerTestTask workerTestTask2 = tasks.get(i);
 				String taskid = String.valueOf(workerTestTask2.getTesttask_id());
 				
-				TestTask testtask2 = testtaskDao.getByID(taskID).get(0);
+				TestTask testtask2 = testtaskDao.getByID(taskid).get(0);
 				//这个truth是C B D答案，是个JSONArray数组，但目前数组长度都是1
 				JSONArray truthArray2 = JSONArray.fromObject(testtask2.getAnswer());
 				String truth2 = truthArray2.getString(0);
@@ -254,7 +255,7 @@ public class RegisterServiceImpl implements RegisterService {
 			//需要将正确答案和工人答案打包然后发给对应计算模块
 			calculateTest = new CalculateTestImp();
 			worker.setQuality(calculateTest.CaculateTestQuestion(results));
-		
+			
 			workerDao.update(worker);
 			
 			//需要判断该用户的测试题完成的是否足够多,若完成且工人目前level为0，则修改工人level为1
@@ -262,6 +263,7 @@ public class RegisterServiceImpl implements RegisterService {
 					worker.setLevel(1);
 					workerDao.update(worker);
 			}	
+			
 		}
 		return true;
 	}
@@ -354,7 +356,7 @@ public class RegisterServiceImpl implements RegisterService {
 					
 					for (int i = 0; i < requesterTasks.size(); i++) {
 						Integer taskID = requesterTasks.get(i).getTask_id();
-						RTask rTask = rtaskDao.get(RTask.class, taskID);
+						RTask rTask = rtaskDao.getBytaskID(String.valueOf(taskID)).get(0);
 						
 						if (rTask.getState()==0) {
 							state0++;
@@ -402,6 +404,16 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public String getAllTestTask(String userID) {
 		// TODO Auto-generated method stub
+		List<TestTask> testtasks = testtaskDao.findAll(TestTask.class);
+		for(int i=0;i<testtasks.size();i++){
+			TestTask testTask = testtasks.get(i);
+			Integer taskID = testTask.getTest_id();
+			//这个id号不包含
+			if (workertesttaskDao.findByWidTid(userID, String.valueOf(taskID)).size()==0) {
+				WorkerTestTask workerTestTask2 = new WorkerTestTask(Integer.valueOf(userID), taskID, new Integer(0), "", 0);
+				workertesttaskDao.save(workerTestTask2);
+			};
+		}
 		List<WorkerTestTask> testTasks = workertesttaskDao.findByWid(userID);
 		return JSONArray.fromObject(testTasks).toString();
 	}

@@ -18,6 +18,7 @@ require(['wh'], function (wh) {
     var taskID = url.split("?")[1].split("&")[1].split("=")[1];
 
     var answerLength;
+    var headerflag = false;
 
     $.ajax({
         type:'post',
@@ -52,6 +53,7 @@ require(['wh'], function (wh) {
                 var content = d.split(':')[1];
                 var subattribures = ahead.split('-');
                 if (subattribures[0] === "headers"){
+                    headerflag = true;
                     if (typeof (subattribures[1]) == "undefined"){
                         //这样就是整个headers
                         var array = JSON.parse(content);
@@ -166,7 +168,7 @@ require(['wh'], function (wh) {
                     count = count + 1;
                     options = options + "<div class='radio'> <label> " +
                         "<input type='radio' name='optionsRadios" + j + "' id='option" + count + "' value='' checked>" + "" +
-                        "<input type='text' id='customfill"+j+"' placeholder='fill in the blanks'></label> </div>";
+                        "<input type='text' id='customfill"+j+"' placeholder=''></label> </div>";
                     options = options + "</div>";
 
                     $("#candidateItems").append(options);
@@ -176,14 +178,16 @@ require(['wh'], function (wh) {
             for (var i=0;i<sqlTargets.length-candidateLength;i++){
                 var options = "<div class='form-group'> <div class='radio'> <label> " +
                     "<input type='radio' name='optionsRadios"+(candidateLength+i)+"' id='option"+(candidateLength+i)+"' value='' checked>"+
-                    "<input type='text' id='customfill"+(candidateLength+i)+"' placeholder='fill in the blanks'></label> </div> </div>";
+                    "<input type='text' id='customfill"+(candidateLength+i)+"' placeholder=''></label> </div> </div>";
                 $("#candidateItems").append(options);
             }
 
             //这个是用来统计个数的函数，需要先加载，再调用
-            $('#dataTables-example').DataTable({
-                responsive: true
-            });
+            if(headerflag){
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
+            }
     }).then(function () {
         //用来绑定提交答案按钮
 
@@ -205,6 +209,7 @@ require(['wh'], function (wh) {
                     }
                 }
             }
+
             $.ajax({
                 type:'post',
                 url:'finishTaskAction',
