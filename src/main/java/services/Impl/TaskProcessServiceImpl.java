@@ -5,13 +5,11 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import CaculateParams.CaculateParameter;
 import CaculateParams.CaculateParameterImpl;
@@ -40,9 +38,7 @@ import services.Interface.ParserCrowdIQLService;
 import services.Interface.TaskProcessService;
 import vos.LastestM;
 import vos.RequesterTaskInfo;
-import vos.RequesterTaskVos;
 import vos.WorkerInfo;
-import vos.WorkerTaskVos;
 
 public class TaskProcessServiceImpl implements TaskProcessService {
 
@@ -158,7 +154,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		for (int i = 0; i < qualities.length; i++) {
 			qualities[i] = workers.get(i).getQuality();
 		}
-		int workNumber = caculateParameter.getWorkNumber(qualities);
+		//这里除以2，后续需要改善
+		int workNumber = caculateParameter.getWorkNumber(qualities)/2;
 //		System.out.println(di);
 //		System.out.println(each_reward);
 //		System.out.println(workNumber);
@@ -257,8 +254,6 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				Worker worker = workers.get(i);
 				WorkerInfo workerInfo = new WorkerInfo(worker.getWorker_id(), worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
 						worker.getAverage_di(), worker.getAverage_reward());
-				System.out.println(worker.getWorker_id());
-				System.out.println(worker.getLevel());
 				workerInfos.add(workerInfo);
 			}
 			//找到对应发布的任务，取出其中有用的信息，包装发给接口类
@@ -272,11 +267,12 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			//(返回本次轮回的截止日期) TimeStamp getTakenDeadline(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo);
 			//这里面两个类，是自己封装的，方便取信息
 			RecommendTask recommendTask = new RecommendTaskImpl();
+			
 			String[] workerIDs = recommendTask.getRecommendTask(rTask.getWorker_number()-rTask.getHastaken_number(), 1, workerInfos, requesterTaskInfo);
-			Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number()-rTask.getHastaken_number(), 1, workerInfos, requesterTaskInfo);
+			Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number()-rTask.getHastaken_number(), 1, workerInfos, requesterTaskInfo);	
+			
 			//要写入数据库
 			for(int i=0;i<workerIDs.length;i++){
-				System.out.println(workerIDs[i]);
 				if (workerRTaskDao.findByTidWid(workerIDs[i], taskID).size()>0) {
 					WorkerRTask workerRTask = workerRTaskDao.findByTidWid(workerIDs[i], taskID).get(0);
 					workerRTask.setTaken_deadline(taken_deadline);
