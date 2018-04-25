@@ -20,6 +20,8 @@ require(['wh'], function (wh) {
     var answerLength;
     var headerflag = false;
 
+    var type;
+
     $.ajax({
         type:'post',
         url:'showTaskAction',
@@ -30,6 +32,7 @@ require(['wh'], function (wh) {
         },
         dataType:'json'
     }).then(function (data) {
+            type = $.parseJSON($.parseJSON(data).type);
 
             var task = $.parseJSON($.parseJSON(data).content);
             var sqlTargets = task.sqlTargets;
@@ -151,63 +154,102 @@ require(['wh'], function (wh) {
 
             });
 
-            var candidateLength = 0;
-            if (candidateItems!=null) {
-                var count = 0;
-                candidateLength = candidateItems.length;
-                candidateItems.forEach(function (d, j) {
-                    var options = "<div class='form-group'>";
-                    d.forEach(function (di, i) {
-                        if (di.indexOf(":") !== -1) {
-                            di = di.split(":")[0];
-                        }
-                        options = options + "<div class='radio'> <label> <input type='radio' name='optionsRadios" + j + "' id='option" + i + "' value='" + di + "'>" +
-                            di + "</label> </div>";
-                        count = i;
+            if (type == 1) {
+                var candidateLength = 0;
+                if (candidateItems != null) {
+                    var count = 0;
+                    candidateLength = candidateItems.length;
+                    candidateItems.forEach(function (d, j) {
+                        var options = "<div class='form-group'>";
+                        d.forEach(function (di, i) {
+                            if (di.indexOf(":") !== -1) {
+                                di = di.split(":")[0];
+                            }
+                            options = options + "<div class='radio'> <label> <input type='radio' name='optionsRadios" + j + "' id='option" + i + "' value='" + di + "'>" +
+                                di + "</label> </div>";
+                            count = i;
+                        });
+                        count = count + 1;
+                        options = options + "<div class='radio'> <label> " +
+                            "<input type='radio' name='optionsRadios" + j + "' id='option" + count + "' value='' checked>" + "" +
+                            "<input type='text' id='customfill" + j + "' placeholder=''></label> </div>";
+                        options = options + "</div>";
+
+                        $("#candidateItems").append(options);
                     });
-                    count = count + 1;
-                    options = options + "<div class='radio'> <label> " +
-                        "<input type='radio' name='optionsRadios" + j + "' id='option" + count + "' value='' checked>" + "" +
-                        "<input type='text' id='customfill"+j+"' placeholder=''></label> </div>";
-                    options = options + "</div>";
+                }
 
+                for (var i = 0; i < sqlTargets.length - candidateLength; i++) {
+                    var options = "<div class='form-group'> <div class='radio'> <label> " +
+                        "<input type='radio' name='optionsRadios" + (candidateLength + i) + "' id='option" + (candidateLength + i) + "' value='' checked>" +
+                        "<input type='text' id='customfill" + (candidateLength + i) + "' placeholder=''></label> </div> </div>";
                     $("#candidateItems").append(options);
-                });
+                }
+
+            }else if (type == 2){
+                //多选题： 答案选取的时候两层array，[[a,b,c],[],[]...]
+                //如果有多选题，则必定是有候选答案的，
+
+                    var count = 0;
+
+                    candidateItems.forEach(function (d, j) {
+                        var options = "<div class='form-group'>";
+                        d.forEach(function (di, i) {
+                            if (di.indexOf(":") !== -1) {
+                                di = di.split(":")[0];
+                            }
+                            options = options + "<div class='radio'> <label> <input type='checkbox' name='optionsRadios" + j + "' id='option" + i + "' value='" + di + "'>" +
+                                di + "</label> </div>";
+                            count = i;
+                        });
+                        count = count + 1;
+                        options = options + "<div class='radio'> <label> " +
+                            "<input type='checkbox' name='optionsRadios" + j + "' id='option" + count + "' value=''>" + "" +
+                            "<input type='text' id='customfill" + j + "' placeholder=''></label> </div>";
+                        options = options + "</div>";
+
+                        $("#candidateItems").append(options);
+                    });
+
             }
 
-            for (var i=0;i<sqlTargets.length-candidateLength;i++){
-                var options = "<div class='form-group'> <div class='radio'> <label> " +
-                    "<input type='radio' name='optionsRadios"+(candidateLength+i)+"' id='option"+(candidateLength+i)+"' value='' checked>"+
-                    "<input type='text' id='customfill"+(candidateLength+i)+"' placeholder=''></label> </div> </div>";
-                $("#candidateItems").append(options);
-            }
-
-            //这个是用来统计个数的函数，需要先加载，再调用
-            if(headerflag){
-                $('#dataTables-example').DataTable({
-                    responsive: true
-                });
-            }
     }).then(function () {
         //用来绑定提交答案按钮
 
         $("#submitanswer").bind("click", function () {
-
             var answerArray = new Array();
 
             for (var j=0;j<answerLength;j++){
                 var radios = document.getElementsByName("optionsRadios"+j);
-                var answer;
-                for (var i=0;i<radios.length;i++){
-                    if (radios[i].checked){
-                        if (radios[i].value == ""){
-                            answer = $("#"+"customfill"+j).val();
-                        }else {
-                            answer = radios[i].value;
+
+                if (type == 1){
+                    var answer;
+                    for (var i=0;i<radios.length;i++){
+                        if (radios[i].checked){
+                            if (radios[i].value == ""){
+                                answer = $("#"+"customfill"+j).val();
+                            }else {
+                                answer = radios[i].value;
+                            }
+                            answerArray[j] = answer;
                         }
-                        answerArray[j] = answer;
+                    }
+                }else if (type == 2){
+                    var subanswers = new Array();
+                    for (var i=0;i<radios.length;i++){
+                        if (radios[i].checked){
+                            if (radios[i].value == ""){
+                                if ($("#"+"customfill"+j).val() != "") {
+                                    subanswers.push($("#" + "customfill" + j).val());
+                                }
+                            }else {
+                                subanswers.push(radios[i].value);
+                            }
+                            answerArray[j] = subanswers;
+                        }
                     }
                 }
+
             }
 
             $.ajax({
@@ -221,9 +263,17 @@ require(['wh'], function (wh) {
                 dataType:'json'
             }).then(function () {
                 alert("success");
-            })
+            }, function () {
+                alert("failed");
+            });
         })
 
+        //这个是用来统计个数的函数，需要先加载，再调用
+        if(headerflag){
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+        }
     });
 
 

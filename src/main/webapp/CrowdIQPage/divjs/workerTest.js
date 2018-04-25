@@ -166,12 +166,7 @@ require(['wh'], function (wh) {
                 $("#candidateItems").append(options+"</div>");
             });
         }
-        //这个是用来统计个数的函数，需要先加载，再调用
-        if (headerflag){
-            $('#dataTables-example').DataTable({
-                responsive: true
-            });
-        }
+
     }).then(function () {
 
         $("#submitanswer").bind("click", function () {
@@ -201,12 +196,19 @@ require(['wh'], function (wh) {
                 dataType:'json'
             }).then(function () {
                 alert("success");
+            }, function () {
+                alert("failed");
             })
         })
 
+        //这个是用来统计个数的函数，需要先加载，再调用
+        if (headerflag){
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+        }
 
     });
-
 
     wh.initHeader(userID);
 

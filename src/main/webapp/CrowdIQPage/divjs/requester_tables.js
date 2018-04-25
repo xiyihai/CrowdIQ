@@ -35,10 +35,7 @@ require(['rh'], function (rh) {
             $("#tables-tbody").append(context);
         });
 
-        //这个是用来统计个数的函数，需要先加载，再调用
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
+
     }).then(function () {
 
         $("a[id^='quality']").bind("click", function () {
@@ -149,7 +146,10 @@ require(['rh'], function (rh) {
             });
         });
 
-
+        //这个是用来统计个数的函数，需要先加载，再调用
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
     });
 
 

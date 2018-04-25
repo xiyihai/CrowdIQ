@@ -35,10 +35,7 @@ require(['wh'], function (wh) {
             $("#recommendtask-tbody").append(context);
         });
 
-        //这个是用来统计个数的函数，需要先加载，再调用
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
+
     }).then(function () {
 
         $("a[id^='preview']").bind("click", function () {
@@ -60,9 +57,15 @@ require(['wh'], function (wh) {
                 dataType:'json'
             }).then(function () {
                 alert("success");
+            }, function () {
+                alert("failed");
             });
         });
 
+        //这个是用来统计个数的函数，需要先加载，再调用
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
     });
 
     function RTask(taskID, taken_deadline, final_deadline, wbase, di, work_state){

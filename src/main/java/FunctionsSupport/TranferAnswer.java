@@ -23,11 +23,11 @@ public class TranferAnswer {
 		return wanswerA+":"+truthA+":"+items.size();
 	}
 	
-	static public String answertranfer(String wanswer, ArrayList<String> items){
+	static public String answertranfer(String wanswer, JSONArray items){
 		String[] alphabet = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N"};
 		String wanswerA = wanswer;
 		for (int i = 0; i < items.size(); i++) {
-			String item = items.get(i);
+			String item = items.getString(i);
 			if (item.contains(":")) {
 				item = item.split(":")[0];
 			}

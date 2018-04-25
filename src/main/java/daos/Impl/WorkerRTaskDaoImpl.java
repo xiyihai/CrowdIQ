@@ -8,15 +8,15 @@ import domains.WorkerRTask;
 public class WorkerRTaskDaoImpl extends BaseDaoImpl<WorkerRTask> implements WorkerRTaskDao {
 
 	@Override
-	public List<WorkerRTask> findByWidDeadline(String userID, String deadline) {
+	public List<WorkerRTask> findByWidDeadline(String userID, String deadline, Integer valid) {
 		// TODO Auto-generated method stub
-		return findBySql("select * from worker_recommendtask where worker_id = "+Integer.valueOf(userID)+" and date_format(taken_deadline,'%Y-%m-%d %H:%i') >= '"+deadline+"'", WorkerRTask.class);
+		return findBySql("select * from worker_recommendtask where worker_id = "+Integer.valueOf(userID)+" and date_format(taken_deadline,'%Y-%m-%d %H:%i') >= '"+deadline+"' and valid = "+valid, WorkerRTask.class);
 	}
 
 	@Override
-	public List<WorkerRTask> findByDeadline(String deadline) {
+	public List<WorkerRTask> findByDeadline(String deadline, Integer valid) {
 		// TODO Auto-generated method stub
-		return findBySql("select * from worker_recommendtask where date_format(taken_deadline,'%Y-%m-%d %H:%i') <= '"+deadline+"'", WorkerRTask.class);
+		return findBySql("select * from worker_recommendtask where date_format(taken_deadline,'%Y-%m-%d %H:%i') <= '"+deadline+"' and valid = "+valid, WorkerRTask.class);
 	}
 
 	@Override

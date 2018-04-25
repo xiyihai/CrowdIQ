@@ -16,6 +16,8 @@ require(['rh'], function (rh) {
     var taskID = url.split("?")[1].split("&")[1].split("=")[1];
     var flag = url.split("?")[1].split("&")[2].split("=")[1];
 
+    var type;
+
     $.ajax({
         type:'post',
         url:'showTaskAction',
@@ -29,6 +31,7 @@ require(['rh'], function (rh) {
 
             var t = $.parseJSON(data);
 
+            type = $.parseJSON(t.type);
             var task = $.parseJSON(t.content);
 
             var sqlTargets = task.sqlTargets;
@@ -162,19 +165,54 @@ require(['rh'], function (rh) {
         }
 
         if (finalAnswers!=null){
-            finalAnswers.forEach(function (d) {
-                $("#finalAnswers").append("<span>"+d+"</span>");
-            });
+
+            if (type == 1){
+                finalAnswers.forEach(function (d) {
+                    $("#finalAnswers").append("<span>"+d+"</span>");
+                });
+            }else if(type == 2){
+                finalAnswers.forEach(function (d, i) {
+                    var mulAnswer = '';
+                    d.forEach(function (v, j) {
+                        if (j == 0){
+                            mulAnswer = v;
+                        }else{
+                            mulAnswer = mulAnswer+' ; '+v;
+                        }
+                    });
+                    $("#finalAnswers").append("<span>"+mulAnswer+"</span>");
+                })
+            }
         }
 
         if (receiveAnswers!=null){
-            receiveAnswers.forEach(function (d) {
-                var options = "<ul class='top-k'>";
-                d.forEach(function (di) {
-                    options = options+"<li>"+di+"</li>";
+
+            if (type == 1){
+                receiveAnswers.forEach(function (d) {
+                    var options = "<ul class='top-k'>";
+                    d.forEach(function (di) {
+                        options = options+"<li>"+di+"</li>";
+                    });
+                    $("#receivedAnswers").append(options+"</ul>");
                 });
-                $("#receivedAnswers").append(options+"</ul>");
-            });
+            }else if(type == 2){
+                receiveAnswers.forEach(function (d) {
+                    var options = "<ul class='top-k'>";
+                    d.forEach(function (di) {
+                        var v = '';
+                        di.forEach(function (dii, j) {
+                            if (j == 0){
+                                v= dii;
+                            }else{
+                                v = v + " ; " + dii;
+                            }
+                        });
+                        options = options+"<li>"+v+"</li>";
+                    });
+                    $("#receivedAnswers").append(options+"</ul>");
+                });
+            }
+
         }
 
             //这个是用来统计个数的函数，需要先加载，再调用

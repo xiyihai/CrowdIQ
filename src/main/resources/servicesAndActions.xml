@@ -45,6 +45,8 @@
 		<property name="workerDao" ref="WorkerDao"></property>
 		<property name="requesterDao" ref="RequesterDao"></property>
 		<property name="workerRTaskDao" ref="WorkerRTaskDao"></property>
+		<property name="answerCompareDao" ref="AnswerCompareDao"></property>
+		<property name="mulAnswerCompareDao" ref="MulAnswerCompareDao"></property>
 	</bean>
 	
 	

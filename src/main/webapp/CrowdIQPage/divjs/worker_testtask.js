@@ -33,10 +33,7 @@ require(['wh'], function (wh) {
             $("#testtask-tbody").append(context);
         });
 
-        //这个是用来统计个数的函数，需要先加载，再调用
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
+
     }).then(function () {
 
         $("a[id^='do']").bind("click", function () {
@@ -51,6 +48,10 @@ require(['wh'], function (wh) {
             window.location.href = "workerTestResult.html?userID="+userID+"&taskID="+taskID;
         });
 
+        //这个是用来统计个数的函数，需要先加载，再调用
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
     });
 
 

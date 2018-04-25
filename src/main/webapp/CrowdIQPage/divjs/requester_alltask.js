@@ -38,10 +38,6 @@ require(['rh'], function (rh) {
             $("#requestertask-tbody").append(context);
         });
 
-        //这个是用来统计个数的函数，需要先加载，再调用
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
     }).then(function () {
        //用于绑定按钮作用
 
@@ -113,6 +109,11 @@ require(['rh'], function (rh) {
             var number = $(this).attr('id').substring(4);
             var taskID = $("#" + "taskID" + number).html();
             window.location.href = "requesterHITRevise.html?userID="+userID+"&taskID="+taskID;
+        });
+
+        //这个是用来统计个数的函数，需要先加载，再调用
+        $('#dataTables-example').DataTable({
+            responsive: true
         });
 
     });

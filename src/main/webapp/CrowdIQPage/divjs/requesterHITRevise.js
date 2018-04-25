@@ -168,6 +168,7 @@ require(['rh'], function (rh) {
         $("#each-reward").html("$"+each_reward);
         $("#deadline").html(deadline);
 
+
         //这个是用来统计个数的函数，需要先加载，再调用
         $('#dataTables-example').DataTable({
             responsive: true
@@ -194,8 +195,11 @@ require(['rh'], function (rh) {
             dataType:'json'
         }).then(function () {
             alert("success");
+        }, function () {
+            alert("failed");
         })
     });
+
 
     rh.initHeader(userID);
 

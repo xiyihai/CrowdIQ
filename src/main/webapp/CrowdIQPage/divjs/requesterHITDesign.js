@@ -187,10 +187,9 @@ require(['rh'], function (rh) {
             $('#dataTables-example').DataTable({
                 responsive: true
             });
+
         })
-
     });
-
 
     var taskfinal;
     //绑定下一个按钮
@@ -230,6 +229,8 @@ require(['rh'], function (rh) {
         taskfinal.deadline = $("#deadline").html();
         taskfinal.table_name = tablename;
 
+        taskfinal.type = $("input[name='category']:checked").val();
+
         $.ajax({
             type:'post',
             url:'commitTaskAction',
@@ -240,6 +241,8 @@ require(['rh'], function (rh) {
             dataType:'json'
         }).then(function () {
           alert("success");
+        }, function () {
+            alert("failed");
         })
     });
 

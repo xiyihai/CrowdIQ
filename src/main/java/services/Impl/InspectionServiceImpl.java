@@ -3,6 +3,8 @@ package services.Impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.struts2.ServletActionContext;
+
 import csy4367.impl.HeaderDetecter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -30,7 +32,8 @@ public class InspectionServiceImpl implements InspectionService {
 		//这里借助readTable的ArrayList<String[]> 来判断是否存在表头
 		
 		HeaderDetecter headerDetecter = new HeaderDetecter();
-		flag_header = headerDetecter.hasHeader(readTable, "E:\\Probase\\CrowdIQ\\ConceptAndAttribute.txt");
+		String path = ServletActionContext.getRequest().getRealPath("/WEB-INF/probase");
+		flag_header = headerDetecter.hasHeader(readTable, path+"/ConceptAndAttribute.txt");
 		return flag_header;
 	}
 

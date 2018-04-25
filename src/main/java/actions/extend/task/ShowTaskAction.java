@@ -5,7 +5,7 @@ import actions.base.TaskProcessBaseAction;
 public class ShowTaskAction extends TaskProcessBaseAction {
 	//用于接受前端需要发布任务的ID号
 	private String taskID;
-	//用于返回待修改的真个task数据
+	//用于返回待修改的整个task数据
 	private String taskJSON;
 	private String userID;
 	//区分标志

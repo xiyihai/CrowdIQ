@@ -60,6 +60,8 @@ public class RTask {
 	@Column(name="begin_time")
 	private Timestamp begin_time;
 	
+	@Column(name="type")
+	private Integer type;
 	
 	
 	public Timestamp getBegin_time() {
@@ -165,10 +167,18 @@ public class RTask {
 	public void setHaspaid_cost(Double haspaid_cost) {
 		this.haspaid_cost = haspaid_cost;
 	}
+	
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
 	public RTask(String content, String table_name, Timestamp begin_time, Timestamp deadline, Double each_reward, Integer hastaken_number,
 			Integer hasanswer_number, Integer state, Double difficult_degree, Integer worker_number,
-			Double predict_cost, Double haspaid_cost) {
+			Double predict_cost, Double haspaid_cost, Integer type) {
 		super();
 		this.content = content;
 		this.table_name = table_name;
@@ -182,6 +192,7 @@ public class RTask {
 		this.worker_number = worker_number;
 		this.predict_cost = predict_cost;
 		this.haspaid_cost = haspaid_cost;
+		this.type = type;
 	}
 
 	public RTask() {

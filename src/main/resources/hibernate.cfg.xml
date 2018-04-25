@@ -40,6 +40,8 @@
   <mapping class="domains.WTask"/>
   <mapping class="domains.RTableList"/>
   <mapping class="domains.WorkerRTask"/>
+  <mapping class="domains.AnswerCompare"/>
+  <mapping class="domains.MulAnswerCompare"/>
   
   
  </session-factory>

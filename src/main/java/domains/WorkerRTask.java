@@ -33,6 +33,9 @@ public class WorkerRTask {
 	
 	@Column(name="taken_deadline")
 	private Timestamp taken_deadline;
+	
+	@Column(name="valid")
+	private Integer valid;
 
 	public Integer getWorker_id() {
 		return worker_id;
@@ -66,12 +69,21 @@ public class WorkerRTask {
 		this.taken_deadline = taken_deadline;
 	}
 
-	public WorkerRTask(Integer worker_id, Integer task_id, Integer times, Timestamp taken_deadline) {
+	public Integer getValid() {
+		return valid;
+	}
+
+	public void setValid(Integer valid) {
+		this.valid = valid;
+	}
+
+	public WorkerRTask(Integer worker_id, Integer task_id, Integer times, Timestamp taken_deadline, Integer valid) {
 		super();
 		this.worker_id = worker_id;
 		this.task_id = task_id;
 		this.times = times;
 		this.taken_deadline = taken_deadline;
+		this.valid = valid;
 	}
 
 	public WorkerRTask() {

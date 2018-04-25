@@ -1,7 +1,11 @@
 package actions.extend.task.worker;
 
 
+import com.mchange.v2.reflect.ReflectUtils;
+
 import actions.base.TaskProcessBaseAction;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class FinishTaskAction extends TaskProcessBaseAction {
 
@@ -34,6 +38,9 @@ public class FinishTaskAction extends TaskProcessBaseAction {
 	}
 	
 	public String execute(){
+		if (JSONArray.fromObject(answers).size() == 0) {
+			return ERROR;
+		}
 		if (taskProcessService.finishTask(userID, taskID, answers)) {
 			return SUCCESS;	
 		}else {

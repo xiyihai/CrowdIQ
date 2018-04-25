@@ -328,7 +328,7 @@ public class RegisterServiceImpl implements RegisterService {
 				Date now=new Date();
 				String deadline=dateFormat.format(now); 
 				
-				List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline);
+				List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline, 1);
 				for (int i = 0; i < workerRTasks.size(); i++) {
 					if (wtaskDao.getByWidTid(userID, String.valueOf(workerRTasks.get(i).getTask_id())).isEmpty()) {
 						rtask_number++;

@@ -37,10 +37,7 @@ require(['wh'], function (wh) {
                 $("#takentask-tbody").append(context);
             });
 
-            //这个是用来统计个数的函数，需要先加载，再调用
-            $('#dataTables-example').DataTable({
-                responsive: true
-            });
+
         }
     ).then(function () {
 
@@ -58,6 +55,8 @@ require(['wh'], function (wh) {
                 dataType:'json'
             }).then(function () {
                 alert("success");
+            }, function () {
+                alert("failed");
             });
         });
 
@@ -71,6 +70,10 @@ require(['wh'], function (wh) {
             var number = $(this).attr('id').substring(7);
             var taskID = $("#" + "taskID" + number).html();
             window.location.href = "workerHITOverview.html?userID="+userID+"&taskID="+taskID+"&done=1";
+        });
+        //这个是用来统计个数的函数，需要先加载，再调用
+        $('#dataTables-example').DataTable({
+            responsive: true
         });
     });
 
@@ -107,6 +110,7 @@ require(['wh'], function (wh) {
 
 
     wh.initHeader(userID);
+
 });
 
 

@@ -10,22 +10,35 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
+import CDASQualityControl.CDASAggregateAnswer;
+import CDASQualityControl.CDASAggregateAnswerImp;
 import CaculateParams.CaculateParameter;
 import CaculateParams.CaculateParameterImpl;
 import CaculateParams.CaculateSalary;
 import CaculateParams.CaculateSalaryImpl;
 import FunctionsSupport.TranferAnswer;
-import QualityControl.AggregateAnswer;
-import QualityControl.AggregateAnswerImp;
+import InquireQualityControl.InquireAggregateAnswer;
+import InquireQualityControl.InquireAggregateAnswerImp;
+import QuestionControl.AggregateAnswer;
+import QuestionControl.AggregateAnswerImp;
+import MultiQualityControl.AggregateMulAnswerImp;
+import MultiQualityControl.MulAggregateAnswer;
+import OpMulQualityControl.OpAggregateMulAnswer;
+import OpMulQualityControl.OpAggregateMulAnswerImp;
+import RecommendTask.FirstCountNumRecommend;
 import RecommendTask.RecommendTask;
-import RecommendTask.RecommendTaskImpl;
+import SigMulQualityControl.AggregateMulSigAnswer;
+import SigMulQualityControl.AggregateMulSigAnswerImp;
+import daos.Interface.AnswerCompareDao;
+import daos.Interface.MulAnswerCompareDao;
 import daos.Interface.RTaskDao;
 import daos.Interface.RequesterDao;
 import daos.Interface.RequesterTaskDao;
 import daos.Interface.WTaskDao;
 import daos.Interface.WorkerDao;
 import daos.Interface.WorkerRTaskDao;
+import domains.AnswerCompare;
+import domains.MulAnswerCompare;
 import domains.RTask;
 import domains.Requester;
 import domains.RequesterTask;
@@ -48,6 +61,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	private WorkerDao workerDao;
 	private RequesterDao requesterDao;
 	private WorkerRTaskDao workerRTaskDao;
+	private AnswerCompareDao answerCompareDao;
+	private MulAnswerCompareDao mulAnswerCompareDao;
 	
 	private ParserCrowdIQLService parserCrowdIQLService;
 	
@@ -62,6 +77,22 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	}
 
 	
+	public AnswerCompareDao getAnswerCompareDao() {
+		return answerCompareDao;
+	}
+
+	public void setAnswerCompareDao(AnswerCompareDao answerCompareDao) {
+		this.answerCompareDao = answerCompareDao;
+	}
+
+	public MulAnswerCompareDao getMulAnswerCompareDao() {
+		return mulAnswerCompareDao;
+	}
+
+	public void setMulAnswerCompareDao(MulAnswerCompareDao mulAnswerCompareDao) {
+		this.mulAnswerCompareDao = mulAnswerCompareDao;
+	}
+
 	public WorkerRTaskDao getWorkerRTaskDao() {
 		return workerRTaskDao;
 	}
@@ -192,7 +223,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				,Timestamp.valueOf(UI.get("deadline").toString()+":00"),Double.valueOf(UI.get("each_reward").toString()),Integer.valueOf(UI.get("hastaken_number").toString()),
 				Integer.valueOf(UI.get("hasanswer_number").toString()),Integer.valueOf(UI.get("state").toString()),
 				Double.valueOf(UI.get("difficult_degree").toString()), Integer.valueOf(UI.get("worker_number").toString()),
-				Double.valueOf(UI.get("predict_cost").toString()), Double.valueOf(UI.get("haspaid_cost").toString()));		
+				Double.valueOf(UI.get("predict_cost").toString()), Double.valueOf(UI.get("haspaid_cost").toString()), Integer.valueOf(UI.get("type").toString()));		
 		
 		rtaskDao.save(rTask);
 		Integer task_id = rtaskDao.getIDbyContent(UI.get("content").toString()).get(0).getTask_id();
@@ -249,12 +280,21 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				}
 			}
 			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+			Date now=new Date();
+			String deadline=dateFormat.format(now); 
+			
 			List<WorkerInfo> workerInfos = new ArrayList<>();
 			for (int i = 0; i < workers.size(); i++) {
 				Worker worker = workers.get(i);
-				WorkerInfo workerInfo = new WorkerInfo(worker.getWorker_id(), worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
-						worker.getAverage_di(), worker.getAverage_reward());
-				workerInfos.add(workerInfo);
+				//需要判断如果数据库中该工人短时间内收到推荐任务多于10个，或者 收录的任务不多于32，则暂停
+				int wrtask_number = workerRTaskDao.findByWidDeadline(String.valueOf(worker.getWorker_id()), deadline, 1).size();
+				int wtask_number = wtaskDao.getByWidState(String.valueOf(worker.getWorker_id()), 0).size();
+				if (wrtask_number <= 8 && wtask_number <= 20) {
+					WorkerInfo workerInfo = new WorkerInfo(worker.getWorker_id(), worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
+							worker.getAverage_di(), worker.getAverage_reward());
+					workerInfos.add(workerInfo);
+				}
 			}
 			//找到对应发布的任务，取出其中有用的信息，包装发给接口类
 			RequesterTaskInfo requesterTaskInfo = new RequesterTaskInfo(rTask.getTask_id(), 
@@ -266,10 +306,10 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			//接口方法(返回工人ID组成的数组)： String[] getRecommendTask(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo)
 			//(返回本次轮回的截止日期) TimeStamp getTakenDeadline(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo);
 			//这里面两个类，是自己封装的，方便取信息
-			RecommendTask recommendTask = new RecommendTaskImpl();
+			RecommendTask recommendTask = new FirstCountNumRecommend();
 			
 			String[] workerIDs = recommendTask.getRecommendTask(rTask.getWorker_number()-rTask.getHastaken_number(), 1, workerInfos, requesterTaskInfo);
-			Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number()-rTask.getHastaken_number(), 1, workerInfos, requesterTaskInfo);	
+			Timestamp taken_deadline = recommendTask.getTakenDeadline(rTask.getWorker_number()-rTask.getHastaken_number(), 1, 15, workerInfos, requesterTaskInfo);	
 			
 			//要写入数据库
 			for(int i=0;i<workerIDs.length;i++){
@@ -279,7 +319,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					workerRTask.setTimes(1);
 					workerRTaskDao.update(workerRTask);
 				}else {
-					WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[i]), Integer.valueOf(taskID), 1, taken_deadline);
+					WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[i]), Integer.valueOf(taskID), 1, taken_deadline, 1);
 					workerRTaskDao.save(workerRTask);		
 				}
 			}	
@@ -378,12 +418,14 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				Timestamp deadline = rtaskObject.getDeadline();
 				Integer state = 0;
 				Double each_reward =rtaskObject.getEach_reward();
+				Integer type = rtaskObject.getType();
+				
 				//获取当前时间
 				Timestamp taken_time = new Timestamp(new Date().getTime());
 				Double difficult_degree = rtaskObject.getDifficult_degree();
 				
 				wtaskDao.save(new WTask(Integer.valueOf(userID), Integer.valueOf(taskID), jsonObject.toString(), 
-						deadline, state , each_reward, taken_time, difficult_degree));
+						deadline, state , each_reward, taken_time, difficult_degree, type));
 				//有工人收录，则对应雇主任务中已收录工人数参数也要变化
 				rtaskObject.setHastaken_number(rtaskObject.getHastaken_number()+1);
 				
@@ -393,6 +435,10 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					rtaskObject.setState(5);
 				}
 				rtaskDao.update(rtaskObject);
+				//从任务推荐表中去除
+				WorkerRTask wRTask = workerRTaskDao.findByTidWid(userID, taskID).get(0);
+				wRTask.setValid(0);
+				workerRTaskDao.update(wRTask);
 				return true;
 			}
 		}
@@ -401,7 +447,14 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 	@Override
 	public boolean finishTask(String userID, String taskID, String answers) {
 		// TODO Auto-generated method stub
+		
+		//需要防止单人页面多次点击提交任务
+		//若type为2，则这边answer为 Array array
 		WTask wTask = wtaskDao.getByWidTid(userID, taskID).get(0);
+		if(wTask.getState() == 2){
+			return false;
+		}
+		
 		JSONObject wtaskContent = JSONObject.fromObject(wTask.getContent());
 		wtaskContent.put("submitAnswer", answers);
 		wTask.setContent(wtaskContent.toString());
@@ -470,7 +523,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		rtask.replace("receiveWorkerID", receiveWorkerID);
 		rTask.setContent(rtask.toString());
 		
-		rTask.setHasanswer_number(rTask.getHasanswer_number()+1);;
+		rTask.setHasanswer_number(rTask.getHasanswer_number()+1);
 		//这里需要获取上面工人浮动工资，再写入		
 		rTask.setHaspaid_cost(Double.valueOf(dFormat.format(rTask.getHaspaid_cost()+get_reward)));
 		rtaskDao.update(rTask);
@@ -479,9 +532,18 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		Requester requester = requesterDao.getByRID(String.valueOf(requester_id)).get(0);
 		requester.setAccount(Double.valueOf(dFormat.format(requester.getAccount()-get_reward)));
 		requesterDao.update(requester);
+		
 		if (rTask.getHasanswer_number()==rTask.getWorker_number()) {
-
+			
 			AggregateAnswer aggregateAnswer = new AggregateAnswerImp();
+			MulAggregateAnswer mulAggregateAnswer = new AggregateMulAnswerImp();
+			
+			//获取其他答案决策方法？
+			CDASAggregateAnswer cdasAggregateAnswer = new CDASAggregateAnswerImp();
+			InquireAggregateAnswer inquireAggregateAnswer = new InquireAggregateAnswerImp();
+			
+			AggregateMulSigAnswer aggregateMulSigAnswer = new AggregateMulSigAnswerImp();
+			OpAggregateMulAnswer opAggregateMulAnswer = new OpAggregateMulAnswerImp();
 			
 			//这里还需要考虑雇主任务已经收集满了，需要决策等后续任务，雇主任务状态修改等
 			rTask.setState(2);
@@ -493,18 +555,14 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 			int length = rtask.getJSONArray("sqlTargets").size();
 			JSONArray finalAnswers = rtask.getJSONArray("finalAnswers");
 			for (int i = 0; i < length; i++) {
-				//制作参数 top_k
-				ArrayList<String> top_k = new ArrayList<>();;
+				//制作参数 top_k，只有放入答案整合函数才用到，答案转换格式不需要！！
+				ArrayList<String> top_k = new ArrayList<>();
+				JSONArray candidateItems = new JSONArray();
 				if (rtask.containsKey("candidateItems")) {
 					if ((rtask.getJSONArray("candidateItems").size()-1) >= i) {
-						JSONArray candidateItems = rtask.getJSONArray("candidateItems").getJSONArray(i);
+						candidateItems = rtask.getJSONArray("candidateItems").getJSONArray(i);
 						top_k = TranferAnswer.top_ktranfer(candidateItems);
 					}
-				}
-				//制作参数answers
-				ArrayList<String> worker_answer = new ArrayList<>();
-				for (int j = 0; j < rTask.getWorker_number(); j++) {
-					worker_answer.add(TranferAnswer.answertranfer(hasReceivedAnswers.getJSONArray(j).getString(i), top_k));
 				}
 				//制作工人质量矩阵
 				ArrayList<String> worker_quality = new ArrayList<>();
@@ -514,19 +572,119 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					String quality = worker2.getQuality();
 					worker_quality.add(quality);
 				}
-				//这里都只是决策出的一个答案
-//				for (int j = 0; j < worker_answer.size(); j++) {
-//					System.out.println(worker_answer.get(j)+"----");
-//				}
+				ArrayList<String> update_qualitys = new ArrayList<>(); 
 				
-				aggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
-				String finalAnswer = aggregateAnswer.AggFinalAnswer().get(0);
-				//还需要转一下
-				if (finalAnswer.startsWith("!")) {
-					finalAnswer = TranferAnswer.resulttranfer(finalAnswer.substring(1, 2), rtask.getJSONArray("candidateItems").getJSONArray(i));
+				//需要区分type
+				int type = rTask.getType();
+				if (type == 1) {
+					//制作参数answers
+					
+					ArrayList<String> worker_answer = new ArrayList<>();
+					for (int j = 0; j < rTask.getWorker_number(); j++) {
+						worker_answer.add(TranferAnswer.answertranfer(hasReceivedAnswers.getJSONArray(j).getString(i), candidateItems));
+					}	
+					long truth_begin_time = System.currentTimeMillis(); 
+					aggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
+					String finalAnswer = aggregateAnswer.AggFinalAnswer().get(0);
+					long truth_finish_time = System.currentTimeMillis();
+
+					//用其他方法决策？存储A,B,C即可
+					long cdas_begin_time = System.currentTimeMillis();
+					cdasAggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
+					String cdas = cdasAggregateAnswer.AggFinalAnswer().get(0);
+					long cdas_finish_time = System.currentTimeMillis();
+
+					long inquire_begin_time = System.currentTimeMillis();
+					inquireAggregateAnswer.AggresionAnswer(worker_answer, worker_quality, top_k);
+					String inquire = inquireAggregateAnswer.AggFinalAnswer().get(0);
+					long inquire_finish_time = System.currentTimeMillis();
+
+					AnswerCompare answerCompare = new AnswerCompare(Integer.valueOf(taskID), finalAnswer, cdas, inquire, String.valueOf(truth_finish_time-truth_begin_time),
+							String.valueOf(cdas_finish_time-cdas_begin_time), String.valueOf(inquire_finish_time-inquire_begin_time));
+					answerCompareDao.save(answerCompare);
+							
+					//还需要转一下
+					finalAnswer = TranferAnswer.resulttranfer(finalAnswer, candidateItems);
+
+					update_qualitys = aggregateAnswer.WriteWm();
+					//更新雇主任务最终答案
+					finalAnswers.add(finalAnswer);
+					//将所有决策出的答案都放入
+					rtask.put("finalAnswers", finalAnswers);
+					rTask.setContent(rtask.toString());	
+					//更新数据库对应雇主字段
+					rtaskDao.update(rTask);
+					
+				} else if (type == 2) {
+
+					//制作参数answers
+					ArrayList<ArrayList<String>> worker_answer = new ArrayList<>();
+					for (int j = 0; j < rTask.getWorker_number(); j++) {
+						
+						//获取该多选题的候选答案个数，将其依次转换
+						ArrayList<String> worker_tranfer_answer = new ArrayList();
+						int items = hasReceivedAnswers.getJSONArray(j).getJSONArray(i).size();
+						for (int k = 0; k < items; k++) {
+							worker_tranfer_answer.add(TranferAnswer.answertranfer(hasReceivedAnswers.getJSONArray(j).getJSONArray(i).getString(k), candidateItems));
+						}
+						
+						worker_answer.add(worker_tranfer_answer);
+					}
+
+					//调用多选题答案决策函数
+					long truth_begin_time = System.currentTimeMillis();
+					mulAggregateAnswer.AggresionMulAnswer(worker_answer, worker_quality, top_k);
+					String answer = mulAggregateAnswer.AggFinalAnswer().get(0);
+					long truth_finish_time = System.currentTimeMillis();
+
+					
+					//用其他方法决策？存储A,B,C即可
+					long op_begin_time = System.currentTimeMillis();
+					opAggregateMulAnswer.AggresionMulAnswer(worker_answer, worker_quality, top_k);
+					String op = opAggregateMulAnswer.AggFinalAnswer().get(0);
+					long op_finish_time = System.currentTimeMillis();
+
+					
+					long sig_begin_time = System.currentTimeMillis();
+					aggregateMulSigAnswer.AggresionMulSigAnswer(worker_answer, worker_quality, top_k);
+					String sig = aggregateMulSigAnswer.AggFinalAnswer().get(0);
+					long sig_finish_time = System.currentTimeMillis();
+
+					MulAnswerCompare mulAnswerCompare = new MulAnswerCompare(Integer.valueOf(taskID), answer, sig, op,
+							String.valueOf(truth_finish_time-truth_begin_time),String.valueOf(sig_finish_time-sig_begin_time),String.valueOf(op_finish_time-op_begin_time));
+					mulAnswerCompareDao.save(mulAnswerCompare);
+
+					//将[a,b]转换成可处理的数组
+					answer = answer.substring(1, answer.length()-1);
+					ArrayList<String> init_finalAnswer = new ArrayList<>();
+					
+					for (int j = 0; j < answer.split(",").length; j++) {
+						if (j == 0) {
+							init_finalAnswer.add(answer.split(",")[j]);
+						}else {
+							int l = answer.split(",")[j].length();
+							init_finalAnswer.add(answer.split(",")[j].substring(1, l));	
+						}
+					}
+					
+					JSONArray finalAnswer = new JSONArray(); 
+					
+					//还需要转一下
+					for (int j = 0; j < init_finalAnswer.size(); j++) {
+						finalAnswer.add(TranferAnswer.resulttranfer(init_finalAnswer.get(j),  candidateItems));
+					}
+					update_qualitys = mulAggregateAnswer.WriteWm();
+					
+					//更新雇主任务最终答案
+					finalAnswers.add(finalAnswer);
+						
+					//将所有决策出的答案都放入
+					rtask.put("finalAnswers", finalAnswers);
+					rTask.setContent(rtask.toString());	
+					//更新数据库对应雇主字段
+					rtaskDao.update(rTask);
 				}
 				
-				ArrayList<String> update_qualitys = aggregateAnswer.WriteWm();
 				//更新工人质量矩阵
 				for (int j = 0; j < update_qualitys.size(); j++) {
 					String update_quality = update_qualitys.get(j);
@@ -535,14 +693,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					worker2.setQuality(update_quality);
 					workerDao.update(worker2);
 				}
-				//更新雇主任务最终答案
-				finalAnswers.add(finalAnswer);
 			}
-			//将所有决策出的答案都放入
-			rtask.put("finalAnswers", finalAnswers);
-			rTask.setContent(rtask.toString());	
-			//更新数据库对应雇主字段
-			rtaskDao.update(rTask);
 		}
 		return true;
 	}
@@ -596,7 +747,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		Date now=new Date();
 		String deadline=dateFormat.format(now); 
 		
-		List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline);
+		List<WorkerRTask> workerRTasks = workerRTaskDao.findByWidDeadline(userID, deadline, 1);
 		
 		//将任务的简要信息给前端, 包括 taskid, 收录截止时间，基础工资，难度系数，任务截止时间 ，已收录工人数/需要的工人数
 		JSONArray tasks = new JSONArray();
@@ -687,7 +838,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				//找到对应任务推荐表
 				List<WorkerRTask> wRTasks = workerRTaskDao.findByTid(taskID);
 				for (int j = 0; j < wRTasks.size(); j++) {
-					workerRTaskDao.delete(wRTasks.get(j));
+					wRTasks.get(j).setValid(0);
+					workerRTaskDao.update(wRTasks.get(j));
 				}
 			}
 		}
@@ -701,10 +853,11 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 		String deadline=dateFormat.format(now); 
 		try {
 			
-			//建立hashmap来去重
+			//建立hashmap来去重，为了不再重复处理同一个任务的推荐，times有用
 			HashMap<String, String> map = new HashMap<>();
 			
-			List<WorkerRTask> workerRTasks = workerRTaskDao.findByDeadline(deadline);
+			List<WorkerRTask> workerRTasks = workerRTaskDao.findByDeadline(deadline, 1);
+			
 			for (int i = 0; i < workerRTasks.size(); i++) {
 				
 				Integer taskID = workerRTasks.get(i).getTask_id();
@@ -712,7 +865,8 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 				String key = taskID+":"+times;
 
 				if (map.containsKey(key)) {
-					workerRTaskDao.delete(workerRTasks.get(i));
+					workerRTasks.get(i).setValid(0);
+					workerRTaskDao.update(workerRTasks.get(i));	
 					continue;
 				}else{
 					map.put(key, key);
@@ -728,7 +882,7 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					//输入任务： 任务ID， 截止时间， each_reward， 已收录工人数，需要工人数， 任务难度系数
 					//这里需要排除已经推荐过的工人
 					
-					List<Worker> workersAll = workerDao.getByLevel(1);
+					List<Worker> workersAll = workerDao.getByLevel(1); //
 					List<WorkerRTask> workerRTasks2 = workerRTaskDao.findByTid(String.valueOf(taskID));
 					
 					//利用集合相减去重
@@ -745,9 +899,14 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					List<WorkerInfo> workerInfos = new ArrayList<>();
 					for (int j = 0; j < worker_id_workersAll.size(); j++) {
 						Worker worker = workerDao.getByWid(String.valueOf(worker_id_workersAll.get(j))).get(0);
-						WorkerInfo workerInfo = new WorkerInfo(worker.getWorker_id(), worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
-								worker.getAverage_di(), worker.getAverage_reward());
-						workerInfos.add(workerInfo);
+						//需要判断如果数据库中该工人短时间内收到推荐任务多于10个，或者 收录的任务不多于32，则暂停
+						int wrtask_number = workerRTaskDao.findByWidDeadline(String.valueOf(worker.getWorker_id()), deadline, 1).size();
+						int wtask_number = wtaskDao.getByWidState(String.valueOf(worker.getWorker_id()), 0).size();
+						if (wrtask_number <= 8 && wtask_number <= 20) {
+							WorkerInfo workerInfo = new WorkerInfo(worker.getWorker_id(), worker.getQuality(), worker.getLevel(), worker.getAverage_costtime(),
+									worker.getAverage_di(), worker.getAverage_reward());
+							workerInfos.add(workerInfo);
+						}
 					}
 					//找到对应发布的任务，取出其中有用的信息，包装发给接口类
 					RequesterTaskInfo requesterTaskInfo = new RequesterTaskInfo(rTask.getTask_id(), 
@@ -759,18 +918,21 @@ public class TaskProcessServiceImpl implements TaskProcessService {
 					//接口方法(返回工人ID组成的数组)： String[] getRecommendTask(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo)
 					//(返回本次轮回的截止日期) TimeStamp getTakenDeadline(Integer worker_number, Integer times, List<WorkerInfo> workerInfos, RequesterTaskInfo requesterTaskInfo);
 					//这里面两个类，是自己封装的，方便取信息
-					RecommendTask recommendTask = new RecommendTaskImpl();
+					RecommendTask recommendTask = new FirstCountNumRecommend();
 					String[] workerIDs = recommendTask.getRecommendTask(worker_number-taken_number, times+1, workerInfos, requesterTaskInfo);
-					Timestamp taken_deadline = recommendTask.getTakenDeadline(worker_number-taken_number, times+1, workerInfos, requesterTaskInfo);
-					workerRTaskDao.delete(workerRTasks.get(i));
+					Timestamp taken_deadline = recommendTask.getTakenDeadline(worker_number-taken_number, times+1, 15, workerInfos, requesterTaskInfo);
+					
+					workerRTasks.get(i).setValid(0);
+					workerRTaskDao.update(workerRTasks.get(i));
 					//要写入数据库
 					for(int j=0;j<workerIDs.length;j++){
-						WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[j]), Integer.valueOf(taskID), times+1, taken_deadline);
+						WorkerRTask workerRTask = new WorkerRTask(Integer.valueOf(workerIDs[j]), Integer.valueOf(taskID), times+1, taken_deadline, 1);
 						workerRTaskDao.save(workerRTask);
 					}
 				}else{
 					//把过期的推荐任务从数据库删除
-					workerRTaskDao.delete(workerRTasks.get(i));	
+					workerRTasks.get(i).setValid(0);
+					workerRTaskDao.update(workerRTasks.get(i));	
 				}
 			}
 		} catch (Exception e) {

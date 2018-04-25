@@ -24,7 +24,8 @@
 	<bean id="WTaskDao" class="daos.Impl.WTaskDaoImpl" parent="daoTemplate"></bean>
 	<bean id="RTableListDao" class="daos.Impl.RTableListDaoImpl" parent="daoTemplate"></bean>
 	<bean id="WorkerRTaskDao" class="daos.Impl.WorkerRTaskDaoImpl" parent="daoTemplate"></bean>
-	
+	<bean id="AnswerCompareDao" class="daos.Impl.AnswerCompareDaoImpl" parent="daoTemplate"></bean>
+	<bean id="MulAnswerCompareDao" class="daos.Impl.MulAnswerCompareDaoImpl" parent="daoTemplate"></bean>
 	
 	<!-- spring的属性加载器，加载properties文件中的属性 -->  
 	<bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  

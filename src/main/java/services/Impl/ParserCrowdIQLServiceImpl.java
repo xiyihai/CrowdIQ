@@ -575,10 +575,12 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 						}
 					}
 				}
+
 				map_result.put("candidateItems", results);
-				System.out.println(results);
-				//计算使用算法的比例
-				top_kPerc = results.size() / (double)targetsBlank.length;
+
+				if (targetsBlank != null) {
+					top_kPerc = results.size() / (double)targetsBlank.length;
+				}
 			}
 			return JSONObject.fromObject(map_result).toString();
 		}
@@ -681,7 +683,6 @@ public class ParserCrowdIQLServiceImpl implements ParserCrowdIQLService {
 		}else{
 			return new Double(0);
 		}
-		
 	}
 	
 }

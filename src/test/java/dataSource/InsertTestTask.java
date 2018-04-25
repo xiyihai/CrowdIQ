@@ -62,7 +62,9 @@ public class InsertTestTask {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		insertDB();
+		for (int i = 0; i < 10; i++) {
+			insertDB();	
+		}
 	}
 
 }

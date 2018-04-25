@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.id.IntegralDataTypeHolder;
 
 import domains.key.WTaskKey;
 
@@ -51,6 +52,9 @@ public class WTask {
 
 	@Column(name="difficult_degree")
 	private Double difficult_degree;
+	
+	@Column(name="type")
+	private Integer type;	
 	
 	public Double getDifficult_degree() {
 		return difficult_degree;
@@ -131,9 +135,17 @@ public class WTask {
 	public void setEach_reward(Double each_reward) {
 		this.each_reward = each_reward;
 	}
+	
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
 	public WTask(Integer worker_id, Integer task_id, String content, Timestamp deadline, Integer state,
-			Double each_reward, Timestamp taken_time, Double difficult_degree) {
+			Double each_reward, Timestamp taken_time, Double difficult_degree, Integer type) {
 		super();
 		this.worker_id = worker_id;
 		this.task_id = task_id;
@@ -143,6 +155,7 @@ public class WTask {
 		this.each_reward = each_reward;
 		this.taken_time = taken_time;
 		this.difficult_degree = difficult_degree;
+		this.type = type;
 	}
 
 	public WTask() {
